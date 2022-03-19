@@ -5,3 +5,4 @@
 - [1.1 역사의 흐름은 무엇인가](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_1_자바_8_9_10_11_무슨_일이_일어나고_있는가.md#11-역사의-흐름은-무엇인가)
 - [1.2 왜 아직도 자바는 변화하는가?](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_1_자바_8_9_10_11_무슨_일이_일어나고_있는가.md#12-왜-아직도-자바는-변화하는가)
     - [1.2.1 왜 아직도 자바는 변화하는가?](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_1_자바_8_9_10_11_무슨_일이_일어나고_있는가.md#121-프로그래밍-언어-생태계에서-자바의-위치)
+    - [1.2.2 스트림 처리](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_1_자바_8_9_10_11_무슨_일이_일어나고_있는가.md#122-스트림-처리)
