@@ -11,3 +11,4 @@
     - [1.2.5 자바가 진화해야 하는 이유](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_1_자바_8_9_10_11_무슨_일이_일어나고_있는가.md#125-자바가-진화해야-하는-이유)
 - [1.3 자바 함수](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_1_자바_8_9_10_11_무슨_일이_일어나고_있는가.md#13-자바-함수)
     - [1.3.1 메서드와 람다를 일급 시민으로](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_1_자바_8_9_10_11_무슨_일이_일어나고_있는가.md#131-메서드와-람다를-일급-시민으로)
+    - [1.3.2 코드 넘겨주기 : 예제](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_1_자바_8_9_10_11_무슨_일이_일어나고_있는가.md#132-코드-넘겨주기--예제)
