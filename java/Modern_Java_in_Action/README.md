@@ -14,3 +14,4 @@
     - [1.3.2 코드 넘겨주기 : 예제](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_1_자바_8_9_10_11_무슨_일이_일어나고_있는가.md#132-코드-넘겨주기--예제)
     - [1.3.3 메서드 전달에서 람다로](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_1_자바_8_9_10_11_무슨_일이_일어나고_있는가.md#133-메서드-전달에서-람다로)
 - [1.4 스트림](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_1_자바_8_9_10_11_무슨_일이_일어나고_있는가.md#14-스트림)
+    - [1.4.1 멀티스레딩은 어렵다](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_1_자바_8_9_10_11_무슨_일이_일어나고_있는가.md#141-멀티스레딩은-어렵다)
