@@ -22,4 +22,5 @@
 ## [Chapter 2. 동작 파라미터화 코드 전달하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md)
 
 - [2.1 변화하는 요구사항에 대응하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#21-변화하는-요구사항에-대응하기)
+    - [2.1.1 첫 번째 시도: 녹색 사과 필터링](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#211-첫-번째-시도--녹색-사과-필터링)
 

@@ -1,6 +1,7 @@
 # Chapter 2. 동작 파라미터화 코드 전달하기
 
 - [2.1 변화하는 요구사항에 대응하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#21-변화하는-요구사항에-대응하기)
+    - [2.1.1 첫 번째 시도: 녹색 사과 필터링](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#211-첫-번째-시도--녹색-사과-필터링)
 
 변화하는 요구사항은 소프트웨어 엔지니어링에서 피할 수 없는 문제입니다. 자주 변하는 요구사항에 대해 비용을 최소화 하되, 새로운 기능은 쉽게 구현할 수 있어야 장기적인 관점에서 유지보수가 쉬워집니다.
 
@@ -28,3 +29,31 @@
 하나의 예제를 선정한 다음 예제 코드를 점차 개선하면서 유연한 코드를 만드는 방법에 대해 알아보겠습니다.
 
 기존의 농장 재고목록 애플리케이션에 `List`에서 `녹색 사과`만 `filtering`하는 기능을 추가한다고 가정하고 시작하면 간단한 작업이라는 생각이 들 것입니다.
+
+### 2.1.1 첫 번째 시도: 녹색 사과 필터링
+
+```java
+enum Color {RED, GREEN}
+```
+
+```java
+class FilteringApples {
+    public static List<Apple> filterGreenApples(List<Apple> inventory) {
+        List<Apple> result = new ArrayList<>();
+        for (Apple apple : inventory) {
+            if (apple.getColor() == Color.GREEN) { // 필터링 조건
+                result.add(apple);
+            }
+        }
+        return result;
+    }
+}
+```
+
+`녹색 사과`만 `filtering`하는 메소드는 위 처럼 만들 수 있습니다. 이때, `빨간 사과`도 `filtering`이 하고 싶어졌다면 어떻게 고쳐야 할까요?
+
+큰 고민 없이 메소드를 `복사`, `붙여넣기`하여 필터링 조건만 변경할 수도 있지만, 추후 더 다양한 색으로 `filtering`이 필요하다면 부적절한 방법입니다.
+
+- 이런 경우엔 `좋은 규칙`이 하나 있습니다.
+
+> 거의 비슷한 코드가 반복 존재한다면 그 코드를 추상화하라
