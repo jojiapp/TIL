@@ -2,6 +2,7 @@
 
 - [2.1 변화하는 요구사항에 대응하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#21-변화하는-요구사항에-대응하기)
     - [2.1.1 첫 번째 시도: 녹색 사과 필터링](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#211-첫-번째-시도--녹색-사과-필터링)
+    - [2.1.2 두 번째 시도: 색을 파라미터화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#212-두-번째-시도--색을-파라미터화)
 
 변화하는 요구사항은 소프트웨어 엔지니어링에서 피할 수 없는 문제입니다. 자주 변하는 요구사항에 대해 비용을 최소화 하되, 새로운 기능은 쉽게 구현할 수 있어야 장기적인 관점에서 유지보수가 쉬워집니다.
 
@@ -57,3 +58,47 @@ class FilteringApples {
 - 이런 경우엔 `좋은 규칙`이 하나 있습니다.
 
 > 거의 비슷한 코드가 반복 존재한다면 그 코드를 추상화하라
+
+### 2.1.2 두 번째 시도: 색을 파라미터화
+
+`filtering`할 `Color`를 파라미터로 받아 위의 문제를 해결할 수 있습니다.
+
+```java
+class FilteringApples {
+    public static List<Apple> filterApplesByColor(List<Apple> inventory, Color color) {
+        List<Apple> result = new ArrayList<>();
+        for (Apple apple : inventory) {
+            if (apple.getColor() == color) {
+                result.add(apple);
+            }
+        }
+        return result;
+    }
+}
+```
+
+이제 `Color`를 받아 해당 `Color`로 `filtering`할 수 있게 되었습니다.
+
+이번엔 `무게`로도 `filtering`이 필요하다고 요구사항이 들어왔다고 하면 아래와 같이 구현할 수 있습니다.
+
+```java
+class FilteringApples {
+    public static List<Apple> filterApplesByWeight(List<Apple> inventory, int weight) { // 받는 파라미터 변경
+        List<Apple> result = new ArrayList<>();
+        for (Apple apple : inventory) {
+            if (apple.getWeight() > weight) { // 필터링 조건 변경
+                result.add(apple);
+            }
+        }
+        return result;
+    }
+}
+```
+
+기존의 코드를 `복사`, `붙여넣기`하여 위 처럼 만들수 있지만 이번엔 `조건`외에 모든 코드가 동일합니다.
+
+> `복사`, `붙여넣기`는 `DRY (같은 것을 반복하지 말 것)`원칙을 어기는 일입니다.
+>
+> 탐색 과정을 고쳐야 하는 경우가 발생하면 메소드 전체 구현을 고쳐야 하므로 비싼 대가를 치러야 합니다.
+
+위의 문제를 해결하기 위해 `파라미터`로 `Color`랑 `Weight`를 받고, 어떤 것으로 `filtering`할 지 `flag 파라미터`도 추가하여 처리할 수 있습니다.
