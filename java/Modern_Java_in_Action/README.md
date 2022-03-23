@@ -18,3 +18,5 @@
 - [1.5 디폴트 메서드와 자바 모듈](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_1_자바_8_9_10_11_무슨_일이_일어나고_있는가.md#15-디폴트-메서드와-자바-모듈)
 - [1.6 함수형 프로그래밍에서 가져온 다른 유용한 아이디어](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_1_자바_8_9_10_11_무슨_일이_일어나고_있는가.md#16-함수형-프로그래밍에서-가져온-다른-유용한-아이디어)
 - [1.7 마치며](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_1_자바_8_9_10_11_무슨_일이_일어나고_있는가.md#17-마치며)
+
+## [Chapter 2. 동작 파라미터화 코드 전달하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md)
