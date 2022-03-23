@@ -20,3 +20,6 @@
 - [1.7 마치며](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_1_자바_8_9_10_11_무슨_일이_일어나고_있는가.md#17-마치며)
 
 ## [Chapter 2. 동작 파라미터화 코드 전달하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md)
+
+- [2.1 변화하는 요구사항에 대응하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#21-변화하는-요구사항에-대응하기)
+
