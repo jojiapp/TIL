@@ -3,6 +3,7 @@
 - [2.1 변화하는 요구사항에 대응하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#21-변화하는-요구사항에-대응하기)
     - [2.1.1 첫 번째 시도: 녹색 사과 필터링](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#211-첫-번째-시도--녹색-사과-필터링)
     - [2.1.2 두 번째 시도: 색을 파라미터화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#212-두-번째-시도--색을-파라미터화)
+    - [2.1.3 세 번째 시도: 가능한 모든 속성으로 필터링](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#213-세-번째-시도--가능한-모든-속성으로-필터링)
 
 변화하는 요구사항은 소프트웨어 엔지니어링에서 피할 수 없는 문제입니다. 자주 변하는 요구사항에 대해 비용을 최소화 하되, 새로운 기능은 쉽게 구현할 수 있어야 장기적인 관점에서 유지보수가 쉬워집니다.
 
@@ -31,7 +32,7 @@
 
 기존의 농장 재고목록 애플리케이션에 `List`에서 `녹색 사과`만 `filtering`하는 기능을 추가한다고 가정하고 시작하면 간단한 작업이라는 생각이 들 것입니다.
 
-### 2.1.1 첫 번째 시도: 녹색 사과 필터링
+### 2.1.1 첫 번째 시도 : 녹색 사과 필터링
 
 ```java
 enum Color {RED, GREEN}
@@ -59,7 +60,7 @@ class FilteringApples {
 
 > 거의 비슷한 코드가 반복 존재한다면 그 코드를 추상화하라
 
-### 2.1.2 두 번째 시도: 색을 파라미터화
+### 2.1.2 두 번째 시도 : 색을 파라미터화
 
 `filtering`할 `Color`를 파라미터로 받아 위의 문제를 해결할 수 있습니다.
 
@@ -102,3 +103,32 @@ class FilteringApples {
 > 탐색 과정을 고쳐야 하는 경우가 발생하면 메소드 전체 구현을 고쳐야 하므로 비싼 대가를 치러야 합니다.
 
 위의 문제를 해결하기 위해 `파라미터`로 `Color`랑 `Weight`를 받고, 어떤 것으로 `filtering`할 지 `flag 파라미터`도 추가하여 처리할 수 있습니다.
+
+### 2.1.3 세 번째 시도 : 가능한 모든 속성으로 필터링
+
+> 해당 방식은 절대 사용하면 안됩니다.
+
+```java
+class FilteringApples {
+    public static List<Apple> filterApples(List<Apple> inventory, Color color, int weight, boolean flag) { // 파라미터 추가
+        List<Apple> result = new ArrayList<>();
+        for (Apple apple : inventory) {
+            if ((flag && apple.getColor() == color) ||
+                    (!flag && apple.getWeight() > weight)) { // flag에 따른 조건
+                result.add(apple);
+            }
+        }
+        return result;
+    }
+}
+```
+
+아주 안좋은 코드 입니다. `flag`의 `true`, `false`가 무엇을 의미하는지도 알수 없고,
+`크기`, `모양`등 `filtering`할 요구 사항이 늘어나는 경우엔 `파라미터`와 `조건`이 점점 많아질 것입니다.
+
+요구 조건이 많아지면 지금까지 살펴 봤듯 기존에는 2가지 방법이 있습니다.
+
+- 여러 중복된 필터 메소드 구현
+- 하나의 거대한 필터 메소드 구현
+
+> `Java 8`에서는 `동작 파라미터화`로 `filtering` 조건을 파라미터로 받아 처리할 수 있습니다.
