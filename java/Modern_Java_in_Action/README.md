@@ -33,3 +33,4 @@
     - [2.3.3 여섯 번째 시도 : 람다 표현식 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#233-여섯-번째-시도--람다-표현식-사용)
     - [2.3.4 일곱 번째 시도 : 리스트 형식으로 추상화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#234-일곱-번째-시도--리스트-형식으로-추상화)
 - [2.4 실전 예제](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#24-실전-예제)
+    - [2.4.1 Comparator로 정렬하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#241-Comparator로-정렬하기)
