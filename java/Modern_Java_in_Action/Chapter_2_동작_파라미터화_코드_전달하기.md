@@ -11,6 +11,7 @@
     - [2.3.2 다섯 번째 시도 : 익명 클래스 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#232-다섯-번째-시도--익명-클래스-사용)
     - [2.3.3 여섯 번째 시도 : 람다 표현식 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#233-여섯-번째-시도--람다-표현식-사용)
     - [2.3.4 일곱 번째 시도 : 리스트 형식으로 추상화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#234-일곱-번째-시도--리스트-형식으로-추상화)
+- [2.4 실전 예제](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#24-실전-예제)
 
 변화하는 요구사항은 소프트웨어 엔지니어링에서 피할 수 없는 문제입니다. 자주 변하는 요구사항에 대해 비용을 최소화 하되, 새로운 기능은 쉽게 구현할 수 있어야 장기적인 관점에서 유지보수가 쉬워집니다.
 
@@ -394,3 +395,14 @@ class Filtering {
 ```
 
 이제 `사과` 이외에도 필터가 필요한 모든 `List`에 적용이 가능합니다.
+
+## 2.4 실전 예제
+
+`동작 파라미터화 패턴`은 동작을 캡슐화한 다음에 메소드로 전달해서 메소드의 동작을 파라미터화 합니다.
+
+- `Comparator (정렬)`
+- `Runable (실행)`
+- `Callable (결과 반환)`
+- `GUI 이벤트 처리`
+
+위의 예제를 살펴보면서 `코드 전달 개념`을 더욱 확실하게 익혀봅시다.
