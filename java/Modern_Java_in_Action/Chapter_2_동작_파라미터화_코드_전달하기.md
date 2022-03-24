@@ -4,6 +4,7 @@
     - [2.1.1 첫 번째 시도: 녹색 사과 필터링](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#211-첫-번째-시도--녹색-사과-필터링)
     - [2.1.2 두 번째 시도: 색을 파라미터화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#212-두-번째-시도--색을-파라미터화)
     - [2.1.3 세 번째 시도: 가능한 모든 속성으로 필터링](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#213-세-번째-시도--가능한-모든-속성으로-필터링)
+- [2.2 동작 파라미터화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#22-동작-파라미터화)
 
 변화하는 요구사항은 소프트웨어 엔지니어링에서 피할 수 없는 문제입니다. 자주 변하는 요구사항에 대해 비용을 최소화 하되, 새로운 기능은 쉽게 구현할 수 있어야 장기적인 관점에서 유지보수가 쉬워집니다.
 
@@ -132,3 +133,48 @@ class FilteringApples {
 - 하나의 거대한 필터 메소드 구현
 
 > `Java 8`에서는 `동작 파라미터화`로 `filtering` 조건을 파라미터로 받아 처리할 수 있습니다.
+
+## 2.2 동작 파라미터화
+
+위에서 살펴봤듯, 변화하는 요구사항에 좀 더 유연하게 대응할 방법이 필요합니다.
+
+우선, 한 걸음 물러서서 생각을 해보면 조건은 `Apple`의 `어떤 속성`에 기초하여 `boolean` 값을 알 수 있으면 됩니다.
+
+> `인자`를 받아 `boolean` 값을 반환하는 함수를 `Predicate` 라고 합니다.
+
+```java
+interface ApplePredicate {
+    boolean test(Apple a); // 사과 선택 전략을 캡슐화
+}
+```
+
+```java
+class AppleWeightPredicate implements ApplePredicate {
+    @Override
+    public boolean test(Apple apple) {
+        return apple.getWeight() > 150;
+    }
+}
+```
+
+```java
+class AppleColorPredicate implements ApplePredicate {
+    @Override
+    public boolean test(Apple apple) {
+        return apple.getColor() == Color.GREEN;
+    }
+}
+```
+
+각 `class`는 `ApplePredicate`를 상속 받아 각각 필요한 조건을 정의하였습니다. 위 조건에 따라 `filter`메소드가 다르게 동작할 것이라고 예상할 수 있습니다.
+
+> 위와 같은 패턴을 `전략 디자인 패턴`이라고 합니다.
+>
+> `전략 디자인 패턴`은 알고리즘을 `캡슐화`하는 `알고리즘 패밀리`를 정의해둔 다음에 `런타임에 알고리즘을 선택`하는 기법입니다.  
+> 위의 예제에선 `ApplePredicate`가 `알고리즘 패밀리`이고, `AppleWeightPredicate`와 `AppleColorPredicate`가 `전략` 입니다.
+
+이제 `filterApples`에서 `ApplePredicate` 객체를 파라미터로 받아 `Apple`의 조건을 검사하도록 메소드를 변경하면 전달 받은 객체에 따라 `filtering`을 다르게 할 수 있게 됩니다.
+
+`filterApples` 메소드 내부에서 `Collection` 반복 로직과 `Collection` 각 요소에 적용할 동작을 분리 할 수 있다는 점에서 소프트웨어 엔지니어링적으로 큰 이득을 얻을 수 있습니다.
+
+> 이렇게 메소드가 `동작(또는 전략)`을 받아서 내부적으로 다양한 동작을 `수행`할 수 있도록 하는 것을 `동작 파라미터화`라고 합니다.
