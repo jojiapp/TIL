@@ -9,6 +9,7 @@
 - [2.3 복잡한 과정 간소화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#23-복잡한-과정-간소화)
     - [2.3.1 익명 클래스](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#231-익명-클래스)
     - [2.3.2 다섯 번째 시도 : 익명 클래스 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#232-다섯-번째-시도--익명-클래스-사용)
+    - [2.3.3 여섯 번째 시도 : 람다 표현식 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#233-여섯-번째-시도--람다-표현식-사용)
 
 변화하는 요구사항은 소프트웨어 엔지니어링에서 피할 수 없는 문제입니다. 자주 변하는 요구사항에 대해 비용을 최소화 하되, 새로운 기능은 쉽게 구현할 수 있어야 장기적인 관점에서 유지보수가 쉬워집니다.
 
@@ -214,7 +215,11 @@ class FilteringApples {
 `Lambda`를 이용하면 `ApplePredicate`를 상속받아 구현하지 않아도 아래와 같이 간단하게 사용할 수 있습니다.
 
 ```java
-filter(inventory,apple->apple.getColor()==Color.RED&&apple.getWeight()>150)
+class Foo {
+    public static void main(String[] args) {
+        filter(inventory, apple -> apple.getColor() == Color.RED && apple.getWeight() > 150);
+    }
+}
 ```
 
 #### 한 개의 파라미터, 다양한 동작
@@ -341,3 +346,26 @@ public class MeaningOfThis {
 
 > `동작 파라미타화`를 사용하면 요구사항 변화에 더 유연하게 대응할 수 있으므로 모든 프로그래머가 `동작 파라미터화`를 사용하도록 권장 합니다.
 
+### 2.3.3 여섯 번째 시도 : 람다 표현식 사용
+
+`Lambda expresstion`을 이용하면 위의 예제를 아래 처럼 간단하게 구현할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        filter(inventory, apple -> apple.getColor() == Color.RED && apple.getWeight() > 150);
+    }
+
+    public static List<Apple> filter(List<Apple> inventory, ApplePredicate p) {
+        List<Apple> result = new ArrayList<>();
+        for (Apple apple : inventory) {
+            if (p.test(apple)) {
+                result.add(apple);
+            }
+        }
+        return result;
+    }
+}
+```
+
+> `Lambda`를 사용하면 `동작 파라미터화`로 인한 `유연함`도 얻고, 코드의 `간결함`도 얻을 수 있습니다.
