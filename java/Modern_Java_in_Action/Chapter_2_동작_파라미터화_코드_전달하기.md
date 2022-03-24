@@ -7,6 +7,7 @@
 - [2.2 동작 파라미터화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#22-동작-파라미터화)
     - [2.2.1 네 번째 시도 : 추상적 조건으로 필터링](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#221-네-번째-시도--추상적-조건으로-필터링)
 - [2.3 복잡한 과정 간소화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#23-복잡한-과정-간소화)
+    - [2.3.1 익명 클래스](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#231-익명-클래스)
 
 변화하는 요구사항은 소프트웨어 엔지니어링에서 피할 수 없는 문제입니다. 자주 변하는 요구사항에 대해 비용을 최소화 하되, 새로운 기능은 쉽게 구현할 수 있어야 장기적인 관점에서 유지보수가 쉬워집니다.
 
@@ -276,3 +277,8 @@ class Foo {
 위에서 `전략 디자인 패턴`을 활용하여 유연한 코드를 만들었습니다. 하지만 매번 `ApplePredicate`를 상속받아 구현해야 한다는 것은 여전히 번거로운 일입니다.
 
 `Java`는 `클래스 선언`과 `인스턴스화`를 동시에 할 수 있는 `익명 클래스`를 제공합니다.
+
+### 2.3.1 익명 클래스
+
+`익명 클래스`는 `Java`의 지역 클래스와 비슷한 개념입니다.
+`익명 클래스`를 이용하면 `클래스 선언`과 `인스턴스화`를 동시에 할 수 있으므로 상속받지 않아도 즉석으로 필요한 구현을 만들어서 사용할 수 있습니다.

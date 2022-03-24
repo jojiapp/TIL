@@ -28,3 +28,4 @@
 - [2.2 동작 파라미터화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#22-동작-파라미터화)
     - [2.2.1 네 번째 시도 : 추상적 조건으로 필터링](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#221-네-번째-시도--추상적-조건으로-필터링)
 - [2.3 복잡한 과정 간소화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#23-복잡한-과정-간소화)
+    - [2.3.1 익명 클래스](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#231-익명-클래스)
