@@ -5,6 +5,7 @@
     - [2.1.2 두 번째 시도: 색을 파라미터화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#212-두-번째-시도--색을-파라미터화)
     - [2.1.3 세 번째 시도: 가능한 모든 속성으로 필터링](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#213-세-번째-시도--가능한-모든-속성으로-필터링)
 - [2.2 동작 파라미터화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#22-동작-파라미터화)
+    - [2.2.1 네 번째 시도 : 추상적 조건으로 필터링](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#221-네-번째-시도--추상적-조건으로-필터링)
 
 변화하는 요구사항은 소프트웨어 엔지니어링에서 피할 수 없는 문제입니다. 자주 변하는 요구사항에 대해 비용을 최소화 하되, 새로운 기능은 쉽게 구현할 수 있어야 장기적인 관점에서 유지보수가 쉬워집니다.
 
@@ -178,3 +179,93 @@ class AppleColorPredicate implements ApplePredicate {
 `filterApples` 메소드 내부에서 `Collection` 반복 로직과 `Collection` 각 요소에 적용할 동작을 분리 할 수 있다는 점에서 소프트웨어 엔지니어링적으로 큰 이득을 얻을 수 있습니다.
 
 > 이렇게 메소드가 `동작(또는 전략)`을 받아서 내부적으로 다양한 동작을 `수행`할 수 있도록 하는 것을 `동작 파라미터화`라고 합니다.
+
+### 2.2.1 네 번째 시도 : 추상적 조건으로 필터링
+
+위에서 만든 `ApplePredicate`를 이용해서 아래와 같이 만들 수 있습니다.
+
+````java
+class FilteringApples {
+    public static List<Apple> filter(List<Apple> inventory, ApplePredicate p) {
+        List<Apple> result = new ArrayList<>();
+        for (Apple apple : inventory) {
+            if (p.test(apple)) {
+                result.add(apple);
+            }
+        }
+        return result;
+    }
+}
+````
+
+이제 요구사항이 달라져도 `ApplePredicate`를 상속받아 구현 후, 해당 객체를 `파라미터`로 넘겨만 주면 됩니다. 첫 번째 코드에 비해 가독성도 좋아지고 사용하기도 쉬워으며, 훨씬 더 유연한 코드가
+되었습니다.
+
+> 우리가 전달한 `ApplePredicate` 객체에 의해 `filterApples` 메소드의 동작이 결정됩니다.
+>
+> 즉, `filterApples` 메소드의 동작을 파라미타화 한 것 입니다.
+
+현재 메소드는 `teet` 메소드를 사용합니다. 그렇기 때문에 `ApplePredicate` 객체를 생성해서 보내야 합니다. 하지만 이건 `test` 메소드를 구현하는 객체를
+이용해서 `boolean expresstion` 등을 전달할 수 있으므로 `코드를 전달` 할 수 있는 것과 동일합니다.
+
+`Lambda`를 이용하면 `ApplePredicate`를 상속받아 구현하지 않아도 아래와 같이 간단하게 사용할 수 있습니다.
+
+```java
+filter(inventory,apple->apple.getColor()==Color.RED&&apple.getWeight()>150)
+```
+
+#### 한 개의 파라미터, 다양한 동작
+
+`Collection` 탐색 로직과 각 항목에 적용할 동작을 분리할 수 있다는 것이 `동작 파라미터화`의 강점입니다.
+
+한 메소드가 다른 동작을 수행하도록 재활용 할 수 있습니다. 따라서 유연한 API를 만들 때 `동작 파라미터화`가 중요한 역할을 합니다.
+
+#### 유연한 prettyPrintApple 메소드 구현하기
+
+`사과 리스트`를 전달 받아 다양한 방법으로 문자열을 생성 할 수 있도록 `파라미터화`된 `prettyPrintApple`를 구현해 보겠습니다.
+
+```java
+interface AppleFormatter {
+    String accept(Apple apple);
+}
+```
+
+```java
+class AppleFancyFormatter implements AppleFormatter {
+    @Override
+    public String accept(Apple apple) {
+        String characteristic = apple.getWeight() > 150 ? "heavy" : "light";
+        return "A %s %s apple".formatted(characteristic, apple.getColor());
+    }
+}
+```
+
+```java
+class AppleSimpleFormatter implements AppleFormatter {
+    @Override
+    public String accept(Apple apple) {
+        return "An apple of %s g".formatted(apple.getWeight());
+    }
+}
+```
+
+```java
+class Print {
+    public static void prettyPrintApple(List<Apple> inventory, AppleFormatter formatter) {
+        for (Apple apple : inventory) {
+            System.out.println(formatter.accept(apple));
+
+        }
+    }
+}
+```
+
+이제 아래와 같이 출력하고 싶은 `forrmater`를 생성하여 `prettyPrintApple`의 `파라미터`로 넘겨 주면 됩니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Print.prettyPrintApple(inventory, new AppleSimpleFormatter());
+    }
+}
+```
