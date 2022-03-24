@@ -10,6 +10,7 @@
     - [2.3.1 익명 클래스](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#231-익명-클래스)
     - [2.3.2 다섯 번째 시도 : 익명 클래스 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#232-다섯-번째-시도--익명-클래스-사용)
     - [2.3.3 여섯 번째 시도 : 람다 표현식 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#233-여섯-번째-시도--람다-표현식-사용)
+    - [2.3.4 일곱 번째 시도 : 리스트 형식으로 추상화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#234-일곱-번째-시도--리스트-형식으로-추상화)
 
 변화하는 요구사항은 소프트웨어 엔지니어링에서 피할 수 없는 문제입니다. 자주 변하는 요구사항에 대해 비용을 최소화 하되, 새로운 기능은 쉽게 구현할 수 있어야 장기적인 관점에서 유지보수가 쉬워집니다.
 
@@ -369,3 +370,27 @@ class Foo {
 ```
 
 > `Lambda`를 사용하면 `동작 파라미터화`로 인한 `유연함`도 얻고, 코드의 `간결함`도 얻을 수 있습니다.
+
+### 2.3.4 일곱 번째 시도 : 리스트 형식으로 추상화
+
+```java
+public interface Predicate<T> {
+    boolean test(T t);
+}
+```
+
+```java
+class Filtering {
+    public static <T> List<T> filter(List<T> list, Predicate<T> p) {
+        List<T> result = new ArrayList<>();
+        for (T e : list) {
+            if (p.test(e)) {
+                resule.add(e);
+            }
+        }
+        return result;
+    }
+}
+```
+
+이제 `사과` 이외에도 필터가 필요한 모든 `List`에 적용이 가능합니다.
