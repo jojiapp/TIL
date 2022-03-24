@@ -14,6 +14,7 @@
 - [2.4 실전 예제](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#24-실전-예제)
     - [2.4.1 Comparator로 정렬하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#241-Comparator로-정렬하기)
     - [2.4.2 Runnable로 코드 블록 실행하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#242-Runnable로-코드-블록-실행하기)
+    - [2.4.3 Callable을 결과로 반환하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#243-Callable을-결과로-반환하기)
 
 변화하는 요구사항은 소프트웨어 엔지니어링에서 피할 수 없는 문제입니다. 자주 변하는 요구사항에 대해 비용을 최소화 하되, 새로운 기능은 쉽게 구현할 수 있어야 장기적인 관점에서 유지보수가 쉬워집니다.
 
@@ -454,7 +455,7 @@ class Foo {
 `Java Thread`를 이용하면 병렬로 코드 블록을 실행할 수 있습니다.
 
 `Java 8`까지는 `Thread` 생성자에 객체만을 전달할 수 있었으므로
-`void run` 메소드를 포함하는 `Runnable interface`를 `익명 클래스`로 히여 사용하는것이 일반적이였습니다.
+`void run` 메소드를 포함하는 `interface Runnable`를 `익명 클래스`로 히여 사용하는것이 일반적이였습니다.
 
 ```java
 // java.lang.Runnable
@@ -482,6 +483,41 @@ class Foo {
 class Foo {
     public static void main(String[] args) {
         Thread t = new Thread(() -> System.out.println("Modern Java in Action"))
+    }
+}
+```
+
+### 2.4.3 Callable을 결과로 반환하기
+
+`Java 5`부터 지원하는 `interface ExecutorService`는 테스크 제출과 실행 과정의 연관성을 끊어주는 역할을 합니다.
+
+`ExecutorService`를 이용하면 `Task`를 스레드 풀로 보내고 결과를 `Future`로 저장할 수 있습니다.
+
+`interface Callable`을 이용하면 `Runnable`처럼 코드블럭을 실행한 뒤, 값을 반환 받을 수 있습니다.
+`Runnable`의 업그레이드 버전이라고 생각할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        Future<String> threadName = executorService.submit(new Callable<String>() {
+
+            @Override
+            public String call() throws Exception {
+                return Thread.currentThread().getName();
+            }
+        });
+    }
+}
+```
+
+`Lambda`를 이용하면 아래와 같이 구현할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        Future<String> threadName = executorService.submit(() -> Thread.currentThread().getName());
     }
 }
 ```
