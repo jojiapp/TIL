@@ -8,6 +8,7 @@
     - [2.2.1 네 번째 시도 : 추상적 조건으로 필터링](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#221-네-번째-시도--추상적-조건으로-필터링)
 - [2.3 복잡한 과정 간소화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#23-복잡한-과정-간소화)
     - [2.3.1 익명 클래스](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#231-익명-클래스)
+    - [2.3.2 다섯 번째 시도 : 익명 클래스 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#232-다섯-번째-시도--익명-클래스-사용)
 
 변화하는 요구사항은 소프트웨어 엔지니어링에서 피할 수 없는 문제입니다. 자주 변하는 요구사항에 대해 비용을 최소화 하되, 새로운 기능은 쉽게 구현할 수 있어야 장기적인 관점에서 유지보수가 쉬워집니다.
 
@@ -282,3 +283,61 @@ class Foo {
 
 `익명 클래스`는 `Java`의 지역 클래스와 비슷한 개념입니다.
 `익명 클래스`를 이용하면 `클래스 선언`과 `인스턴스화`를 동시에 할 수 있으므로 상속받지 않아도 즉석으로 필요한 구현을 만들어서 사용할 수 있습니다.
+
+### 2.3.2 다섯 번째 시도 : 익명 클래스 사용
+
+`익명 클래스`를 사용하면 아래와 같이 구현할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Print.prettyPrintApple(inventory, new ApplePredicate() {
+            @Override
+            public boolean test(Apple apple) {
+                return Color.RED == apple.getColor();
+            }
+        });
+    }
+}
+```
+
+`익명 클래스`를 사용하더라도 여전이 부족한 점이 있습니다.
+
+- 클래스로 구현 정의하지 않았을뿐이지, 여전히 많은 공간을 차지합니다.
+- 많은 프로그래머가 `익명 클래스` 사용에 익숙하지가 않습니다.
+
+#### 익명 클래스 문제
+
+```java
+public class MeaningOfThis {
+    public final int value = 4;
+
+    public void doIt() {
+        int value = 6;
+        Runnable r = new Runnable() {
+            public final int value = 5;
+
+            @Override
+            public void run() {
+                System.out.println(this.value);
+            }
+        };
+        r.run();
+    }
+
+    public static void main(String[] args) {
+        MeaningOfThis m = new MeaningOfThis();
+        m.doIt();
+    }
+}
+```
+
+위의 코드는 `this`가 `MeaningOfThis`가 아니라 `Runnable`을 참조하므로 `5`가 출력됩니다.
+
+이처럼 코드가 장황하면 코드를 이해하고 해석하는데 시간이 오래 걸립니다. 가능한 한 눈에 이해할 수 있는 코드여야 좋습니다.
+
+`익명 클래스`로 `interface`를 구현하는 여러 `class`를 선언하는 과정을 조금 줄이긴 했지만, 여전히 `코드 조각`을 전달하는 과정에서 `객체`를 만들고 명시적으로 새로운 동작을 정의하는 메소드를
+구현해야 한다는 점은 변함이 없습니다.
+
+> `동작 파라미타화`를 사용하면 요구사항 변화에 더 유연하게 대응할 수 있으므로 모든 프로그래머가 `동작 파라미터화`를 사용하도록 권장 합니다.
+
