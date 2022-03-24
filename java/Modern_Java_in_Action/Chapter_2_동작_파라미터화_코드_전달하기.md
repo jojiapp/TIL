@@ -16,6 +16,7 @@
     - [2.4.2 Runnable로 코드 블록 실행하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#242-Runnable로-코드-블록-실행하기)
     - [2.4.3 Callable을 결과로 반환하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#243-Callable을-결과로-반환하기)
     - [2.4.4 GUI 이벤트 처리하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#244-GUI-이벤트-처리하기)
+- [2.5 마치며](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#25-마치며)
 
 변화하는 요구사항은 소프트웨어 엔지니어링에서 피할 수 없는 문제입니다. 자주 변하는 요구사항에 대해 비용을 최소화 하되, 새로운 기능은 쉽게 구현할 수 있어야 장기적인 관점에서 유지보수가 쉬워집니다.
 
@@ -554,3 +555,11 @@ class Foo {
     }
 }
 ```
+
+## 2.5 마치며
+
+- `동작 파라미터화`에서는 메소드 내부적으로 다양한 동작을 수행할 수 있도록 코드를 메소드 인수로 전달합니다.
+- `동작 파라미터화`를 이용하면 변화하는 요구사항에 유연하게 대처가 가능합니다.
+- `코드 전달 기법`을 이용하면 도작을 메소드의 인수로 전달할 수 있지만, `Java 8` 이전에는 `익명 클래스`를 사용하더라도 코드가 지저분 했지만,
+  `Java 8` 부터는 `Lambda`를 이용해 간단하게 사용할 수 있게 되었습니다.
+- `Java API`의 많은 메소드는 정렬, 스레드, GUI 처리 등을 포함한 다양한 동작으로 `파라미터화`할 수 있습니다.
