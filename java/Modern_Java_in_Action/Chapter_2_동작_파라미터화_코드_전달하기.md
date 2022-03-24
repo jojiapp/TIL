@@ -13,6 +13,7 @@
     - [2.3.4 일곱 번째 시도 : 리스트 형식으로 추상화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#234-일곱-번째-시도--리스트-형식으로-추상화)
 - [2.4 실전 예제](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#24-실전-예제)
     - [2.4.1 Comparator로 정렬하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#241-Comparator로-정렬하기)
+    - [2.4.2 Runnable로 코드 블록 실행하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#242-Runnable로-코드-블록-실행하기)
 
 변화하는 요구사항은 소프트웨어 엔지니어링에서 피할 수 없는 문제입니다. 자주 변하는 요구사항에 대해 비용을 최소화 하되, 새로운 기능은 쉽게 구현할 수 있어야 장기적인 관점에서 유지보수가 쉬워집니다.
 
@@ -417,6 +418,7 @@ class Filtering {
 아래와 같은 `interface`를 갖는 `java.util.Comparator` 객체를 이용하여 `sort` 동작을 파라미터화 할 수 있습니다.
 
 ```java
+// java.util.Comparator
 public interface Comparator<T> {
     int compare(T o1, T o2);
 }
@@ -443,6 +445,43 @@ class Foo {
 class Foo {
     public static void main(String[] args) {
         inventory.sort((a1, a2) -> a1.getWeight().compareTo(a2.getWeight()))
+    }
+}
+```
+
+### 2.4.2 Runnable로 코드 블록 실행하기
+
+`Java Thread`를 이용하면 병렬로 코드 블록을 실행할 수 있습니다.
+
+`Java 8`까지는 `Thread` 생성자에 객체만을 전달할 수 있었으므로
+`void run` 메소드를 포함하는 `Runnable interface`를 `익명 클래스`로 히여 사용하는것이 일반적이였습니다.
+
+```java
+// java.lang.Runnable
+public interface Runnable {
+    void run();
+}
+```
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("Modern Java in Action");
+            }
+        });
+    }
+}
+```
+
+`Lambda`를 이용하면 아래와 같이 구현할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Thread t = new Thread(() -> System.out.println("Modern Java in Action"))
     }
 }
 ```

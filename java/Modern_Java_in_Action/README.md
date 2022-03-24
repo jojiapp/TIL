@@ -34,3 +34,4 @@
     - [2.3.4 일곱 번째 시도 : 리스트 형식으로 추상화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#234-일곱-번째-시도--리스트-형식으로-추상화)
 - [2.4 실전 예제](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#24-실전-예제)
     - [2.4.1 Comparator로 정렬하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#241-Comparator로-정렬하기)
+    - [2.4.2 Runnable로 코드 블록 실행하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#242-Runnable로-코드-블록-실행하기)
