@@ -15,6 +15,7 @@
     - [2.4.1 Comparator로 정렬하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#241-Comparator로-정렬하기)
     - [2.4.2 Runnable로 코드 블록 실행하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#242-Runnable로-코드-블록-실행하기)
     - [2.4.3 Callable을 결과로 반환하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#243-Callable을-결과로-반환하기)
+    - [2.4.4 GUI 이벤트 처리하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/Chapter_2_동작_파라미터화_코드_전달하기.md#244-GUI-이벤트-처리하기)
 
 변화하는 요구사항은 소프트웨어 엔지니어링에서 피할 수 없는 문제입니다. 자주 변하는 요구사항에 대해 비용을 최소화 하되, 새로운 기능은 쉽게 구현할 수 있어야 장기적인 관점에서 유지보수가 쉬워집니다.
 
@@ -518,6 +519,38 @@ class Foo {
     public static void main(String[] args) {
         ExecutorService executorService = Executors.newCachedThreadPool();
         Future<String> threadName = executorService.submit(() -> Thread.currentThread().getName());
+    }
+}
+```
+
+### 2.4.4 GUI 이벤트 처리하기
+
+일반적으로 `GUI 프로그래밍`은 마우스 클릭이나 문자열 위로 이동하는 등의 이벤트에 대응하는 동작을 수행하는 식으로 동작합니다.
+
+즉, 변화에 대응할 수 있도록 유연한 코드가 필요합니다.
+
+`JavaFX`에서는 `setOnAction` 메소드에 `EventHandler`를 전달함으로써 동작을 설정할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Button button = new Button("Send");
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                label.setText("Sent!!");
+            }
+        });
+    }
+}
+```
+
+`Lambda`를 이용하여 아래와 같이 구현할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        button.setOnAction(event -> label.setText("Sent!!"));
     }
 }
 ```
