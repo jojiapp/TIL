@@ -56,3 +56,4 @@
     - [3.4.1 Predicate](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#341-Predicate)
     - [3.4.2 Consumer](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#342-Consumer)
     - [3.4.3 Function](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#343-Function)
+- [3.5 형식 검사, 형식 추론, 제약](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#35-형식-검사-형식-추론-제약)

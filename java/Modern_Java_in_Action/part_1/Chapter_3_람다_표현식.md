@@ -13,6 +13,7 @@
     - [3.4.1 Predicate](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#341-Predicate)
     - [3.4.2 Consumer](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#342-Consumer)
     - [3.4.3 Function](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#343-Function)
+- [3.5 형식 검사, 형식 추론, 제약](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#35-형식-검사-형식-추론-제약)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -422,3 +423,10 @@ class Foo {
     }
 }
 ```
+
+## 3.5 형식 검사, 형식 추론, 제약
+
+`Lambda`로 `함수형 인터페이스`의 `인스턴스`를 만들 수 있다고 했습니다.
+`Lambda expresstion` 자체에는 어떤 `함수형 인터페이스`를 구현하는지에 대한 정보가 없습니다.
+
+`Lambda expresstion`을 제대로 이해하려면 `Lambda`의 실제 형식을 파악해야 합니다.
