@@ -1,6 +1,7 @@
 # Chapter 3. 람다 표현식
 
 - [3.1 람다란 무엇인가?](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#31-람다란-무엇인가)
+- [3.2 어디에, 어떻게 람다를 사용할까?](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#32-어디에-어떻게-람다를-사용할까)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -67,4 +68,14 @@ class Foo {
 ```java
 (parameters) -> { statements; } // 이 경우에는 return 을 명시적으로 적어주어야 합니다.
 ```
+
+## 3.2 어디에, 어떻게 람다를 사용할까?
+
+`Lambda`는 `함수형 인터페이스`에서 사용할 수 있습니다.
+
+```java
+List<Apple> greenApples = filter(inventory, (Apple a) -> GREEN == a.getColor());
+```
+
+위의 예제는 `filter` 메소드가 `함수형 인터페이스`인 `Predicate<T>`를 두 번째 인자로 받기 때문에, `Lambda`로 값을 넘겨준 것입니다.
 
