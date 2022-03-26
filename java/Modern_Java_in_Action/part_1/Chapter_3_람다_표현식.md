@@ -10,6 +10,7 @@
     - [3.3.3 3단계 : 동작 실행](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#333-3단계--동작-실행)
     - [3.3.4 4단계 : 람다 전달](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#334-4단계--람다-전달)
 - [3.4 함수형 인터페이스 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#34-함수형-인터페이스-사용)
+    - [3.4.1 Predicate](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#341-Predicate)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -250,3 +251,38 @@ class Foo {
 
 `Java 8`에서는 `java.util.function` 패키지로 여러 가지 새로운 `함수형 인터페이스`를 제공합니다.
 
+### 3.4.1 Predicate
+
+`java.util.function.Predicate<T>`의 `test`라는 `추상 메소드`는 제네릭 형식의 `T` 객체를 전달받아 `boolean` 타입을 반환하는 `함수형 인터페이스` 입니다,
+
+#### 예제
+
+```java
+
+@FunctionalInterface
+public interface Predicate<T> {
+    boolean test(T t);
+}
+```
+
+```java
+class Foo {
+    public static List<T> filter(List<T> list, Predicate<T> p) {
+        List<T> result = new ArrayList<>();
+        for (T t : inventory) {
+            if (p.test(t)) {
+                result.add(t);
+            }
+        }
+        return result;
+    }
+}
+```
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        List<String> nonEmpty = filter(listOfStrings, (s) -> !s.isEmplty());
+    }
+}
+```
