@@ -9,6 +9,7 @@
     - [3.3.2 2단계 : 함수형 인터페이스를 이용해서 동작 전달](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#332-2단계--함수형-인터페이스를-이용해서-동작-전달)
     - [3.3.3 3단계 : 동작 실행](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#333-3단계--동작-실행)
     - [3.3.4 4단계 : 람다 전달](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#334-4단계--람다-전달)
+- [3.4 함수형 인터페이스 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#34-함수형-인터페이스-사용)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -238,3 +239,14 @@ class Foo {
 > `Lambda`의 `파라미터 리스트`에서 타입을 지정해주지 않아도 `타입 추론`으로 타입이 지정되기 때문에 생략할 수 있습니다.
 
 이제 변화하는 요구사항에 유연하게 대처할 수 있습니다.
+
+## 3.4 함수형 인터페이스 사용
+
+`함수형 인터페이스`의 `추상 메소드`는 `Lambda expression`의 `시그니처`를 묘사합니다.
+
+> `함수형 인터페이스`의 `추상 메소드 시그니처`를 `함수 디스크립터`라고 합니다.
+
+다양한 `Lambda expression`을 사용하려면 공통된 `함수 디스크립터`를 기술하는 `함수형 인터페이스 집합`이 필요합니다.
+
+`Java 8`에서는 `java.util.function` 패키지로 여러 가지 새로운 `함수형 인터페이스`를 제공합니다.
+
