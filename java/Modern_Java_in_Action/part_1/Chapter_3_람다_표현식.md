@@ -6,6 +6,7 @@
     - [3.2.2 함수 디스크립터](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#322-함수-디스크립터)
 - [3.3 람다 활용 : 실행 어라운드 패턴](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#33-람다-활용--실행-어라운드-패턴)
     - [3.3.1 1단계 : 동작 파라미터화를 기억하라](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#331-1단계--동작-파라미터화를-기억하라)
+    - [3.3.2 2단계 : 함수형 인터페이스를 이용해서 동작 전달](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#332-2단계-함수형-인터페이스를-이용해서-동작-전달)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -177,8 +178,30 @@ class Foo {
 
 ### 3.3.1 1단계 : 동작 파라미터화를 기억하라
 
-현재 위의 코드는 한 번에 한줄만 읽는 코드지만 
-요구사항으로 한 번에 두 줄을 읽어야 하거니, 가장 자주 사용되는 단어를 반환해야 한다면 `실제 처리 코드`만 `변경`되면 됩니다.
+현재 위의 코드는 한 번에 한줄만 읽는 코드지만 요구사항으로 한 번에 두 줄을 읽어야 하거니, 가장 자주 사용되는 단어를 반환해야 한다면 `실제 처리 코드`만 `변경`되면 됩니다.
 
 `실제 처리 코드`를 `동작 파라미터화`한다면 유연하게 대처가 가능합니다.
 
+### 3.3.2 2단계 : 함수형 인터페이스를 이용해서 동작 전달
+
+우선, `processFile` 메소드에서 실행할 동작을 전달해야 합니다.
+
+`BufferedReader -> String`과 `IOException`을 던질 수 있는 `시그니처`와 일치하는 `함수형 인터페이스`를 만들어야 합니다.
+
+```java
+
+@FunctionalInterface
+public interface BufferedReaderProcessor {
+    String process(BufferedReader b) throws IOException;
+}
+```
+
+`processFile` 메소드의 인자로 `BufferedReaderProcessor`를 받을 수 있도록 `processFile` 메소드를 변경합니다.
+
+```java
+class Foo {
+    public String processFile(BufferedReaderProcessor processor) throws IOException {
+        ...
+    }
+}
+```
