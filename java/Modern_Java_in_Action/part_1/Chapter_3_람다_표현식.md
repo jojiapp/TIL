@@ -16,6 +16,7 @@
 - [3.5 형식 검사, 형식 추론, 제약](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#35-형식-검사-형식-추론-제약)
     - [3.5.1 형식 검사](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#351-형식-검사)
     - [3.5.2 같은 람다, 다른 함수형 인터페이스](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#352-같은-람다-다른-함수형-인터페이스)
+    - [3.5.3 형식 추론](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#353-형식-추론)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -528,3 +529,25 @@ public interface Action {
 위와 같이 정의되어 있을 떄, `execute(() -> {})`라는 `Lambda expression`이 있다면 두 메소드의 `함수 디스크립터`가 동일하므로 어떤 메소드를 가리키는지 명확하지 않습니다.
 
 이런 경우, `execute((Action) () -> {})` 처럼 캐스트를 하여 사용하면 명확해집니다.
+
+### 3.5.3 형식 추론
+
+`자바 컴파일러`는 `Lambda expression`이 사용된 `Context`를 이용해서 관련된 `함수형 인터페이스`를 추론합니다.
+
+`대상 형식(target type)`을 이용해서 `함수 디스크립터`를 알 수 있으므로 `Lambda`의 `시그니처`도 추론이 가능합니다.
+
+즉, `파라미터`에 타입을 생략할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Comparator<Apple> c1 = (Apple a1, Apple a2) -> ...
+        Comparator<Apple> c2 = (a1, a2) -> ...
+    }
+}
+```
+
+두 번째 로직 처럼 단순하게 작성이 가능합니다.
+
+> 꼭 생략하는것이 좋은것은 아닙니다. 상황에 따라 명시적으로 형식을 포함하는게 가독성에 더 좋을수도 있으므로,
+> 작성하는 개발자가 결정하면 됩니다.
