@@ -14,6 +14,7 @@
     - [3.4.2 Consumer](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#342-Consumer)
     - [3.4.3 Function](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#343-Function)
 - [3.5 형식 검사, 형식 추론, 제약](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#35-형식-검사-형식-추론-제약)
+    - [3.5.1 형식 검사](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#351-형식-검사)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -430,3 +431,26 @@ class Foo {
 `Lambda expresstion` 자체에는 어떤 `함수형 인터페이스`를 구현하는지에 대한 정보가 없습니다.
 
 `Lambda expresstion`을 제대로 이해하려면 `Lambda`의 실제 형식을 파악해야 합니다.
+
+### 3.5.1 형식 검사
+
+`Lambda`가 사용되는 `Context`를 이용해서 형식을 추론할 수 있습니다.
+
+어떤 `Context`에서 기대되는 `Lambda expression`의 형식을 `대상 형식 (target type)`이라고 합니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        List<Apple> heavierThan150g = filter(inventory, (Apple apple) -> apple.getWeight() > 150);
+    }
+}
+```
+
+위 식에서 형식 검사 과정은 아래와 같습니다.
+
+1. `filter` 메소드의 선언을 확인
+2. `filter` 메소드는 두 번째 파라미터로 `Predicate<Apple>` 형식(대상 형식)을 기대
+3. `Predicate<Apple>`은 `test`라는 한 개의 `추상 메소드`를 정의하는 `함수형 인터페이스`
+4. `test` 메소드는 `Apple`를 받아 `boolean`을 반환하는 `함수 디스크립터`를 묘사
+5. `filter`의 두 번째 파라미터로 전달 된 인수는 이와 같은 요구사항을 만족해야 함
+
