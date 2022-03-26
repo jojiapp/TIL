@@ -15,6 +15,7 @@
     - [3.4.3 Function](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#343-Function)
 - [3.5 형식 검사, 형식 추론, 제약](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#35-형식-검사-형식-추론-제약)
     - [3.5.1 형식 검사](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#351-형식-검사)
+    - [3.5.2 같은 람다, 다른 함수형 인터페이스](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#352-같은-람다-다른-함수형-인터페이스)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -436,7 +437,7 @@ class Foo {
 
 `Lambda`가 사용되는 `Context`를 이용해서 형식을 추론할 수 있습니다.
 
-어떤 `Context`에서 기대되는 `Lambda expression`의 형식을 `대상 형식 (target type)`이라고 합니다.
+> 어떤 `Context`에서 기대되는 `Lambda expression`의 형식을 `대상 형식 (target type)`이라고 합니다.
 
 ```java
 class Foo {
@@ -454,3 +455,76 @@ class Foo {
 4. `test` 메소드는 `Apple`를 받아 `boolean`을 반환하는 `함수 디스크립터`를 묘사
 5. `filter`의 두 번째 파라미터로 전달 된 인수는 이와 같은 요구사항을 만족해야 함
 
+### 3.5.2 같은 람다, 다른 함수형 인터페이스
+
+`대상 형식(target type)`이라는 특징 떄문에 같은 `Lambda expression`이더라도 호환되는 `추상 메소드`를 가진 다른 `함수형 인터페이스`로 사용될 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Callable<Integer> c = () -> 42;
+        PrivilegedAction<Integer> p = () -> 42;
+    }
+}
+```
+
+`Callable`과 `PrivilegedAction` 모두 인자를 받지 않고 `T` 객체를 반환하는 `함수형 인터페이스`입니다. 따라서 같은 `Lambda expression`이지만 두 개 모두 유효합니다.
+
+#### 다이아몬드 연산자
+
+이미 `Java 7`에서 추가된 `다이아몬드 연산자(<>)`로 `Context`에 따른 제네릭 형식을 추론할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        List<String> strings = new ArrayList<>();
+        List<Integer> integers = new ArrayList<>();
+    }
+}
+```
+
+이때, `인스턴스 표현식`의 `형식 인수`는 `Context`에 의해 추론됩니다.
+
+#### 특별한 void 호환 규칙
+
+`Lambda`의 `body`에 일반 표현식이 있으면 `void`를 반환하는 `함수 디스크립터`와 호환이 됩니다. (파라미터 리스트도 동일해야 함)
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Predicate<String> p = s -> list.add(s);
+        Consumer<String> c = s -> list.add(s);
+
+    }
+}
+```
+
+`Predicate`는 `boolean`을 반환받으므로 유효하고, `Consumer`은 `void`를 반환받기 때문에 호환이 되어 유효합니다.
+
+#### 함수 디스크립터가 동일한 경우
+
+```java
+
+@FunctionalInterface
+class Foo {
+    public void execute(Runnable runnable) {
+        runnable.run();
+    }
+
+    public void execute(Action action) {
+        action.act();
+    }
+}
+```
+
+```java
+
+@FuncationalInterface
+public interface Action {
+    void act();
+}
+```
+
+위와 같이 정의되어 있을 떄, `execute(() -> {})`라는 `Lambda expression`이 있다면 두 메소드의 `함수 디스크립터`가 동일하므로 어떤 메소드를 가리키는지 명확하지 않습니다.
+
+이런 경우, `execute((Action) () -> {})` 처럼 캐스트를 하여 사용하면 명확해집니다.
