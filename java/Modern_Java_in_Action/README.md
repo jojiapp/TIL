@@ -40,3 +40,5 @@
     - [2.4.3 Callable을 결과로 반환하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_2_동작_파라미터화_코드_전달하기.md#243-Callable을-결과로-반환하기)
     - [2.4.4 GUI 이벤트 처리하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_2_동작_파라미터화_코드_전달하기.md#244-GUI-이벤트-처리하기)
 - [2.5 마치며](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_2_동작_파라미터화_코드_전달하기.md#25-마치며)
+
+### [Chapter 3. 람다 표현식](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md)
