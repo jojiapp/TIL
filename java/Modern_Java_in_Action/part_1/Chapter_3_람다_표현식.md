@@ -12,6 +12,7 @@
 - [3.4 함수형 인터페이스 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#34-함수형-인터페이스-사용)
     - [3.4.1 Predicate](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#341-Predicate)
     - [3.4.2 Consumer](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#342-Consumer)
+    - [3.4.3 Function](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#343-Function)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -315,9 +316,109 @@ public interface Iterable<T> {
 
 ```java
 class Foo {
-  public static void main(String[] args) {
-    List<Integer> integers = List.of(1, 2, 3, 4, 5);
-    integers.forEach(number -> System.out.println(number));
-  }
+    public static void main(String[] args) {
+        List<Integer> integers = List.of(1, 2, 3, 4, 5);
+        integers.forEach(number -> System.out.println(number));
+    }
+}
+```
+
+### 3.4.3 Function
+
+`java.util.function.Function<T, R>`는 제네릭 형식의 `T`를 객체를 전달 받아 `R` 객체를 반환하는 `apply` 추상 메소드를 제공합니다.
+
+#### 예제
+
+```java
+
+@FuncationalInterface
+public interface Function<T, R> {
+    R apply(T t);
+}
+```
+
+```java
+class Foo {
+    public <T, R> List<R> map(List<T> list, Function<T, R> f) {
+        List<R> result = new ArrayList<>();
+        for (T t : list) {
+            result.add(f.apply(t));
+        }
+        return result;
+    }
+}
+```
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        List<Integer> integers = List.of(1, 2, 3, 4, 5);
+        map(integers, (number -> number + 1)); // 2, 3, 4, 5, 6
+    }
+}
+```
+
+#### 기본형 특화
+
+`제네릭 파라미터`는 `참조형`만 사용할 수 있습니다. 그렇기 때문에 `기본형 타입`을 사용하면 `참조형 타입`으로 `박싱` 하게 됩니다.
+
+하지만, `박싱`은 `기본 타입`을 `참조 타입`으로 변한하면 `Heep` 영역에 저장됩니다. 따라서 `박싱`한 값은 메모리를 더 소모하며 `기본형`을 가져올 떄도 메모리를 탐색하는 과정이 필요하므로 비용이 많이
+듭니다.
+
+> `Java 8`에서는 기본형을 입출력 사용하는 상황에서 `오토박싱`을 피할 수 있도록 특화된 `함수형 인터페이스`를 제공합니다.
+
+```java
+
+@FunctionalInterface
+public interface IntPredicate {
+    boolean test(int value);
+}
+```
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        IntPredicate intPredicate = (i -> i % 2 == 0);
+        intPredicate.test(1000); // true
+    }
+}
+```
+
+위의 `IntPredicate`는 `기본형 타입`을 그대로 사용하기 때문에 `오토박싱`이 일어나지 않아 기존의 `Predicate<T>`에 비해 효율적입니다.
+
+> 이름에서 알수 있겠지만, `IntPredicate`외에도 `DoublePredicate`, `LongPredicate` 등 기본 타입을 모두 정의해 두었습니다.
+>
+> 다른 `함수형 인터페이스 (Function, Consumer 등)`들도 모두 같은 `네이밍 규칙`을 가지고 있습니다. `(ex: IntFunction<T, R>)`
+
+#### 에외, 람다, 함수형 인터페이스의 관계
+
+`함수형 인터페이스`에서는 확인된 예외를 던지는 동작을 허용하지 않습니다.
+
+예외를 던지는 `Lambda expression`을 만들려면 `함수형 인터페이스`에 직접 정의하거나, `try ~ catch` 블록으로 감싸야합니다.
+
+```java
+
+@FunctionalInterface
+public interface BufferedReaderProcessor {
+    String process(BufferedReader b) throws IOException;
+}
+```
+
+위의 `함수형 인터페이스`는 `IOException`을 던지고 있습니다.
+
+`java.util.function.Function<T, R>`에 위의 `함수형 인터페이스`를 사용하고 싶은 경우, `Function<T, R>`에 에외를 정의할 수 없으니
+`try ~ catch` 블록으로 감싸서 처리 해야합니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Function<BufferedReader, String> f = (b) -> {
+            try {
+                return b.readLine();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        };
+    }
 }
 ```
