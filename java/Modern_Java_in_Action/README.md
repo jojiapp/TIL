@@ -42,3 +42,5 @@
 - [2.5 마치며](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_2_동작_파라미터화_코드_전달하기.md#25-마치며)
 
 ### [Chapter 3. 람다 표현식](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md)
+
+- [3.1 람다란 무엇인가?](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#31-람다란-무엇인가)
