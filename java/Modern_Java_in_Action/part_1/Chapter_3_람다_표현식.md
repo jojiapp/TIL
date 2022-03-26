@@ -3,6 +3,7 @@
 - [3.1 람다란 무엇인가?](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#31-람다란-무엇인가)
 - [3.2 어디에, 어떻게 람다를 사용할까?](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#32-어디에-어떻게-람다를-사용할까)
     - [3.2.1 함수형 인터페이스](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#321-함수형-인터페이스)
+    - [3.2.2 함수 디스크립터](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#322-함수-디스크립터)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -133,4 +134,24 @@ public interface PrivilegedAction<T> {
 
 `함수형 인터페이스`를 `Lambda expresstion`으로 구현하여 사용할 수 있습니다. 그렇게 되면 기존 처럼 해당 `interface`를 상속받아 구현하거나, 지저분한 `익명 클래스`를 사용하지 않아도
 됩니다.
+
+### 3.2.2 함수 디스크립터
+
+`함수형 인터페이스`의 `추상 메소드 시그니처`는 `Lambda expresstion`의 `시그니처`를 가리킵니다.
+
+> `Lambda expression`의 `시그니처`를 서술하는 메소드를 `함수 디스크립터` 라고 부릅니다.
+
+`() -> void`는 `파라미터 리스트`가 없고 `void`를 반환하는 함수를 의미합니다.  
+`(Apple, Apple) -> int`는 `Apple`객체 두개를 전달 받아 `int`를 반환하는 함수를 의미합니다.
+
+`Lambda expression`을 사용할 때, `바디`가 한 줄이라면 `{}`와 `return` 키워드를 생략할 수 있다고 했습니다.
+`void`처럼 반환 값이 없는 `함수`도 `{}`를 생략하고 작성할수 있습니다.
+
+#### @FunctionalInterface는 무엇인가?
+
+`함수형 인터페이스`를 보면 `@FunctionalInteface`가 추가되어 있는걸 볼 수 있습니다.
+
+해당 `어노테이션`이 붙어있으면 `함수형 인터페이스`라고 생각하고, 그에 맞지 않게 구현이 되면 컴파일 에러가 발생합니다.
+
+`@Override`가 붙어있으면 `override`할 메소드와 `시그니처`가 다르면 컴파일 에러가 발생하는것과 비슷합니다.
 
