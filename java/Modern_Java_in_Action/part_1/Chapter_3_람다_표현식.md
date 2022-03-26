@@ -6,8 +6,9 @@
     - [3.2.2 함수 디스크립터](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#322-함수-디스크립터)
 - [3.3 람다 활용 : 실행 어라운드 패턴](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#33-람다-활용--실행-어라운드-패턴)
     - [3.3.1 1단계 : 동작 파라미터화를 기억하라](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#331-1단계--동작-파라미터화를-기억하라)
-    - [3.3.2 2단계 : 함수형 인터페이스를 이용해서 동작 전달](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#332-2단계-함수형-인터페이스를-이용해서-동작-전달)
+    - [3.3.2 2단계 : 함수형 인터페이스를 이용해서 동작 전달](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#332-2단계--함수형-인터페이스를-이용해서-동작-전달)
     - [3.3.3 3단계 : 동작 실행](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#333-3단계--동작-실행)
+    - [3.3.4 4단계 : 람다 전달](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#334-4단계--람다-전달)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -220,3 +221,20 @@ class Foo {
     }
 }
 ```
+
+### 3.3.4 4단계 : 람다 전달
+
+이제 `Lambda`를 이용해서 원하는 동작을 `processFile` 메소드에 전달하면 됩니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        processFile(br -> br.readLine());
+        processFile(br -> br.readLine() + br.readLine());
+    }
+}
+```
+
+> `Lambda`의 `파라미터 리스트`에서 타입을 지정해주지 않아도 `타입 추론`으로 타입이 지정되기 때문에 생략할 수 있습니다.
+
+이제 변화하는 요구사항에 유연하게 대처할 수 있습니다.
