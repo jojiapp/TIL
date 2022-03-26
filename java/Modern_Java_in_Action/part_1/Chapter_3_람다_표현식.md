@@ -4,6 +4,7 @@
 - [3.2 어디에, 어떻게 람다를 사용할까?](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#32-어디에-어떻게-람다를-사용할까)
     - [3.2.1 함수형 인터페이스](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#321-함수형-인터페이스)
     - [3.2.2 함수 디스크립터](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#322-함수-디스크립터)
+- [3.3 람다 활용 : 실행 어라운드 패턴](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#33-람다-활용--실행-어라운드-패턴)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -154,4 +155,22 @@ public interface PrivilegedAction<T> {
 해당 `어노테이션`이 붙어있으면 `함수형 인터페이스`라고 생각하고, 그에 맞지 않게 구현이 되면 컴파일 에러가 발생합니다.
 
 `@Override`가 붙어있으면 `override`할 메소드와 `시그니처`가 다르면 컴파일 에러가 발생하는것과 비슷합니다.
+
+## 3.3 람다 활용 : 실행 어라운드 패턴
+
+`자원 처리`에 사용되는 `순환 패턴`은 자원을 열고, 처리하고, 자원를 닫는 순서로 이루어집니다.
+
+`설정`과 `정리`과정은 대부분 비슷하므로 `실제 처리 코드`는 `설정`과 `정리`에 둘러 쌓인 형태를 갖습니다. 이러한 형식의 코드를 `실행 어라운드 패턴`이라고 합니다.
+
+```java
+class Foo {
+    public String processFile() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("data.txt"))) {
+            return br.readLine(); // 실제 처리 코드
+        }
+    }
+}
+```
+
+`Java 7`에 추가된 `try-with-resources`구문을 사용하면 자원을 명시적으로 닫을 필요가 없으므로 조금 더 간결하게 작성이 가능합니다.
 
