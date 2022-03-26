@@ -2,6 +2,7 @@
 
 - [3.1 람다란 무엇인가?](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#31-람다란-무엇인가)
 - [3.2 어디에, 어떻게 람다를 사용할까?](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#32-어디에-어떻게-람다를-사용할까)
+    - [3.2.1 함수형 인터페이스](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#321-함수형-인터페이스)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -59,13 +60,13 @@ class Foo {
 
 `Lambda`의 기본 문법은 아래와 같습니다.
 
-```java
+```text
 (parameters) -> expression  // `바디`가 한줄 이면 `return` 키워드를 생략할 수 있습니다.
 ```
 
 또는 아래 처럼 `{}`안에 작성할 수 있습니다.
 
-```java
+```text
 (parameters) -> { statements; } // 이 경우에는 return 을 명시적으로 적어주어야 합니다.
 ```
 
@@ -74,8 +75,62 @@ class Foo {
 `Lambda`는 `함수형 인터페이스`에서 사용할 수 있습니다.
 
 ```java
-List<Apple> greenApples = filter(inventory, (Apple a) -> GREEN == a.getColor());
+class Foo {
+    public static void main(String[] args) {
+        List<Apple> greenApples = filter(inventory, (Apple a) -> GREEN == a.getColor());
+    }
+}
+
 ```
 
 위의 예제는 `filter` 메소드가 `함수형 인터페이스`인 `Predicate<T>`를 두 번째 인자로 받기 때문에, `Lambda`로 값을 넘겨준 것입니다.
+
+### 3.2.1 함수형 인터페이스
+
+`함수형 인터페이스`는 정확히 하나의 `추상 메소드`를 지정하는 `interface`입니다.
+
+위의 예제에서 살펴 본 `Predicate<T>`는 `boolean test(T t)` 메소드 하나만 `추상 메소드`이기 떄문에 `함수형 인터페이스`입니다.
+
+```java
+public interface Predicate<T> {
+    boolean test(T t);
+}
+```
+
+```java
+public interface Comparator<T> {
+    int compare(T o1, T o2);
+}
+```
+
+```java
+public interface Runnable {
+    void run();
+}
+```
+
+```java
+public interface ActionListener extends EventListener {
+    void actionPerformed(ActionEvent e);
+}
+```
+
+```java
+public interface Callable<V> {
+    V call() throws Exception;
+}
+```
+
+```java
+public interface PrivilegedAction<T> {
+    T run();
+}
+```
+
+위의 `interface`들은 하나의 `추상 메소드`만 가지므로 `함수형 인터페이스` 입니다.
+
+> `default` 메소드가 있더라도, `추상 메소드`가 오직 하나면 함수형 인터페이스 입니다.
+
+`함수형 인터페이스`를 `Lambda expresstion`으로 구현하여 사용할 수 있습니다. 그렇게 되면 기존 처럼 해당 `interface`를 상속받아 구현하거나, 지저분한 `익명 클래스`를 사용하지 않아도
+됩니다.
 
