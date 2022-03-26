@@ -11,6 +11,7 @@
     - [3.3.4 4단계 : 람다 전달](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#334-4단계--람다-전달)
 - [3.4 함수형 인터페이스 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#34-함수형-인터페이스-사용)
     - [3.4.1 Predicate](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#341-Predicate)
+    - [3.4.2 Consumer](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#342-Consumer)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -253,7 +254,7 @@ class Foo {
 
 ### 3.4.1 Predicate
 
-`java.util.function.Predicate<T>`의 `test`라는 `추상 메소드`는 제네릭 형식의 `T` 객체를 전달받아 `boolean` 타입을 반환하는 `함수형 인터페이스` 입니다,
+`java.util.function.Predicate<T>`는 제네릭 형식의 `T` 객체를 전달받아 `boolean` 타입을 반환 하는 `test` 추상 메소드 제공합니다.
 
 #### 예제
 
@@ -284,5 +285,39 @@ class Foo {
     public static void main(String[] args) {
         List<String> nonEmpty = filter(listOfStrings, (s) -> !s.isEmplty());
     }
+}
+```
+
+### 3.4.2 Consumer
+
+`java.util.function.Consumer<T>`는 제네릭 형식의 `T` 객체를 전달 받아 `void`를 반환하는 `accpet` 추상 메소드를 제공합니다.
+
+#### 예제
+
+```java
+
+@FunctionalInterface
+public interface Consumer<T> {
+    void accept(T t);
+}
+```
+
+```java
+public interface Iterable<T> {
+    default void forEach(Consumer<? super T> action) {
+        Objects.requireNonNull(action);
+        for (T t : this) {
+            action.accept(t);
+        }
+    }
+}
+```
+
+```java
+class Foo {
+  public static void main(String[] args) {
+    List<Integer> integers = List.of(1, 2, 3, 4, 5);
+    integers.forEach(number -> System.out.println(number));
+  }
 }
 ```
