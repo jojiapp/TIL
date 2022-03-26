@@ -5,6 +5,7 @@
     - [3.2.1 함수형 인터페이스](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#321-함수형-인터페이스)
     - [3.2.2 함수 디스크립터](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#322-함수-디스크립터)
 - [3.3 람다 활용 : 실행 어라운드 패턴](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#33-람다-활용--실행-어라운드-패턴)
+    - [3.3.1 1단계 : 동작 파라미터화를 기억하라](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#331-1단계--동작-파라미터화를-기억하라)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -173,4 +174,11 @@ class Foo {
 ```
 
 `Java 7`에 추가된 `try-with-resources`구문을 사용하면 자원을 명시적으로 닫을 필요가 없으므로 조금 더 간결하게 작성이 가능합니다.
+
+### 3.3.1 1단계 : 동작 파라미터화를 기억하라
+
+현재 위의 코드는 한 번에 한줄만 읽는 코드지만 
+요구사항으로 한 번에 두 줄을 읽어야 하거니, 가장 자주 사용되는 단어를 반환해야 한다면 `실제 처리 코드`만 `변경`되면 됩니다.
+
+`실제 처리 코드`를 `동작 파라미터화`한다면 유연하게 대처가 가능합니다.
 
