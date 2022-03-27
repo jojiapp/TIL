@@ -9,6 +9,7 @@
     - [4.4.1 중간 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#441-중간-연산)
     - [4.4.2 최종 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#442-최종-연산)
     - [4.4.3 스트림 이용하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#443-스트림-이용하기)
+- [4.6 마치며](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#46-마치며)
 
 거의 모든 `Java Application`은 `Collection`을 만들고 처리하는 과정을 포함합니다.
 
@@ -100,7 +101,7 @@ class Foo {
 
 `Java 8`에는 `stream` 메소드가 추가 되었습니다. `(java.util.stream.Stream 참고)`
 
-`숫자 범위`나 `I/O`자원에서 `Stream` 요소를 만드는 등 `stream` 메소드 외에도 다양한 방법으로 `Stream`을 만들 수 있습니ㅣ다.
+`숫자 범위`나 `I/O`자원에서 `Stream` 요소를 만드는 등 `stream` 메소드 외에도 다양한 방법으로 `Stream`을 만들 수 있습니다.
 
 > `Stream`이란 **데이터 처리 연산을 지원하도록 소스에서 추출된 연속된 요소** 입니다.
 
@@ -310,3 +311,12 @@ class Foo {
 - `Stream Pipeline`을 실행하고 결과를 만들 `최종 연산`
 
 > `Stream Pipeline`은 `호출을 연결 (중간 연산)`해서 설정을 만든 뒤, `build (최종 연산)`를 통해 결과를 반환하는 `Builder Pattern`과 비슷합니다.
+
+## 4.6 마치며
+
+- `Stream`은 소스에서 추출된 `연속 요소`로, `데이터 처리 연산`을 지원합니다.
+- `내부 반복`을 지원합니다. `내부 반복`은 `filter`, `map`, `sorted`등의 연산으로 반복을 `추상화`합니다.
+- `Stream`에는 `중간 연산`과 `최종 연산`이 있습니다.
+- `중간 연산`은 `filter`, `map` 처럼 `Stream`을 반환하면서 다른 연산과 연결되는 연산이며, **어떤 결과도 생성할 수 없다는게 특징**입니다.
+- `최종 연산`은 `forEach`나 `collect`처럼 `Stream Pipeline`을 처리해서 결과를 반환합니다.
+- `Stream`은 요쇼를 요청할 때 `게으르게` 계산됩니다.
