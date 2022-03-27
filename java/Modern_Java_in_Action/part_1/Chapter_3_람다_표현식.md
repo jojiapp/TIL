@@ -23,7 +23,8 @@
     - [3.6.2 생성자 참조](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#362-생성자-참조)
 - [3.7 람다, 메서드 참조 활용하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#37-람다-메서드-참조-활용하기)
     - [3.7.1 1단계 : 코드 전달](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#371-1단계--코드-전달)
-    - [3.7.2 2단계 : 익명 클래스 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#372-2단계-익명-클래스-사용)
+    - [3.7.2 2단계 : 익명 클래스 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#372-2단계--익명-클래스-사용)
+    - [3.7.3 3단계 : 람다 표현식 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#373-3단계--람다-표현식-사용)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -827,3 +828,35 @@ class Foo {
     }
 }
 ```
+
+### 3.7.3 3단계 : 람다 표현식 사용
+
+앞서 `익명 클래스`보다는 `Lambda expression`을 사용하는 것이 훨씬 더 간결하다는 것을 공부했습니다.
+
+`함수형 인터페이스`를 기대하는 곳에는 어디든 `Lambda expression`을 사용할 수 있습니다.
+
+`Comparator<T>`의 `함수 디스크립터`는 `(T, T) -> int` 이기 때문에 아래처럼 `Lambda`를 작성할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        inventory.sort((a1, a2) -> a1.getWeight().compareTo(a2.getWeight()));
+    }
+}
+```
+
+`Comparator<T>`에는 `Comparable` 키를 추출하여 `Comparator`객체로 만드는 `Function`함수를 인수로 받는 정적 메소드 `comparing`를 포함하고 있습니다.
+
+해당 메소드를 활용하면 위의 코드를 아래처럼 더 `가독성` 좋게 변경할 수 있습니다.
+
+```java
+
+class Foo {
+    public static void main(String[] args) {
+        Comparator<Apple> c = Comparator.comparing(a -> a.getWeight());
+    }
+}
+```
+
+> `static import`를 사용하여 `Comparator`도 생략하면 더 가독성이 좋습니다.
+

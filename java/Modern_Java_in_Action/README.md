@@ -66,4 +66,5 @@
     - [3.6.2 생성자 참조](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#362-생성자-참조)
 - [3.7 람다, 메서드 참조 활용하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#37-람다-메서드-참조-활용하기)
     - [3.7.1 1단계 : 코드 전달](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#371-1단계--코드-전달)
-    - [3.7.2 2단계 : 익명 클래스 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#372-2단계-익명-클래스-사용)
+    - [3.7.2 2단계 : 익명 클래스 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#372-2단계--익명-클래스-사용)
+    - [3.7.3 3단계 : 람다 표현식 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#373-3단계--람다-표현식-사용)
