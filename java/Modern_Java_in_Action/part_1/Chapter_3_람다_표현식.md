@@ -26,6 +26,7 @@
     - [3.7.2 2단계 : 익명 클래스 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#372-2단계--익명-클래스-사용)
     - [3.7.3 3단계 : 람다 표현식 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#373-3단계--람다-표현식-사용)
     - [3.7.4 4단계 : 메서드 참조 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#374-4단계--메서드-참조-사용)
+- [3.8 람다 표현식을 조합할 수 있는 유용한 메서드](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#38-람다-표현식을-조합할-수-있는-유용한-메서드)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -876,3 +877,14 @@ class Foo {
 이렇게 앞서 배운 모든 내용을 동원하여 최적의 코드를 완성했습니다.
 
 > 이것은 단순히 코드만 짧아진 것이 아니라, 코드 자체로 '`Apple`을 `weight`별로 비교해서 `inventory`를 `sort`하라' 라는 코드의 의미도 명확해졌습니다.
+
+## 3.8 람다 표현식을 조합할 수 있는 유용한 메서드
+
+`Java 8 API`의 몇몇 `함수형 인터페이스`는 다양한 유틸리티 메소드를 포함합니다.
+
+예를 들어 두 개의 `Predicate`를 조합하여 `or 연산`을 수행하는 큰 `Predicate`를 만들거나,
+한 `함수`의 `결과`가 다른 `함수`의 `입력`이 되도록 조합할 수도 있습니다.
+
+`함수형 인터페이스`는 하나의 `추상 메소드`만 제공해야 하는데 추가로 `메소드`를 제공한다는 것이 이상하게 생각될 수도 있습니다.
+
+하지만, `default method`를 사용하면 `추상 메소드`가 아니므로 가능합니다.
