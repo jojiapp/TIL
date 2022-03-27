@@ -25,6 +25,7 @@
     - [3.7.1 1단계 : 코드 전달](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#371-1단계--코드-전달)
     - [3.7.2 2단계 : 익명 클래스 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#372-2단계--익명-클래스-사용)
     - [3.7.3 3단계 : 람다 표현식 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#373-3단계--람다-표현식-사용)
+    - [3.7.4 4단계 : 메서드 참조 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#374-4단계--메서드-참조-사용)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -853,10 +854,25 @@ class Foo {
 
 class Foo {
     public static void main(String[] args) {
-        Comparator<Apple> c = Comparator.comparing(a -> a.getWeight());
+        inventory.sort(comparing(a -> a.getWeight()));
     }
 }
 ```
 
 > `static import`를 사용하여 `Comparator`도 생략하면 더 가독성이 좋습니다.
 
+### 3.7.4 4단계 : 메서드 참조 사용
+
+`메소드 참조`를 이용하면 `Lambda expression`의 인수를 더 깔끔하게 전달할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        inventory.sort(comparing(Apple::getWeight));
+    }
+}
+```
+
+이렇게 앞서 배운 모든 내용을 동원하여 최적의 코드를 완성했습니다.
+
+> 이것은 단순히 코드만 짧아진 것이 아니라, 코드 자체로 '`Apple`을 `weight`별로 비교해서 `inventory`를 `sort`하라' 라는 코드의 의미도 명확해졌습니다.
