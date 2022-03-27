@@ -4,6 +4,7 @@
 - [4.2 스트림 시작하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#42-스트림-시작하기)
 - [4.3 스트림과 컬렉션](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#43-스트림과-컬렉션)
     - [4.3.1 딱 한 번만 탐색할 수 있다](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#431-딱-한-번만-탐색할-수-있다)
+    - [4.3.2 외부 반복과 내부 반복](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#432-외부-반복과-내부-반복)
 
 거의 모든 `Java Application`은 `Collection`을 만들고 처리하는 과정을 포함합니다.
 
@@ -177,3 +178,44 @@ class Foo {
 #### 스트림과 컬렉션의 철학적 접근
 
 `Stream`은 **시간적으로 흩어진 값의 집합**으로 간주할 수 있습니다. 반면, `Collection`은 특정 시간에 모든 것이 존재하는 **공간에 흩어진 값**에 비유할 수 있습니다.
+
+### 4.3.2 외부 반복과 내부 반복
+
+`Collection`을 사용하려면 사용자가 직접 `for-each`문을 사용해야 합니다. 이를 `외부 반복` 이라고 합니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        List<String> names = new ArrayList<>();
+        for (Dish dish : menu) {
+            names.add(dish.getName());
+        }
+    }
+}
+```
+
+반면, `Stream`은 반복을 알아서 처리해주고 결과 `Stream 값`을 어딘가에 저장해주는 `내부 반복`을 사용합니다.
+
+`Stream`은 함수에 어떤 작업을 수행할지만 지정하면 모든 것이 알아서 처리 됩니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        List<String> names = menu.stream()
+                .map(Dish::getName)
+                .collect(toList());
+    }
+}
+```
+
+#### 외부 반복과 내부 반복의 차이
+
+`외부 반복`은 한 번에 한 가지 일만 시킬 수 있습니다. 반면, `내부 반복`은 한 번에 모든 일을 말하고 시킬수 있습니다.
+
+예를 들어 아이에게 장난감 정리를 시킨다고 가정하면 `외부 반복`의 경우 장난감 하나하나 말하며 장난감 상자에 넣으라고 말해야 합니다. 그러면 아이 또한, 한 번에 한가지 장난감만 넣을수 있게 됩니다.
+
+반면, `내부 반복`을 사용하면 아이에게 모든 장난감을 상자에 넣어라고 말할수 있고, 그러면 아이는 한 번에 여러 장난감을 집어 상자에 넣을 수 있습니다. 또한, 상자 근처로 이동하여 동선을 최소화할 수도 있습니다.
+
+> 이렇듯 `내부 반복`을 사용하면 최적화된 다양한 순서로 처리할 수 있습니다.
+
+또한, `Stream`의 `내부 반복`은 데이터 표현과 하드웨어를 활용한 `병렬성 구현`을 `자동`으로 선택하는 반면, `외부 반복`은 사용자가 스스로 해야합니다.
