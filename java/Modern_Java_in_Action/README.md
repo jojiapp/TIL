@@ -84,3 +84,4 @@
 - [4.3 스트림과 컬렉션](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#43-스트림과-컬렉션)
     - [4.3.1 딱 한 번만 탐색할 수 있다](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#431-딱-한-번만-탐색할-수-있다)
     - [4.3.2 외부 반복과 내부 반복](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#432-외부-반복과-내부-반복)
+- [4.4 스트림 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#44-스트림-연산)

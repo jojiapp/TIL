@@ -5,6 +5,7 @@
 - [4.3 스트림과 컬렉션](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#43-스트림과-컬렉션)
     - [4.3.1 딱 한 번만 탐색할 수 있다](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#431-딱-한-번만-탐색할-수-있다)
     - [4.3.2 외부 반복과 내부 반복](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#432-외부-반복과-내부-반복)
+- [4.4 스트림 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#44-스트림-연산)
 
 거의 모든 `Java Application`은 `Collection`을 만들고 처리하는 과정을 포함합니다.
 
@@ -219,3 +220,24 @@ class Foo {
 > 이렇듯 `내부 반복`을 사용하면 최적화된 다양한 순서로 처리할 수 있습니다.
 
 또한, `Stream`의 `내부 반복`은 데이터 표현과 하드웨어를 활용한 `병렬성 구현`을 `자동`으로 선택하는 반면, `외부 반복`은 사용자가 스스로 해야합니다.
+
+## 4.4 스트림 연산
+
+`Stream interface`의 연산은 크게 두 가지로 정의할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        menu.stream() // Stream 얻기
+                .filter(dish -> dish.getCalories() > 300) // 중간 연산
+                .map(Dish::getName) // 중간 연산
+                .limit(3) // 중간 연산
+                .collect(toList()); // Stream을 List로 반환
+    }
+}
+```
+
+- `중간 연산`
+    - `filter`, `map`, `limit`처럼 서로 연결되어 `Pipeline`을 형성합니다.
+- `최종 연산`
+    - `collect` 처럼 `Pipeline`를 실행한 다음 닫습니다.
