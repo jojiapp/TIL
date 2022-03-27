@@ -8,6 +8,7 @@
 - [4.4 스트림 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#44-스트림-연산)
     - [4.4.1 중간 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#441-중간-연산)
     - [4.4.2 최종 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#442-최종-연산)
+    - [4.4.3 스트림 이용하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#443-스트림-이용하기)
 
 거의 모든 `Java Application`은 `Collection`을 만들고 처리하는 과정을 포함합니다.
 
@@ -300,3 +301,12 @@ class Foo {
 
 위는 `menu`에서 만든 `Stream`을 모두 출력하는 것입니다. 반환 값은 `void`입니다.
 
+### 4.4.3 스트림 이용하기
+
+`Stream` 이용과정을 요약하면 다음과 같습니다.
+
+- 질의를 수행할 데이터 소스
+- `Stream Pipeline`을 구성할 `중간 연산` 연결
+- `Stream Pipeline`을 실행하고 결과를 만들 `최종 연산`
+
+> `Stream Pipeline`은 `호출을 연결 (중간 연산)`해서 설정을 만든 뒤, `build (최종 연산)`를 통해 결과를 반환하는 `Builder Pattern`과 비슷합니다.
