@@ -19,6 +19,7 @@
     - [3.5.3 형식 추론](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#353-형식-추론)
     - [3.5.4 지역 변수 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#354-지역-변수-사용)
 - [3.6 메서드 참조](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#36-메서드-참조)
+    - [3.6.1 요약](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#361-요약)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -618,3 +619,52 @@ class Foo {
     }
 }
 ```
+
+### 3.6.1 요약
+
+`메소드 참조`는 `Lamnda`의 축약형이라고 생각할 수 있습니다.
+
+예를 들어 Lambda`에서 해당 메소드를 실행해야 한다면, 해당 메소드를 어떻게 실행시키는지 설명을 참조하는 것보다 메소드명을 직접 참조 시키는것이 편리합니다.
+
+`메소드 참조`를 이용하면 기존의 메소드로 `Lambda`를 만들 수 있습니다. 이때, 명시적으로 메소드 명을 참조함으로써 `가독성`을 높일 수 있습니다.
+
+> `메소드 참조`는 `클래스명::메소드명` 형식으로 사용할 수 있습니다.
+>
+> `메소드 참조`는 새로운 기능이 아니라 하나의 메소드를 참조하는 `Lambda`르 편리하게 표현할 수 있는 문법입니다.
+
+#### 메소드 참조를 만드는 방법
+
+`메소드 참조`를 만드는 방법은 3가지가 있습니다.
+
+- `정적 메소드 참조`
+    - ex) `Integer`의 `parseInt` 메소드는 `Integer::parseInt`로 표현할 수 있습니다.
+- `다양한 형식의 인스턴스 메소드 참조`
+    - ex) `String`의 `length` 메소드는 `String::length`로 표현할 수 있습니다.
+- `기존 객체의 인스턴스 메소드 참조`
+    - ex) `Transaction`객체를 할당 받은 `expensiveTransaction` 지역 변수가 있고, `Transaction`객체는 `getValue` 메소드를 가지고
+      있다면 `expensiveTransaction::getValue`로 표현할 수 있습니다.
+
+3번 째의 경우 비공개 헬퍼 메소드를 정의한 상황에서 유용하게 사용될 수 있습니다.
+
+```java
+class Foo {
+    private boolean isValidName(String str) {
+        return Character.isUpperCase((String.charAt(0)));
+    }
+}
+```
+
+해당 메소드를 아래처럼 `Predicate<String>`을 필요로 하는 상황에 적절하게 사용할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        filter(words, this::isValidName);
+    }
+}
+```
+
+`컴파일러`는 `Lambda expression`을 검사하던 방식과 비슷한 과정으로 `메소드 참조`가 주어진 `함수형 인터페이스`와 호환이 가능한지 확인합니다.
+
+> 즉, `메소드 참조`는 `Context`형식과 일치해야 합니다.
+
