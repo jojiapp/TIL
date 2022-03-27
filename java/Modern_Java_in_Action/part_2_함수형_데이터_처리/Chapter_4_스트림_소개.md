@@ -3,6 +3,7 @@
 - [4.1 스트림이란 무엇인가?](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#41-스트림이란-무엇인가)
 - [4.2 스트림 시작하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#42-스트림-시작하기)
 - [4.3 스트림과 컬렉션](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#43-스트림과-컬렉션)
+    - [4.3.1 딱 한 번만 탐색할 수 있다](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#431-딱-한-번만-탐색할-수-있다)
 
 거의 모든 `Java Application`은 `Collection`을 만들고 처리하는 과정을 포함합니다.
 
@@ -164,3 +165,15 @@ class Foo {
 ```
 
 위 처럼 `10000000 건`을 처리하는 로직을 작성했을 떄, `Stream`이 조금 더 빠른걸 확인할 수 있습니다.
+
+### 4.3.1 딱 한 번만 탐색할 수 있다
+
+탐색된 `Stream` 요소는 소비되기 때문에 반복자와 마찬가지로 한 번 더 탐색하기 위해선 초기 데이터 소스에서 새로운 `Stream`을 만들어야 합니다.
+
+그러려면 `Collection` 처럼 반복 사용할 수 있는 데이터 소스여야 합니다. 만약 데이터 소스가 `I/O` 채널이라면 소스를 반복 사용할 수 없으므로 새로운 `Stream`을 만들 수 없습니다.
+
+> `Stream`은 단 한번만 소비할 수 있다.
+
+#### 스트림과 컬렉션의 철학적 접근
+
+`Stream`은 **시간적으로 흩어진 값의 집합**으로 간주할 수 있습니다. 반면, `Collection`은 특정 시간에 모든 것이 존재하는 **공간에 흩어진 값**에 비유할 수 있습니다.
