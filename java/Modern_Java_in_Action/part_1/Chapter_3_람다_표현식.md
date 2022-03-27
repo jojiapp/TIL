@@ -22,6 +22,7 @@
     - [3.6.1 요약](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#361-요약)
     - [3.6.2 생성자 참조](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#362-생성자-참조)
 - [3.7 람다, 메서드 참조 활용하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#37-람다-메서드-참조-활용하기)
+    - [3.7.1 1단계 : 코드 전달](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#371-1단계--코드-전달)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -766,6 +767,45 @@ class Foo {
 class Foo {
     public static void main(String[] args) {
         inventory.sort(Comparator.comparing(Apple::getWeight));
+    }
+}
+```
+
+### 3.7.1 1단계 : 코드 전달
+
+`Java 8`의 `List`는 `sort` 메소드를 제공합니다. 우리는 `sort` 메소드에 `정렬 전략`만 전달하면 됩니다.
+
+`sort` 메소드의 `시그니처`는 아래와 같습니다.
+
+```java
+public interface List<E> extends Collection<E> {
+    default void sort(Comparator<? super E> c) {
+        ...
+    }
+}
+```
+
+`Comparator` 객체를 인수로 받아 두 사과를 비교합니다.
+
+객체 안에 동작을 포함시키는 방식으로 다양한 `전략`을 전달할 수 있습니다.
+
+즉, `sort`에 전달된 `정렬 전략`에 따라 `sort`의 동작이 달라질 것입니다.
+
+- 아래처럼 작성할 수 있습니다.
+
+```java
+public class AppleComparator implements Comparator<Apple> {
+    @Override
+    public int compare(Apple a1, Apple a2) {
+        return a1.getWeight().compareTo(a2.getWeight());
+    }
+}
+```
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        inventory.sort(new AppleComparator());
     }
 }
 ```
