@@ -23,6 +23,7 @@
     - [3.6.2 생성자 참조](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#362-생성자-참조)
 - [3.7 람다, 메서드 참조 활용하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#37-람다-메서드-참조-활용하기)
     - [3.7.1 1단계 : 코드 전달](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#371-1단계--코드-전달)
+    - [3.7.2 2단계 : 익명 클래스 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#372-2단계-익명-클래스-사용)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -806,6 +807,23 @@ public class AppleComparator implements Comparator<Apple> {
 class Foo {
     public static void main(String[] args) {
         inventory.sort(new AppleComparator());
+    }
+}
+```
+
+### 3.7.2 2단계 : 익명 클래스 사용
+
+한 번만 사용된다면, `익명 클래스`를 이용하는 것이 더 좋습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        inventory.sort(new Comparator<Apple>() {
+            @Override
+            public int compare(Apple a1, Apple a2) {
+                return a1.getWeight().compareTo(a2.getWeight());
+            }
+        });
     }
 }
 ```
