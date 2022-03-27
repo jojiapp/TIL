@@ -2,6 +2,7 @@
 
 - [4.1 스트림이란 무엇인가?](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#41-스트림이란-무엇인가)
 - [4.2 스트림 시작하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#42-스트림-시작하기)
+- [4.3 스트림과 컬렉션](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#43-스트림과-컬렉션)
 
 거의 모든 `Java Application`은 `Collection`을 만들고 처리하는 과정을 포함합니다.
 
@@ -122,3 +123,44 @@ class Foo {
 #### 내부 반복
 
 - `Collection` 처럼 반복자를 이용하여 `명시적으로 반복`하는 것과 달리 `내부 반복`을 지원합니다.
+
+## 4.3 스트림과 컬렉션
+
+`Collection`과 `Stream` 모두 **연속된 요소 형식의 값**을 저장하는 인터페이스를 제공합니다. 가장 큰 차이는 데이터를 `언제` 처리하느냐입니다.
+
+`Collection`의 모든 요소는 `Collection`에 추가하기 이전에 모두 계산되어야 하는 반면,
+`Stream`은 이론적으로 **요청할 때만 요소를 계산**하는 `고정된 자료구조`입니다. (`Stream`에는 요소를 `추가`하거나 `삭제`할 수 없습니다.)
+
+`Stream`은 게으르게 생성되는 `Collection`과 같습니다. (`Collection`은 적극적으로 생성됩니다.)
+
+예를 들어 영화를 본다고 생각해보면, `Collection`은 전체 영화 데이터를 다 받아야 볼 수 있는 반면, `Stream`은 다운로드 되는 부분부터 미리 볼 수 있습니다. 영화를 보는 사이 뒷 부분을 다운로드
+하기 때문에 사용자 입장에서는 영화를 더 빠르게 볼 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        List<Apple> apples = new ArrayList<>();
+        for (int i = 0; i < 10000000; i++) {
+            apples.add(new Apple(i, Color.GREEN));
+        }
+
+        long startList = System.currentTimeMillis();
+        List<Apple> listApples = new ArrayList<>();
+        for (Apple apple : apples) {
+            if (apple.getWeight() > 50) {
+                listApples.add(apple);
+            }
+        }
+        System.out.println("list time: " + (System.currentTimeMillis() - startList));
+
+        long startStream = System.currentTimeMillis();
+        List<Apple> streamApples = apples.stream().filter(apple -> apple.getWeight() > 50000).collect(Collectors.toList());
+        System.out.println("stream time: " + (System.currentTimeMillis() - startStream));
+
+        // list time: 74
+        // stream time: 60
+    }
+}
+```
+
+위 처럼 `10000000 건`을 처리하는 로직을 작성했을 떄, `Stream`이 조금 더 빠른걸 확인할 수 있습니다.
