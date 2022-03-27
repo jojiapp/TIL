@@ -21,6 +21,7 @@
 - [3.6 메서드 참조](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#36-메서드-참조)
     - [3.6.1 요약](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#361-요약)
     - [3.6.2 생성자 참조](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#362-생성자-참조)
+- [3.7 람다, 메서드 참조 활용하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#37-람다-메서드-참조-활용하기)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -751,6 +752,20 @@ class TriFunction<T, U, V, R> {
 class Foo {
     public static void main(String[] args) {
         TriFunction<Integer, Integer, Integer, Color> colorFactory = Color::new;
+    }
+}
+```
+
+## 3.7 람다, 메서드 참조 활용하기
+
+처음에 다룬 사과 리스트를 `동작 파라미터화`, `익명 클래스`, `Lambda expression`, `메소드 참조`를 모두 사용하여, 더 간결하고 세련되게 만들어 보겠습니다.
+
+- 최종 코드
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        inventory.sort(Comparator.comparing(Apple::getWeight));
     }
 }
 ```
