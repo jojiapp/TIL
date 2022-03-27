@@ -73,3 +73,4 @@
     - [3.8.1 Comparator 조합](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#381-Comparator-조합)
     - [3.8.2 Predicate 조합](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#382-Predicate-조합)
     - [3.8.3 Function 조합](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#383-Function-조합)
+- [3.10 마치며](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#310-마치며)

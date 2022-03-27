@@ -30,6 +30,7 @@
     - [3.8.1 Comparator 조합](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#381-Comparator-조합)
     - [3.8.2 Predicate 조합](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#382-Predicate-조합)
     - [3.8.3 Function 조합](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#383-Function-조합)
+- [3.10 마치며](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#310-마치며)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -1018,3 +1019,17 @@ class Foo {
     }
 }
 ```
+
+## 3.10 마치며
+
+- `Lambda expression`은 `익명 함수`의 일종입니다. 이름은 없지만 `파라미터 리스트`, `바디`, `반환 형식`을 가지며 `예외`를 던질 수 있습니다.
+- `Lambda expression`로 간결한 코드를 구현할 수 있습니다.
+- `함수형 인터페이스`는 하나의 `추상 메소드`만을 정의한는 `인터페이스`입니다.
+- `함수형 인터페이스`를 기대하는 곳에만 `Lambda expression`을 사용할 수 있습니다.
+- `Lambda expression` 전체가 `함수형 인터페이스`의 인스턴스로 취급됩니다.
+- `java.util.function` 패키지는 자주 사용하는 다양한 `함수형 인터페이스`를 제공합니다.
+- `Java 8`은 `박싱 동작`을 피할수 있는 `IntPredicate`같은 `기본형 특화 인터페이스`를 제공합니다.
+- `실행 어라운드 패턴`을 `Lambda`와 활용하면 `유연성`과 `재사용성`을 추가로 얻을 수 있습니다.
+- `Lambda expression`의 기대 형식을 `대상 형식 (target type)`이라고 합니다.
+- `메소드 참조`를 이용하면 기존의 메소드 구현을 `재사용`하고 `직접 전달`할 수 있습니다.
+- `Comparator`, `Predicate`, `Function` 같은 `함수형 인터페이스`는 `Lambda expression`을 조합할 수 있는 다양한 `default method`를 제공합니다.
