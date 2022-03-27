@@ -20,6 +20,7 @@
     - [3.5.4 지역 변수 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#354-지역-변수-사용)
 - [3.6 메서드 참조](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#36-메서드-참조)
     - [3.6.1 요약](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#361-요약)
+    - [3.6.2 생성자 참조](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#362-생성자-참조)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -668,3 +669,88 @@ class Foo {
 
 > 즉, `메소드 참조`는 `Context`형식과 일치해야 합니다.
 
+### 3.6.2 생성자 참조
+
+`ClassName::new`처럼 기존 `생성자`의 참조를 만들 수 있습니다. 이것은 `정적 메소드 참조`를 만드는 방법과 비슷합니다.
+
+- 예를 들어 `Supplier`의 `() -> Apple` 시그니처를 갖는 `생성자`가 있다고 가정하면 아래 처럼 만들 수 있습니다. 아래 두 코드는 동일합니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Supplier<Aple> c1 = Apple::new;
+        Apple a1 = c1.get();
+    }
+}
+```
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Supplier<Apple> c1 = () -> new Apple();
+        Apple a1 = c1.get();
+    }
+}
+```
+
+- 인수가 하나인 `Apple(Integer weight)`라는 시그니처를 가진 `생성자`는 `Function<T, R>`의 형식과 동일하므로 아래처럼 작성할 수 있습니다. 아래 두 코드는 동일합니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Function<Integer, Apple> c2 = Apple::new;
+        Apple a2 = c2.apply(100);
+    }
+}
+```
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Function<Integer, Apple> c2 = (weight) -> new Apple(weight);
+        Apple a2 = c2.apply(100);
+    }
+}
+```
+
+- 인수를 두 개 받는 시그니차를 가진 `생성자`의 경우 `BiFunction<T, U, R>`의 형식과 동일하므로 아래 처럼 작성할 수 있습니다. 아래 두 코드는 동일합니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        BiFunction<Color, Integer, Apple> c3 = Apple::new;
+        Apple a3 = c3.apple(GREEN, 100);
+    }
+}
+```
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        BiFunction<Color, Integer, Apple> c3 = (color, weight) -> new Apple(color, weight);
+        Apple a3 = c3.apple(GREEN, 100);
+    }
+}
+```
+
+위에서 볼 수 있듯, `메소드 참조`를 이용하면 훨씬 간결하게 코드를 작성할 수 있습니다.
+
+#### 인수가 3개 이상일 경우
+
+위에서는 인수가 1개인 경우와 2개인 경우에 대해서 다뤘습니다. 하지만 인수를 3개 이상 받는 `생성자`의 경우는 정의 된 `함수형 인터페이스`가 없기 때문에 사용할 수가 없습니다.
+
+그렇기 때문에 `시그니처`가 일치하는 `함수형 인터페이스`를 직접 만들어 사용해야 합니다.
+
+```java
+class TriFunction<T, U, V, R> {
+    R apply(T t, U u, V v);
+}
+```
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        TriFunction<Integer, Integer, Integer, Color> colorFactory = Color::new;
+    }
+}
+```
