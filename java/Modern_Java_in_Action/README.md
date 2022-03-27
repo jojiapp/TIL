@@ -2,7 +2,7 @@
 
 ## [Part 1. 기초](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1_기초)
 
-### [Chapter 1. 자바 8, 9, 10, 11 무슨 일이 일어나고 있는가?](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1_기초/Chapter_1_자바_8_9_10_11_무슨_일이_일어나고_있는가.md)
+### [Chapter 1. 자바 8, 9, 10, 11 무슨 일이 일어나고 있는가?](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1_기초/Chapter_1_자바_8_9_10_11_무슨_일이_일어나고_있는가.md#Chapter-1-자바-8-9-10-11-무슨-일이-일어나고-있는가)
 
 - [1.1 역사의 흐름은 무엇인가](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1_기초/Chapter_1_자바_8_9_10_11_무슨_일이_일어나고_있는가.md#11-역사의-흐름은-무엇인가)
 - [1.2 왜 아직도 자바는 변화하는가?](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1_기초/Chapter_1_자바_8_9_10_11_무슨_일이_일어나고_있는가.md#12-왜-아직도-자바는-변화하는가)
@@ -74,3 +74,7 @@
     - [3.8.2 Predicate 조합](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1_기초/Chapter_3_람다_표현식.md#382-Predicate-조합)
     - [3.8.3 Function 조합](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1_기초/Chapter_3_람다_표현식.md#383-Function-조합)
 - [3.10 마치며](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1_기초/Chapter_3_람다_표현식.md#310-마치며)
+
+## [Part 2. 함수형 데이터 처리](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리)
+
+### [Chapter 4. 스트림 소개](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#Chapter-4-스트림-소개)
