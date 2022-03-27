@@ -29,6 +29,7 @@
 - [3.8 람다 표현식을 조합할 수 있는 유용한 메서드](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#38-람다-표현식을-조합할-수-있는-유용한-메서드)
     - [3.8.1 Comparator 조합](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#381-Comparator-조합)
     - [3.8.2 Predicate 조합](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#382-Predicate-조합)
+    - [3.8.3 Function 조합](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#383-Function-조합)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -935,7 +936,7 @@ class Foo {
 
 ### 3.8.2 Predicate 조합
 
-`interface Predicate`는 복잡한 `Predicate`를 만들 수 있도록 `negate`, `and`, `or` 세 가지 메소드를 제공합니다.
+복잡한 `Predicate`를 만들 수 있도록 `negate`, `and`, `or` 세 가지 메소드를 제공합니다.
 
 - `negate`: `Predicate`를 반전 시킬 때 사용
 
@@ -964,11 +965,56 @@ class Foo {
 ```java
 class Foo {
     public static void main(String[] args) {
-      Predicate<Apple> redAndHeavyApple = redApple
-              .and(a -> a.getWeight() > 150)
-              .or(a -> GREEN == a.getColor());
-      
-      // 빨간색 이면서 무게가 150이 넘는 사과 또는 그냥 녹색 사과 추출
+        Predicate<Apple> redAndHeavyApple = redApple
+                .and(a -> a.getWeight() > 150)
+                .or(a -> GREEN == a.getColor());
+
+        // 빨간색 이면서 무게가 150이 넘는 사과 또는 그냥 녹색 사과 추출
+    }
+}
+```
+
+### 3.8.3 Function 조합
+
+`Function` 인스턴를 반환하는 `andThen`, `compose` 두 가지 `default method`를 제공합니다.
+
+- `andThen`: 주어진 `함수`를 먼저 적용한 뒤, `결과`를 다른 `함수`의 `입력`으로 사용
+    - 수학적으로는 `(g(f(x)))`으로 표현
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Function<Integer, Integer> f = (x -> x + 1);
+        Function<Integer, Integer> g = (x -> x * 2);
+        Function<Integer, Integer> h = f.andThen(g);
+        int result = h.apply(1); // 4
+    }
+}
+```
+
+- `compose`: 주어진 `함수`를 먼저 실행한 뒤, 그 `결과`를 `외부 함수`의 `인수`로 제공
+    - 수학적으로는 `(f(g(x)))`으로 표현
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Function<Integer, Integer> f = (x -> x + 1);
+        Function<Integer, Integer> g = (x -> x * 2);
+        Function<Integer, Integer> h = f.compose(g);
+        int result = h.apply(1); // 3
+    }
+}
+```
+
+예를 들어 `헤더`를 `추가`한 다음, `철자 검사`를 하고, 마지막에 `푸터`를 `추가`하는 식으로 `Pipeline`을 만들 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Function<String, String> addHeader = Letter::addHeader;
+        Function<String, String> transformationPipeline = addHeader
+                .andThen(Letter::checkSpelling)
+                .anethen(Letter::addFooter);
     }
 }
 ```

@@ -72,3 +72,4 @@
 - [3.8 람다 표현식을 조합할 수 있는 유용한 메서드](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#38-람다-표현식을-조합할-수-있는-유용한-메서드)
     - [3.8.1 Comparator 조합](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#381-Comparator-조합)
     - [3.8.2 Predicate 조합](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#382-Predicate-조합)
+    - [3.8.3 Function 조합](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#383-Function-조합)
