@@ -28,6 +28,7 @@
     - [3.7.4 4단계 : 메서드 참조 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#374-4단계--메서드-참조-사용)
 - [3.8 람다 표현식을 조합할 수 있는 유용한 메서드](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#38-람다-표현식을-조합할-수-있는-유용한-메서드)
     - [3.8.1 Comparator 조합](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#381-Comparator-조합)
+    - [3.8.2 Predicate 조합](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#382-Predicate-조합)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -932,3 +933,42 @@ class Foo {
 
 > `thenComparing` 메소드는 함수를 인수로 받아 첫 번째 비교자를 이용해서 두 객체가 같다고 판단되면 두 번째 비교자에 객채를 전달 합니다.
 
+### 3.8.2 Predicate 조합
+
+`interface Predicate`는 복잡한 `Predicate`를 만들 수 있도록 `negate`, `and`, `or` 세 가지 메소드를 제공합니다.
+
+- `negate`: `Predicate`를 반전 시킬 때 사용
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Predicate<Apple> notRedApple = redApple.negate();
+        // 빨간색인 사과 추출에서 빨간색이 아닌 사과 추출로 변경
+    }
+}
+```
+
+- `and`: 두 `Predicate`를 조합하여 `and` 조건으로 사용
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Predicate<Apple> redAndHeavyApple = redApple.and(a -> a.getWeight() > 150);
+        // 빨간색이면서 무게가 150이 넘는 사과 추출
+    }
+}
+```
+
+- `or`: 두 `Predicate`를 조합하여 `or` 조건으로 사용
+
+```java
+class Foo {
+    public static void main(String[] args) {
+      Predicate<Apple> redAndHeavyApple = redApple
+              .and(a -> a.getWeight() > 150)
+              .or(a -> GREEN == a.getColor());
+      
+      // 빨간색 이면서 무게가 150이 넘는 사과 또는 그냥 녹색 사과 추출
+    }
+}
+```
