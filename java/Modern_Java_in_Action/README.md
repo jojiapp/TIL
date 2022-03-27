@@ -80,3 +80,4 @@
 ### [Chapter 4. 스트림 소개](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#Chapter-4-스트림-소개)
 
 - [4.1 스트림이란 무엇인가?](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#41-스트림이란-무엇인가)
+- [4.2 스트림 시작하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#42-스트림-시작하기)

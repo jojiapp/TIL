@@ -1,6 +1,7 @@
 # Chapter 4. 스트림 소개
 
 - [4.1 스트림이란 무엇인가?](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#41-스트림이란-무엇인가)
+- [4.2 스트림 시작하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#42-스트림-시작하기)
 
 거의 모든 `Java Application`은 `Collection`을 만들고 처리하는 과정을 포함합니다.
 
@@ -87,3 +88,37 @@ class Foo {
 즉, `데이터 처리 과정`을 `병렬화` 하면서 `스레드`와 `락`을 걱정할 필요가 없어집니다.
 
 > `구글`에서 만든 `구아바`, `아파치 공통 컬렉션 라이브러리`, `마리오 푸스코`가 만든 `람다제이` 같은 `기타 라이브러리`도 있습니다.
+
+## 4.2 스트림 시작하기
+
+`Java 8`에는 `stream` 메소드가 추가 되었습니다. `(java.util.stream.Stream 참고)`
+
+`숫자 범위`나 `I/O`자원에서 `Stream` 요소를 만드는 등 `stream` 메소드 외에도 다양한 방법으로 `Stream`을 만들 수 있습니ㅣ다.
+
+> `Stream`이란 **데이터 처리 연산을 지원하도록 소스에서 추출된 연속된 요소** 입니다.
+
+### Stream 특징
+
+#### 연속된 요소
+
+- `Collection`과 마찬가지로 특정 요소 형식으로 이루어진 `연속된 값 집합`의 `interface`를 제공합니다.
+- `Collection`은 요소 `저장` 및 `접근 연산`이 주를 이루는 반면, `Stream`은 `표현 계산식`이 주를 이룹니다.
+- 즉, `Collection`의 주제는 `데이터`이고, `Stream`의 주제는 `계산`입니다.
+
+#### 소스
+
+- `Collection`, `Array`, `I/O` 자원 등의 데이터 제공 소스로 부터 데이터를 소비하기 때문에, 정렬된 `Collection`으로 부터 `Stream`을 생성하면 정렬이 그대로 유지됩니다.
+
+#### 데이터 처리 연산
+
+- `함수형 프로그래밍`에서 일반적으로 지원하는 연산 및 `Database`와 비슷한 연산을 지원합니다.
+- `순차적` 또는 `병렬`로 실행할 수 있습니다.
+
+#### 파이프라이닝
+
+- 대부분의 `Stream` 연산은 `Stream` 연산끼리 연결하여 커다란 `Pipeline`을 구성할 수 있도록 `Stream`자신을 `반환`합니다.
+- 그 덕에 `laziness`, `short-circuiting`같은 최적화도 얻을 수 있습니다.
+
+#### 내부 반복
+
+- `Collection` 처럼 반복자를 이용하여 `명시적으로 반복`하는 것과 달리 `내부 반복`을 지원합니다.
