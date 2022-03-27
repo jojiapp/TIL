@@ -18,6 +18,7 @@
     - [3.5.2 같은 람다, 다른 함수형 인터페이스](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#352-같은-람다-다른-함수형-인터페이스)
     - [3.5.3 형식 추론](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#353-형식-추론)
     - [3.5.4 지역 변수 사용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#354-지역-변수-사용)
+- [3.6 메서드 참조](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_1/Chapter_3_람다_표현식.md#36-메서드-참조)
 
 `익명 클래스`로 다양한 동작을 구현할 수 있지만, 너무 많은 코드가 필요하고 깔끔하지 않습니다. 깔끔하지 못한 코드는 `동작 파라미터`를 실전에 적용하는 것을 막는 요소가 됩니다.
 
@@ -595,3 +596,25 @@ class Foo {
 덕분에 `Lambda`는 `변수`가 아닌 `값`에 국한되어 동작을 수행한다는 사실이 명확해집니다.
 
 > 가변 지역 변수를 새로운 `Thread`에서 캡처할 수 있다면 안전하지 않은 동작을 수행할 가능성이 생깁니다.
+
+## 3.6 메서드 참조
+
+`메소드 참조`를 이용하면 기존의 메소드 정의를 재활용하여 `Lambda`처럼 전달할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        inventory.sort((a1, a2) -> a1.getWeight().compareTo(a2.getWeight()));
+    }
+}
+```
+
+위의 코드를 `메소드 참조`를 이용하면 아래처럼 작성할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        inventory.sort(Comparator.comparing(Apple::getWeight));
+    }
+}
+```
