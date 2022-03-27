@@ -6,6 +6,7 @@
     - [4.3.1 딱 한 번만 탐색할 수 있다](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#431-딱-한-번만-탐색할-수-있다)
     - [4.3.2 외부 반복과 내부 반복](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#432-외부-반복과-내부-반복)
 - [4.4 스트림 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#44-스트림-연산)
+    - [4.4.1 중간 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#441-중간-연산)
 
 거의 모든 `Java Application`은 `Collection`을 만들고 처리하는 과정을 포함합니다.
 
@@ -241,3 +242,45 @@ class Foo {
     - `filter`, `map`, `limit`처럼 서로 연결되어 `Pipeline`을 형성합니다.
 - `최종 연산`
     - `collect` 처럼 `Pipeline`를 실행한 다음 닫습니다.
+
+### 4.4.1 중간 연산
+
+`중간 연산`의 특징은 `단말 연산`을 `Stream Pipeline`에 실행하기 전까지는 아무 연산도 수행하지 않는다는 것입니다.
+
+`중간 연산`을 합친 다음에 합쳐진 `중간 연산`을 `최종 연산`으로 **한번에 처리**하기 때문에 `게으르다`는 것입니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        List<Apple> apples = new ArrayList<>();
+        for (int i = 0; i < 90000000; i++) {
+            apples.add(new Apple(i, Color.GREEN));
+        }
+        apples.stream()
+                .filter(apple -> {
+                    System.out.println("filter");
+                    return apple.getWeight() > 1;
+                })
+                .map(apple -> {
+                    System.out.println("map");
+                    return apple.getColor();
+                })
+                .limit(3)
+                .collect(Collectors.toList());
+        // filter
+        // filter
+        // filter
+        // map
+        // filter
+        // map
+        // filter
+        // map
+    }
+}
+```
+
+병렬적으로 처리 될 뿐 아니라, 데이터 요소가 `90000000 건`이나 있음에도 `limit`연산 덕분에 전체를 순회하지 않고 3개를 찾으면 연산을 종료하기 떄문에 빠르게 결과를 도출합니다.
+
+이는 `쇼트서킷`이라는 기법 덕분에 가능한 것입니다.
+
+또한, `filter`와 `map`이 한 과정으로 병합되는 것을 `루프 퓨전 (loop fusion)`이라고 합니다.
