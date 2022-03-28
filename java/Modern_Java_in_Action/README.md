@@ -91,3 +91,7 @@
 - [4.6 마치며](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#46-마치며)
 
 ### [Chapter 5. 스트림 활용](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#Chapter-5-스트림-활용)
+
+- [5.1 필터링](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#51-필터링)
+    - [5.1.1 프레이케이트로 필터링](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#511-프레이케이트로-필터링)
+    - [5.1.2 고유 요소 필터링](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#512-고유-요소-필터링)
