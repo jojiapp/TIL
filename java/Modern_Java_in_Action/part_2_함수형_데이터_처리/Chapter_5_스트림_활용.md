@@ -10,6 +10,9 @@
 - [5.3 매핑](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#53-매핑)
     - [5.3.1 스트림의 각 요소에 함수 적용하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#531-스트림의-각-요소에-함수-적용하기)
     - [5.3.2 스트림 평면화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#532-스트림-평면화)
+- [5.4 검색과 매칭](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#54-검색과-매칭)
+    - [5.4.1 프레디케이트가 적어도 한 요소와 일치하는지 확인](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#541-프레디케이트가-적어도-한-요소와-일치하는지-확인)
+    - [5.4.2 프레디케이트가 모든 요소와 일치하는지 검사](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#542-프레디케이트가-모든-요소와-일치하는지-검사)
 
 `Stream`을 이용하면 필요 조건만 인수로 넘겨주면 데이터를 어떻게 처리할지는 `Stream API`가 관리하므로 편리하게 데이터 관련 작업을 할 수 있습니다.
 
@@ -240,3 +243,58 @@ class Mapping {
     }
 }
 ```
+
+## 5.4 검색과 매칭
+
+`allMatch`, `anyMatch`, `noneMatch`, `findFirst`, `findAny` 등 다양한 유틸리티 메소드를 이용하여 특정 속성이 집합에 있는지 여부를 검색할 수 있습니다.
+
+### 5.4.1 프레디케이트가 적어도 한 요소와 일치하는지 확인
+
+`anyMatch`는 `Predicate`를 인수로 받아 요소 중 하나라도 일치하면 `true`를 반환하는 메소드 입니다.
+
+```java
+class Finding {
+    public static void main(String[] args) {
+        if (menu.stream().anyMatch(Dish::isVegetarian)) {
+            System.out.println("채식 요리 존재");
+        }
+    }
+}
+```
+
+위의 코드는 `메뉴`에 `채식 요리`가 **하나라도 있는지 확인**하는 로직입니다.
+
+### 5.4.2 프레디케이트가 모든 요소와 일치하는지 검사
+
+`allMatch`는 `Predicate`를 인수로 받아 모든 요소가 모두 일치해야 `true`를 반환하는 메소드 입니다.
+
+```java
+class Finding {
+    public static void main(String[] args) {
+        menu.stream()
+                .allMatch(dish -> dish.getCalories() < 1000);
+    }
+}
+```
+
+위의 코드는 `메뉴`의 `요리`가 **모두 1000 칼로리가 넘는지 확인**하는 로직입니다.
+
+#### NoneMatch
+
+`noneMatch`는 `allMatch`랑 반대의 연산을 수행합니다.
+
+즉, 모두 일치하지 않아야 `true`를 반환합니다.
+
+```java
+class Finding {
+    public static void main(String[] args) {
+        menu.stream()
+                .noneMatch(dish -> dish.getCalories() >= 1000);
+    }
+}
+```
+
+위의 코드와 `allMatch` 코드는 동일한 결과를 반환합니다.
+
+> 위의 세 메소드는 `스트림 쇼트서킷 기법 (&&, || 같은)`을 사용하기 때문에, 조건이 부합하지 않으면 즉시 반환하도록 최적화되어 있습니다.
+
