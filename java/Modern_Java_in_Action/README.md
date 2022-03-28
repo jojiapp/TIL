@@ -105,3 +105,4 @@
 - [5.4 검색과 매칭](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#54-검색과-매칭)
     - [5.4.1 프레디케이트가 적어도 한 요소와 일치하는지 확인](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#541-프레디케이트가-적어도-한-요소와-일치하는지-확인)
     - [5.4.2 프레디케이트가 모든 요소와 일치하는지 검사](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#542-프레디케이트가-모든-요소와-일치하는지-검사)
+    - [5.4.3 요소 검색](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#543-요소-검색)

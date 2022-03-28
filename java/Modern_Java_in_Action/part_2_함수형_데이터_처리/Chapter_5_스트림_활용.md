@@ -13,6 +13,7 @@
 - [5.4 검색과 매칭](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#54-검색과-매칭)
     - [5.4.1 프레디케이트가 적어도 한 요소와 일치하는지 확인](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#541-프레디케이트가-적어도-한-요소와-일치하는지-확인)
     - [5.4.2 프레디케이트가 모든 요소와 일치하는지 검사](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#542-프레디케이트가-모든-요소와-일치하는지-검사)
+    - [5.4.3 요소 검색](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#543-요소-검색)
 
 `Stream`을 이용하면 필요 조건만 인수로 넘겨주면 데이터를 어떻게 처리할지는 `Stream API`가 관리하므로 편리하게 데이터 관련 작업을 할 수 있습니다.
 
@@ -298,3 +299,45 @@ class Finding {
 
 > 위의 세 메소드는 `스트림 쇼트서킷 기법 (&&, || 같은)`을 사용하기 때문에, 조건이 부합하지 않으면 즉시 반환하도록 최적화되어 있습니다.
 
+### 5.4.3 요소 검색
+
+`findAny`는 현재 `Stream`에서 임의의 요소를 반환합니다.
+
+```java
+class Finding {
+    public static void main(String[] args) {
+        Optional<Dish> dish = menu.stream()
+                .filter(Dish::isVegetarian)
+                .findAny();
+    }
+}
+```
+
+위의 코드는 `채식 요리`중 하나를 반환하는 로직입니다.
+
+#### Optional 이란?
+
+`Optional<T>` 클래스는 값의 존재나 부재 여부를 표현하는 `컨테이너 클래스` 입니다.
+
+만약 위의 코드에서 `채식 요리`가 하나도 없으면 `null`을 반환하게 됩니다.
+`null`은 `NullPointerException`을 유발할 수 있으니 가능한 피해야 합니다.
+
+`Optional`을 사용하면 값의 존재 여부에 따라 다양한 동작을 수행할 수 있습니다.
+
+- `boolen isPresent()`: 값이 존재하면 `true`를 반환합니다.
+- `ifPresent(Consumer<T> block)`: `함수`를 `인자`로 받아 값이 존재하면 `함수`를 실행합니다.
+- `T get()`: 값이 존재하면 값을 반환하고, 존재하지 않으면 `NoSuchElementException` 예외가 발생합니다.
+- `T orElse(T other)`: 값이 있으면 반환하고, 값이 없으면 기본 값을 반환합니다.
+
+```java
+class Finding {
+    public static void main(String[] args) {
+        menu.stream()
+                .filter(Dish::isVegetarian)
+                .findAny()
+                .ifPresent(dish -> System.out.println(dish.getName()));
+    }
+}
+```
+
+위 코드처럼 `null`을 검사할 필요없이 안전하게 작성할 수 있습니다.
