@@ -99,3 +99,6 @@
     - [5.2.1 프레디케이트를 이용한 슬라이싱](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#521-프레디케이트를-이용한-슬라이싱)
     - [5.2.2 스트림 축소](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#522-스트림-축소)
     - [5.2.3 요소 건너뛰기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#523-요소-건너뛰기)
+- [5.3 매핑](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#53-매핑)
+    - [5.3.1 스트림의 각 요소에 함수 적용하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#531-스트림의-각-요소에-함수-적용하기)
+    - [5.3.2 스트림 평면화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#532-스트림-평면화)
