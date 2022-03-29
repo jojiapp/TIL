@@ -235,55 +235,55 @@ class Foo {
 
 한 메소드가 다른 동작을 수행하도록 재활용 할 수 있습니다. 따라서 유연한 API를 만들 때 `동작 파라미터화`가 중요한 역할을 합니다.
 
-#### 유연한 prettyPrintApple 메소드 구현하기
-
-`사과 리스트`를 전달 받아 다양한 방법으로 문자열을 생성 할 수 있도록 `파라미터화`된 `prettyPrintApple`를 구현해 보겠습니다.
-
-```java
-interface AppleFormatter {
-    String accept(Apple apple);
-}
-```
-
-```java
-class AppleFancyFormatter implements AppleFormatter {
-    @Override
-    public String accept(Apple apple) {
-        String characteristic = apple.getWeight() > 150 ? "heavy" : "light";
-        return "A %s %s apple".formatted(characteristic, apple.getColor());
-    }
-}
-```
-
-```java
-class AppleSimpleFormatter implements AppleFormatter {
-    @Override
-    public String accept(Apple apple) {
-        return "An apple of %s g".formatted(apple.getWeight());
-    }
-}
-```
-
-```java
-class Print {
-    public static void prettyPrintApple(List<Apple> inventory, AppleFormatter formatter) {
-        for (Apple apple : inventory) {
-            System.out.println(formatter.accept(apple));
-
-        }
-    }
-}
-```
-
-이제 아래와 같이 출력하고 싶은 `forrmater`를 생성하여 `prettyPrintApple`의 `파라미터`로 넘겨 주면 됩니다.
-
-```java
-class Foo {
-    public static void main(String[] args) {
-        Print.prettyPrintApple(inventory, new AppleSimpleFormatter());
-    }
-}
-```
+> #### 유연한 prettyPrintApple 메소드 구현하기
+> 
+> `사과 리스트`를 전달 받아 다양한 방법으로 문자열을 생성 할 수 있도록 `파라미터화`된 `prettyPrintApple`를 구현해 보겠습니다.
+> 
+> ```java
+> interface AppleFormatter {
+>     String accept(Apple apple);
+> }
+> ```
+> 
+> ```java
+> class AppleFancyFormatter implements AppleFormatter {
+>     @Override
+>     public String accept(Apple apple) {
+>         String characteristic = apple.getWeight() > 150 ? "heavy" : "light";
+>         return "A %s %s apple".formatted(characteristic, apple.getColor());
+>     }
+> }
+> ```
+> 
+> ```java
+> class AppleSimpleFormatter implements AppleFormatter {
+>     @Override
+>     public String accept(Apple apple) {
+>         return "An apple of %s g".formatted(apple.getWeight());
+>     }
+> }
+> ```
+> 
+> ```java
+> class Print {
+>     public static void prettyPrintApple(List<Apple> inventory, AppleFormatter formatter) {
+>         for (Apple apple : inventory) {
+>             System.out.println(formatter.accept(apple));
+> 
+>         }
+>     }
+> }
+> ```
+> 
+> 이제 아래와 같이 출력하고 싶은 `forrmater`를 생성하여 `prettyPrintApple`의 `파라미터`로 넘겨 주면 됩니다.
+> 
+> ```java
+> class Foo {
+>     public static void main(String[] args) {
+>         Print.prettyPrintApple(inventory, new AppleSimpleFormatter());
+>     }
+> }
+> ```
 
 ## 2.3 복잡한 과정 간소화
 
@@ -318,38 +318,38 @@ class Foo {
 - 클래스로 구현 정의하지 않았을뿐이지, 여전히 많은 공간을 차지합니다.
 - 많은 프로그래머가 `익명 클래스` 사용에 익숙하지가 않습니다.
 
-#### 익명 클래스 문제
-
-```java
-public class MeaningOfThis {
-    public final int value = 4;
-
-    public void doIt() {
-        int value = 6;
-        Runnable r = new Runnable() {
-            public final int value = 5;
-
-            @Override
-            public void run() {
-                System.out.println(this.value);
-            }
-        };
-        r.run();
-    }
-
-    public static void main(String[] args) {
-        MeaningOfThis m = new MeaningOfThis();
-        m.doIt();
-    }
-}
-```
-
-위의 코드는 `this`가 `MeaningOfThis`가 아니라 `Runnable`을 참조하므로 `5`가 출력됩니다.
-
-이처럼 코드가 장황하면 코드를 이해하고 해석하는데 시간이 오래 걸립니다. 가능한 한 눈에 이해할 수 있는 코드여야 좋습니다.
-
-`익명 클래스`로 `interface`를 구현하는 여러 `class`를 선언하는 과정을 조금 줄이긴 했지만, 여전히 `코드 조각`을 전달하는 과정에서 `객체`를 만들고 명시적으로 새로운 동작을 정의하는 메소드를
-구현해야 한다는 점은 변함이 없습니다.
+> #### 익명 클래스 문제
+> 
+> ```java
+> public class MeaningOfThis {
+>     public final int value = 4;
+> 
+>     public void doIt() {
+>         int value = 6;
+>         Runnable r = new Runnable() {
+>             public final int value = 5;
+> 
+>             @Override
+>             public void run() {
+>                 System.out.println(this.value);
+>             }
+>         };
+>         r.run();
+>     }
+> 
+>     public static void main(String[] args) {
+>         MeaningOfThis m = new MeaningOfThis();
+>         m.doIt();
+>     }
+> }
+> ```
+> 
+> 위의 코드는 `this`가 `MeaningOfThis`가 아니라 `Runnable`을 참조하므로 `5`가 출력됩니다.
+> 
+> 이처럼 코드가 장황하면 코드를 이해하고 해석하는데 시간이 오래 걸립니다. 가능한 한 눈에 이해할 수 있는 코드여야 좋습니다.
+> 
+> `익명 클래스`로 `interface`를 구현하는 여러 `class`를 선언하는 과정을 조금 줄이긴 했지만, 여전히 `코드 조각`을 전달하는 과정에서 `객체`를 만들고 명시적으로 새로운 동작을 정의하는 메소드를
+> 구현해야 한다는 점은 변함이 없습니다.
 
 > `동작 파라미타화`를 사용하면 요구사항 변화에 더 유연하게 대응할 수 있으므로 모든 프로그래머가 `동작 파라미터화`를 사용하도록 권장 합니다.
 
