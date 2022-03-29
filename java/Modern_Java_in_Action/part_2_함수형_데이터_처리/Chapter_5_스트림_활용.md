@@ -14,6 +14,7 @@
     - [5.4.1 프레디케이트가 적어도 한 요소와 일치하는지 확인](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#541-프레디케이트가-적어도-한-요소와-일치하는지-확인)
     - [5.4.2 프레디케이트가 모든 요소와 일치하는지 검사](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#542-프레디케이트가-모든-요소와-일치하는지-검사)
     - [5.4.3 요소 검색](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#543-요소-검색)
+    - [5.4.4 첫 번째 요소 찾기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#544-첫-번째-요소-찾기)
 
 `Stream`을 이용하면 필요 조건만 인수로 넘겨주면 데이터를 어떻게 처리할지는 `Stream API`가 관리하므로 편리하게 데이터 관련 작업을 할 수 있습니다.
 
@@ -313,7 +314,7 @@ class Finding {
 }
 ```
 
-위의 코드는 `채식 요리`중 하나를 반환하는 로직입니다.
+위의 코드는 `채식 요리` 중 **하나를 반환**하는 로직입니다.
 
 #### Optional 이란?
 
@@ -341,3 +342,25 @@ class Finding {
 ```
 
 위 코드처럼 `null`을 검사할 필요없이 안전하게 작성할 수 있습니다.
+
+### 5.4.4 첫 번째 요소 찾기
+
+`findFirst`는 `Stream`에서 찾은 **첫 번째 요소를 반환**합니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        List<Integer> numbers = List.of(1, 2, 3, 4, 5);
+        numbers.stream()
+                .map(n -> n * n)
+                .filter(n -> n % 3 == 0)
+                .findFirst(); // 9
+    }
+}
+```
+
+#### finFirst와 findAny는 언제 사용하나?
+
+`병렬 실행`에서는 findFirst`로 첫 번쨰 요소를 찾기가 어렵습니다.
+그렇기 때문에 반환 순서가 상관이 없다면 `findAny`를 사용합니다.
+
