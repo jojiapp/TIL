@@ -20,6 +20,8 @@
     - [5.5.2 최댓값과 최솟값](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#552-최댓값과-최솟값)
 - [5.6 실전 연습](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#56-실전-연습)
     - [5.6.1 거래자와 트랜잭션](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#561-거래자와-트랜잭션)
+- [5.7 숫자형 스트림](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#57-숫자형-스트림)
+    - [5.7.1 기본형 특화 스트림](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#571-기본형-특화-스트림)
 
 `Stream`을 이용하면 필요 조건만 인수로 넘겨주면 데이터를 어떻게 처리할지는 `Stream API`가 관리하므로 편리하게 데이터 관련 작업을 할 수 있습니다.
 
@@ -705,4 +707,42 @@ public class TransactionTest {
     }
 }
 ```
+
+## 5.7 숫자형 스트림
+
+`reduce`로 합을 구하는 예제에는 `박싱 비용`이라는 함정이 숨어있습니다. 내부적으로 합계를 계산하기 전에 `Integer`를 `int`로 `언박싱`을 해야 합니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        menu.stream()
+                .map(Dish::getCalories)
+                .reduce(0, Integer::sum);
+    }
+}
+```
+
+아래 예제처럼 `sum`을 직접 호출 하는것이 `reduce`를 사용하는것 보다 직관적이고 더 좋습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        menu.stream()
+                .map(Dish::getCalories)
+                .sum(); // 지원하지 않음
+    }
+}
+```
+
+하지만, `stream`은 해당 기능을 지원하지 않습니다. 해당 객체가 `숫자`인지 `일반 객체`인지 알 수 없고, `일반 객체`의 경우 `sum`을 사용할 수도 없기 때문입니다.
+
+그래서 `Stream`은 `기본형 특화 Stream`을 제공합니다.
+
+### 5.7.1 기본형 특화 스트림
+
+`Java 8`에는 `박싱 비용`을 피할 수 있도록 `IntStream`, `DoubleStream`, `LongStream` 세 가지의 특화된 `Stream`을 제공합니다.
+
+`min`, `max` 같은 자주 사용하는 숫자 관련 `reducing` 연산을 제공합니다.
+
+> `특화 Stream`은 `박싱 비용`에만 관련 있으며, `Stream`에 대한 추가 기능은 제공하지 않습니다.
 
