@@ -15,6 +15,9 @@
     - [5.4.2 프레디케이트가 모든 요소와 일치하는지 검사](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#542-프레디케이트가-모든-요소와-일치하는지-검사)
     - [5.4.3 요소 검색](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#543-요소-검색)
     - [5.4.4 첫 번째 요소 찾기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#544-첫-번째-요소-찾기)
+- [5.5 리듀싱](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#55-리듀싱)
+    - [5.5.1 요소의 합](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#551-요소의-합)
+    - [5.5.2 최댓값과 최솟값](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#552-최댓값과-최솟값)
 
 `Stream`을 이용하면 필요 조건만 인수로 넘겨주면 데이터를 어떻게 처리할지는 `Stream API`가 관리하므로 편리하게 데이터 관련 작업을 할 수 있습니다.
 
@@ -361,6 +364,127 @@ class Foo {
 
 #### finFirst와 findAny는 언제 사용하나?
 
-`병렬 실행`에서는 findFirst`로 첫 번쨰 요소를 찾기가 어렵습니다.
-그렇기 때문에 반환 순서가 상관이 없다면 `findAny`를 사용합니다.
+`병렬 실행`에서는 findFirst`로 첫 번쨰 요소를 찾기가 어렵습니다. 그렇기 때문에 반환 순서가 상관이 없다면 `findAny`를 사용합니다.
 
+## 5.5 리듀싱
+
+메뉴에서 모든 칼로리의 합계나 칼로리가 가장 높은 요리를 구할려면 `Integer` 같은 결과가 나올떄 까지 `Stream` 모든 요소를 반복적으로 처리 해야 합니다.
+
+> 모든 `Stream` 요소를 처리해서 값으러 도출하는 이런 질의를 `리듀싱 연산`이라고 합니다.
+>
+> `함수형 프로그래밍` 언어 용어로는 `작은 조각`이 될 떄까지 반복해서 접는 것과 비슷하다는 의미로 `폴드`라고 부릅니다.
+
+### 5.5.1 요소의 합
+
+`for-each`를 사용하여 모든 요소의 합을 구하는 방법은 아래와 같습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        int sum = 0;
+        for (int n : numbers) {
+            sum += n;
+        }
+    }
+}
+```
+
+여기에서 `2가지 파라미터`를 사용했습니다.
+
+- `sum`: 저장한 값을 보관 (초기값 0)
+- `연산(+)`: `List`의 모든 요소를 조합
+
+여기서 요구사항이 변경되어 `합(+)`이 아니라 `곱(*)`으로 바뀐다면, 앞서 배운 `동작 파라미터화`를 이용할 수 있습니다.
+
+`Stream`에는 `reduce`라는 메소드를 제공합니다. `reduce`는 `2개의 인수`를 갖습니다.
+
+- 초기값
+- 두 요소를 조합해서 새로운 값을 만드는 `BinaryOperator<T>`
+
+아래는 `reduce`를 이용한 버전입니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        List<Integer> numbers = List.of(1, 2, 3, 4, 5);
+        int sum = numbers.stream()
+                .reduce(0, (a, b) -> a + b);
+
+        int sum = numbers.stream()
+                .reduce(1, (a, b) -> a * b);
+    }
+}
+```
+
+`a`는 누적 값이며, `b`는 요소이기 떄문에 아래 처럼 동작하게 됩니다.
+
+- `0 + 1`
+- `1 + 2`
+- `3 + 3` ...
+
+`Integer`에는 두 숫자를 더하는 `sum` 메소드가 존재하기 떄문에 `메소드 참조`로 더 간결하게 사용할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        numbers.stream().reduce(0, Integer::sum);
+    }
+}
+```
+
+#### 초기값 없음
+
+`초기값`을 받지 않도록 `Override`된 `reduce`도 존재합니다.
+
+이 `reduce`는 요소가 없으면 값이 존재하지 않을 수 있으므로 `Optional<T>`을 반환합니다.
+
+### 5.5.2 최댓값과 최솟값
+
+`최댓값`과 `최솟값`을 찾을 때도 `reduce`를 사용할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Optional<Integer> number = numbers.stream().reduce((n1, n2) -> n1 > n2 ? n1 : n2); // 최댓값
+    }
+}
+```
+
+`Integer`에는 `최댓값`을 구하는 `max` 메소드를 지원하므로 `메소드 참조`를 사용할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Optional<Integer> number = numbers.stream().reduce(Integer::min);
+    }
+}
+```
+
+`max`를 `min`으로 바꾸면 `최솟값`을 구할 수 있습니다.
+
+> #### reduce 메서드의 장점과 병렬화
+>
+> `reduce`를 사용하지 않고 `for-each`를 사용해 구현을 할 수도 있지만,
+> `for-each`를 사용하게 되면 `sum`이라는 변수를 공유해야 하므로 `병렬화`하기가 어렵습니다.
+>
+> 강제적으로 동기화를 시키더라도 결국 `병렬화`로 얻어야 할 이득이 `Thread`간의 소모적인 경쟁 떄문에 상쇄되어 버립니다.
+>
+> 즉, `가변 누적자 패턴 (mutable accumulator pattern)`은 `병렬화`와 거리가 너무 먼 기법입니다.
+>
+> `reduce`를 사용하면 `내부 반복`이 추상화 되면서 내부 구현에서 `병렬`로 처리가 가능합니다.
+>
+> `stream`을 `parallelStream`으로 변경하면 `병렬 처리`를 할 수 있습니다. 하지만 다음과 같은 대가를 지불해야합니다.
+>
+> - `reduce`로 넘겨준 `Lambda(인스턴스 변수 같은)`의 상태는 변경되면 안됩니다.
+> - 어떤 순서로 실행되어도 결과가 같은 구조여야 합니다.
+
+> #### 스트림 연산 : 상태 없음과 상태 있음
+>
+>`Stream`을 사용하여 원하는 모든 연산을 쉽게 구현할 수 있습니다. 하지만, 각각의 연산에 따라 내부적인 상태를 고려해야 합니다.
+>
+>`map`, `filter`등은 `input stream`에서 각 요소를 받아 0 또는 결과를 `output stream`으로 보내기 때문에 **내부상태를 갖지 않는 연산** 입니다.
+>
+>`reduce, sum, max` 같은 연산은 결과를 누적 하기 때문에 내부 상태가 필요합니다. `Stream`에서 처리하는 요소 수와 관계없이 내부 상태의 크기는 `한정`되어 있습니다.
+>
+>`sorted`, `distinct`같은 연산은 과거 이력을 알고 있어야 연산을 수행할 수 있습니다. 그렇기 때문에 **모든 요소가 버퍼에 추가**되어 있어야 합니다.
+> 연산을 수행하기 위한 저장소 크기는 정해져 있지 않기 때문에 요소수가 무한이라면 문제가 생길 수 있습니다. 이러한 연산을 내부 상태를 갖는 연산이라고 합니다.
