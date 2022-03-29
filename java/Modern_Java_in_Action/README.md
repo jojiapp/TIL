@@ -110,3 +110,5 @@
 - [5.5 리듀싱](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#55-리듀싱)
     - [5.5.1 요소의 합](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#551-요소의-합)
     - [5.5.2 최댓값과 최솟값](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#552-최댓값과-최솟값)
+- [5.6 실전 연습](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#56-실전-연습)
+    - [5.6.1 거래자와 트랜잭션](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#561-거래자와-트랜잭션)

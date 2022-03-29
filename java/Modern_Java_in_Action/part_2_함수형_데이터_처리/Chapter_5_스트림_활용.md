@@ -18,6 +18,8 @@
 - [5.5 리듀싱](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#55-리듀싱)
     - [5.5.1 요소의 합](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#551-요소의-합)
     - [5.5.2 최댓값과 최솟값](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#552-최댓값과-최솟값)
+- [5.6 실전 연습](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#56-실전-연습)
+    - [5.6.1 거래자와 트랜잭션](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#561-거래자와-트랜잭션)
 
 `Stream`을 이용하면 필요 조건만 인수로 넘겨주면 데이터를 어떻게 처리할지는 `Stream API`가 관리하므로 편리하게 데이터 관련 작업을 할 수 있습니다.
 
@@ -488,3 +490,219 @@ class Foo {
 >
 >`sorted`, `distinct`같은 연산은 과거 이력을 알고 있어야 연산을 수행할 수 있습니다. 그렇기 때문에 **모든 요소가 버퍼에 추가**되어 있어야 합니다.
 > 연산을 수행하기 위한 저장소 크기는 정해져 있지 않기 때문에 요소수가 무한이라면 문제가 생길 수 있습니다. 이러한 연산을 내부 상태를 갖는 연산이라고 합니다.
+
+## 5.6 실전 연습
+
+- 2011년에 일너난 모든 트랜잭션을 찾아 값을 오름차순으로 정렬
+- 거래자가 근무하는 모든 도시를 중복 없이 나열
+- 케임브리지에서 근무하는 모든 거래자를 찾아서 이름순으로 정렬
+- 모든 거래자의 이름을 알파벳순으로 정렬해서 반환
+- 밀라노에 거래자가 있는가?
+- 케임브리지에 거주하는 거래자의 모든 트랜잭션값을 출력
+- 전체 트랜잭션 중 최댓값은 얼마인가
+- 전체 트랜잭션 중 최솟값을 얼마인가
+
+### 5.6.1 거래자와 트랜잭션
+
+```java
+public class Trader {
+
+    private String name;
+    private String city;
+
+    public Trader(String n, String c) {
+        name = n;
+        city = c;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String newCity) {
+        city = newCity;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 17;
+        hash = hash * 31 + (name == null ? 0 : name.hashCode());
+        hash = hash * 31 + (city == null ? 0 : city.hashCode());
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof Trader)) {
+            return false;
+        }
+        Trader o = (Trader) other;
+        boolean eq = Objects.equals(name, o.getName());
+        eq = eq && Objects.equals(city, o.getCity());
+        return eq;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Trader:%s in %s", name, city);
+    }
+
+}
+
+```
+
+```java
+public class Transaction {
+
+    private Trader trader;
+    private int year;
+    private int value;
+
+    public Transaction(Trader trader, int year, int value) {
+        this.trader = trader;
+        this.year = year;
+        this.value = value;
+    }
+
+    public Trader getTrader() {
+        return trader;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 17;
+        hash = hash * 31 + (trader == null ? 0 : trader.hashCode());
+        hash = hash * 31 + year;
+        hash = hash * 31 + value;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof Transaction)) {
+            return false;
+        }
+        Transaction o = (Transaction) other;
+        boolean eq = Objects.equals(trader, o.getTrader());
+        eq = eq && year == o.getYear();
+        eq = eq && value == o.getValue();
+        return eq;
+    }
+
+    @SuppressWarnings("boxing")
+    @Override
+    public String toString() {
+        return String.format("{%s, year: %d, value: %d}", trader, year, value);
+    }
+
+}
+```
+
+#### 스스로 풀어본 답
+
+```java
+public class TransactionTest {
+    public static void main(String[] args) {
+
+        Trader raoul = new Trader("Raoul", "Cambridge");
+        Trader mario = new Trader("Mario", "Milan");
+        Trader alan = new Trader("Alan", "Cambridge");
+        Trader brian = new Trader("Brian", "Cambridge");
+
+        List<Transaction> transactionList = List.of(
+                new Transaction(brian, 2011, 300),
+                new Transaction(raoul, 2012, 1000),
+                new Transaction(raoul, 2011, 400),
+                new Transaction(mario, 2012, 710),
+                new Transaction(mario, 2012, 700),
+                new Transaction(alan, 2012, 950));
+
+        System.out.println("1. 2011년에 일어난 모든 트랜잭션을 찾아 값을 오름차순으로 정렬"); // 정답
+        transactionList.stream()
+                .filter(transaction -> transaction.getYear() == 2011)
+                .sorted(Comparator.comparing(Transaction::getValue))
+                .forEach(System.out::println);
+
+        System.out.println("2. 거래자가 근무하는 모든 도시를 중복 없이 나열"); // 정답
+        transactionList.stream()
+                .map(transaction -> transaction.getTrader().getCity())
+                .distinct()
+                .forEach(System.out::println);
+
+        System.out.println("3. 케임브리지에서 근무하는 모든 거래자를 찾아서 이름순으로 정렬"); // 틀림
+        transactionList.stream()
+                .map(Transaction::getTrader)
+                .filter(trader -> trader.getCity().equals("Cambridge"))
+                .distinct() // 중복없도록 확인 (이 부분 빼먹음)
+                .sorted(Comparator.comparing(Trader::getName))
+                .forEach(System.out::println);
+
+        System.out.println("4. 모든 거래자의 이름을 알파벳순으로 정렬해서 반환"); // 완전 틀림
+        transactionList.stream()
+                .map(transaction -> transaction.getTrader().getName())
+                .sorted(String::compareTo)
+                .forEach(System.out::println);
+
+        // 4. 정답
+        String reduce = transactionList.stream()
+                .map(transaction -> transaction.getTrader().getName())
+                .distinct()
+                .sorted()
+                .reduce("", (s1, s2) -> s1 + s2);
+
+
+        System.out.println("5. 밀라노에 거래자가 있는가?"); // 틀린건 아니지만 더 간결한 방법이 있음
+        transactionList.stream()
+                .filter(transaction -> transaction.getTrader().getCity().equals("Milan"))
+                .findAny()
+                .ifPresent(transaction -> System.out.println(true));
+
+        // 5. 더 간결한 방법
+        transactionList.stream()
+                .anyMatch(transaction ->
+                        transaction.getTrader().getCity().equals("Milan")
+                );
+
+        System.out.println("6. 케임브리지에 거주하는 거래자의 모든 트랜잭션값을 출력"); // 오해
+        transactionList.stream()
+                .filter(transaction -> transaction.getTrader().getCity().equals("Cambridge"))
+                .map(Transaction::getValue) // 그 값이 이 값이 였구나
+                .forEach(System.out::println);
+
+        System.out.println("7. 전체 트랜잭션 중 최댓값은 얼마인가");
+        transactionList.stream()
+                .reduce((t1, t2) -> t1.getValue() > t2.getValue() ? t1 : t2)
+                .ifPresent(transaction -> System.out.println(transaction.getValue()));
+
+        System.out.println("8. 전체 트랜잭션 중 최솟값을 얼마인가");
+        transactionList.stream()
+                .reduce((t1, t2) -> t1.getValue() < t2.getValue() ? t1 : t2)
+                .ifPresent(transaction -> System.out.println(transaction.getValue()));
+
+        // 7, 8 더 깔끔한 방법
+        transactionList.stream()
+                .map(Transaction::getValue)
+                .reduce(Integer::max)
+                .ifPresent(System.out::println);
+    }
+}
+```
+
