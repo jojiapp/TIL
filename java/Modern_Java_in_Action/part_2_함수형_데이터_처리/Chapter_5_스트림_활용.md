@@ -746,3 +746,194 @@ class Foo {
 
 > `특화 Stream`은 `박싱 비용`에만 관련 있으며, `Stream`에 대한 추가 기능은 제공하지 않습니다.
 
+#### 숫자 스트림으로 매핑
+
+`Stream`을 ` 특화 Stream`으로 변환할 떄는 `mapToInt`, `mapToDouble`, `mapToLong` 세가지 메소드를 가장 많이 사용합니다,.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        int calories = menu.stream()
+                .mapToInt(Dish::getCalories)
+                .sum();
+    }
+}
+```
+
+`mapToInt`를 사용했기 때문에 `IntStream`이 반환되어 `sum` 메소드로 간단하게 합계를 구할 수 있으며, `박싱 비용`도 아낄수 있습니다.
+
+#### 객체 스트림으로 복원하기
+
+`IntStream`에서 다시 `일반 Stream`으로 변경하기 위해선 `boxed` 메소드를 이용하면 됩니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        IntStream intStream = menu.stream.mapToInt(Dish::getCalories);
+        Stream<Integer> stream = intStream.boxed();
+    }
+}
+```
+
+#### 기본값 : OptionalInt
+
+합계의 경우 값이 기본겂이 `0`이여도 문제가 없습니다. 하지만, `최댓값`, `최솟값` 같은 경우 실제 값이 `0`인지, 아니면 요소가 존재하지 않는지에 따라 잘못된 결과를 낼 수 있습니다.
+
+객체의 경우 `Optional<T>`로 감싸서 `null`로 부터 안전했지만, 기본 타입의 경우 `Optional<T>`를 사용할 수 없습니다. (사용하기 위해선 `박싱`이 필요)
+
+`특화 스트림`은 `OptionalInt`, `OptionalDouble`, `OptionalLong`를 제공하여 `Optional<T>`와 동일하게 사용할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        IntStream intStream = menu.stream.mapToInt(Dish::getCalories);
+        int max = intStream.max().orElse(1);
+    }
+}
+```
+
+### 5.7.2 숫자 범위
+
+개발을 하다보면 `특정 범위`의 숫자를 생성해야 하는 경우가 많습니다.
+
+`IntStream`은 `range`와 `rangeClosed` 두 메소드를 제공합니다. 두 메소드 모두 `시작값`과 `종료값` 인수를 가지며,
+`ragne`는 `종료값`이 포함되지 않는 다는 차이가 있습니다. (`range <` `rangeClosed <=`)
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        System.out.println(IntStream.rangeClosed(1, 100).filter(n -> n % 2 == 0).count()); // 50
+    }
+}
+```
+
+> 책에서는 `range`가 `시작값`과 `종료값`을 포함하지 않는다고 되어 있는데, 테스트 결과 `종료값`만 포함하지 않았습니다.
+
+### 5.7.3 숫자 스트림 활용 : 피타고라스 수
+
+`피타고라스 수`를 만들며 조금 더 `Stream`연산을 익혀보겠습니다.
+
+#### 피타고라스 수
+
+`피타고라스 수`는 `(a * a) + (b * b) = (c * c)`를 만족하는 `a`, `b`, `c` 세 정수입니다. 예를 들어 `(3 * 3) + (4 * 4) + (5 * 5)`는 `9 + 16 + 25`
+이므로 식이 만족합니다.
+
+#### 세 수 표현하기
+
+`class`를 만드는 것 보다는 세 요소를 갖는 `int[]`을 만들어 `index`로 접근하여 사용하면 간단하게 사용할 수 있습니다.
+`new int[]{3, 4, 5}` 처럼 사용할 수 있습니다.
+
+#### 좋은 필터링 조합
+
+`a`, `b` 두 수만 제공한다고 했을 때, `(a * a) + (b * b)`의 `제곱근`이 정수인지 확인하면 `피타고라스 수`에 부합하는지 알 수 있습니다.
+`부동 소수점`의 경우 `n % 1`으로 거를 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        filter(b -> Math.sqrt((a * a) + (b * b)) % 1 == 0);
+    }
+}
+```
+
+위 코드에서 `a`라는 값이 주어지고  `b`는 `Stream`으로 제공된다고 가정할 때 `filter`로 `a`와 함께 `피타고라스 수`를 구성하는 모든 `b`를 `filtering`할 수 있습니다.
+
+#### 집합 생성
+
+`filter`를 통해 좋은 조합을 갖는 `a`, `b`를 선택했으니, `map`을 사용하여 각 요소를 `피타고라스 수`로 변환할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        stream.filter(b -> Math.sqrt((a * a) + (b * b)) % 1 == 0)
+                .map(b -> new int[]{a, b, (int) Math.sqrt((a * a) + (b * b))});
+    }
+}
+```
+
+#### b값 생성
+
+`Stream.rangeClosed`를 사용하여 주어진 범위의 수를 생성하여 `b` 값을 만들어 줍니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        IntStream.rangeClosed(1, 100)
+                .filter(b -> Math.sqrt((a * a) + (b * b)) % 1 == 0)
+                .boxed()
+                .map(b -> new int[]{a, b, (int) Math.sqrt((a * a) + (b * b))});
+    }
+}
+```
+
+중간에 `boxed`로 `int` 타입을 `Integer`로 만들어 주었습니다. 해당 작업을 하지 않으면 `IntStream`의 `map`은 `int` 반환을 기대하므로 `int[]`을 반환할 수 없습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        IntStream.rangeClosed(1, 100)
+                .filter(b -> Math.sqrt((a * a) + (b * b)) % 1 == 0)
+                .mapToObj(b -> new int[]{a, b, (int) Math.sqrt((a * a) + (b * b))});
+    }
+}
+```
+
+`mapToObj`를 사용하면 조금 더 간결하게 작성이 가능합니다.
+
+#### a 값 생성
+
+이제 `a`만 생성함면 `피타고라스 수`를 생성하는 `Stream`을 완성할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Stream<int[]> pythagoreanTriples =
+                IntStream.rangeClosed(1, 100)
+                        .boxed()
+                        .flatMap(a ->
+                                IntStream.rangeClosed(a, 100)
+                                        .filter(b -> Math.sqrt((a * a) + (b * b)) % 1 == 0)
+                                        .mapToObj(b -> new int[]{a, b, (int) Math.sqrt((a * a) + (b * b))})
+                        );
+    }
+}
+```
+
+조금 복잡해 보일 수 있지만, 하나하나 뜯어보면 어렵지 않습니다.
+
+- 우선 `IntStream`의 `rangeClosed`를 통해 `1 ~ 100`의 `a`를 생성합니다.
+- `flatMap`을 사용하여 위에서 작성 했던 `b` 생성 로직을 작성합니다.
+- `b`생성 로직에서 `시작값`이 `a`로 변경되었습니다. 만약 `1 ~ 100`으로 했다면 `(3, 4, 5)`와 `(4, 3, 5)`처럼 중복 값이 발생할 수 있습니다.
+
+> `flatMap`을 사용하지 않고 `map`을 사용하면 `Stream<Stream<int[]>>` 형태가 되어버립니다.
+
+#### 코드 실행
+
+`limit`를 이용해서 얼마나 많은 세 수를 포함하는 `Stream`을 만들지만 결정하면 됩니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        pythagoreanTriples.limit(5)
+                .forEach(t -> System.out.println("%d, %d, %d".formatted(t[0], t[1], t[2])));
+    }
+}
+```
+
+#### 개선할 점?
+
+현재는 `제곱근`을 두 번 계산합니다. 따라서 `(a * a) + (b * b) = (c * c)`를 만족하는 세 수를 만든 다음 `filtering`하는 것이 더 최적화됩니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Stream<double[]> pythagoreanTriples2 = IntStream.rangeClosed(1, 100)
+                .boxed()
+                .flatMap(
+                        a -> IntStream.rangeClosed(a, 100)
+                                .mapToObj(b -> new double[]{a, b, Math.sqrt((a * a) + (b * b))})
+                                .filter(t -> t[2] % 1 == 0)
+                );
+    }
+}
+```
