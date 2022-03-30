@@ -22,6 +22,13 @@
     - [5.6.1 거래자와 트랜잭션](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#561-거래자와-트랜잭션)
 - [5.7 숫자형 스트림](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#57-숫자형-스트림)
     - [5.7.1 기본형 특화 스트림](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#571-기본형-특화-스트림)
+- [5.8 스트림 만들기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#58-스트림-만들기)
+    - [5.8.1 값으로 스트림 만들기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#581-값으로-스트림-만들기)
+    - [5.8.2 null이 될 수 있는 객체로 스트림 만들기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#582-null이-될-수있는-객체로-스트림-만들기)
+    - [5.8.3 배열로 스트림 만들기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#583-배열로-스트림-만들기)
+    - [5.8.4 파일로 스트림 만들기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#584-파일로-스트림-만들기)
+    - [5.8.5 함수로 무한 스트림 만들기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#585-함수로-무한-스트림-만들기)
+- [5.9 마치며](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#59-마치며)
 
 `Stream`을 이용하면 필요 조건만 인수로 넘겨주면 데이터를 어떻게 처리할지는 `Stream API`가 관리하므로 편리하게 데이터 관련 작업을 할 수 있습니다.
 
@@ -937,3 +944,231 @@ class Foo {
     }
 }
 ```
+
+## 5.8 스트림 만들기
+
+앞서 `Collection`에서 `Stream`을 만들기 위해서 `stream`메소드를 사용하였고, `범위 숫자`에서 `Stream`을 만드는 방법도 알아보았습니다.
+
+그 외에, `일련의 값`, `배열`, `파일`, `함수를 이용한 무한 스트림`등 다양한 방식으로 `Stream`을 만들어 보겠습니다.
+
+### 5.8.1 값으로 스트림 만들기
+
+`임의의 수`를 인수로 받는 정적 메소드 `Stream.of`를 이용해서 `Stream`을 만들 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Stream.of("Modern", "Java", "in", "Action")
+                .map(String::toUpperCase).forEach(System.out::println);
+    }
+}
+```
+
+### 5.8.2 null이 될 수 있는 객체로 스트림 만들기
+
+기존에는 값이 `null`이라면 명시적으로 작성해야 했습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        String homeValue = System.getProperty("home");
+        Stream<String> homeValueStream = homeValue == null ? Stream.empty() : Stream.of(homeValue);
+    }
+}
+```
+
+`Java 9`에서는 `null`이 될 수 있는 개체를 `Stream`으로 만들 수 있는 `Stream.ofNullable` 메소드가 추가되었습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Stream<String> homeValueStream = Stream.ofNullable(System.getProperty("home"));
+    }
+}
+```
+
+`null`이 될 수 있는 객체를 포함하는 `Stream`값을 `flatMap`과 함꼐 사용하는 상황에서는 아래의 `패턴`을 더 유용하게 사용할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Stream<String> values = Stream.of("config", "home", "user")
+                .flatMap(key -> Stream.ofNullable(System.getProperty(key)));
+    }
+}
+```
+
+### 5.8.3 배열로 스트림 만들기
+
+`Arrays.stream`을 이용하여 `Stream`을 만들 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        int[] numbers = {2, 3, 5, 7};
+        int sum = Arrays.stream(numbers).sum;
+    }
+}
+```
+
+### 5.8.4 파일로 스트림 만들기
+
+파일을 처리하는 등의 `I/O 연산`에 사용하는 `Java`의 `NIO API (비블록 I/O)`도 `Stream API`를 활용할 수 있도록 업데이트 되었습니다.
+
+`java.nio.file.Files`의 많은 메소드가 `Stream`을 반환합니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        long uniqueWords = 0;
+        try (Stream<String> lines = Files.lines(
+                Paths.get("data.txt"), Charset.defaultCharset())) {
+            uniqueWords = lines.flatMap(line -> Arrays.stream(line.split(" ")))
+                    .distinct()
+                    .count();
+        } catch (IOException e) {
+            e.getStackTrace();
+        }
+    }
+}
+```
+
+위의 예제는 파일을 읽어 해당 파일의 중복된 단어를 제외하고 모든 단어의 개수를 추출하는 로직입니다.
+
+### 5.8.5 함수로 무한 스트림 만들기
+
+`Stream.iterate`와 `Stream.generate`를 통해 `무한 스트림 (Infinite Stream)`을 생성할 수 있습니다.
+
+`iterate`와 `generate`에서 만든 `Stream`은 요청할 때마다 주어진 `함수`를 이용해서 값을 만들기 때문에 무제한으로 값을 계산할 수 있습니다.
+
+보통 `limit(n)`을 같이 사용하여 개수를 제한합니다.
+
+#### iterate 메서드
+
+`iterate` 메소드는 `초깃값`과 함수를 인수로 받아서 새로운 값을 끊임없이 생산할 수 있습니다. 이런 부분이 `Collection`과 `Stream`의 가장 큰 차이점입니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Stream.iterate(0, n -> n + 2)
+                .limit(10)
+                .forEach(System.out::println);
+    }
+}
+```
+
+> `iterate`는 요청할 때마다 값을 생산할 수 있으며 끝이 없으므로 `Infinite Stream`을 만듭니다.
+>
+> 이러한 `Stream`을 `언바운드 스트림 (Unbounded Stream)`이라고 표현합니다.
+
+> #### 피보나치수열 집합
+>
+> `피보나치수열`은 `0`,`1`로 시작해서 이후의 수자는 이전 두 숫자를 더한 값입니다.
+>
+> `Stream.iterate`을 이용해서 `피보나치수열`을 만들어 보겠습니다.
+>
+> ```java
+> class Foo {
+>   public static void main(String[] args) {
+>     Stream.iterate(new int[]{0, 1}, (t) -> new int[]{t[1], t[0] + t[1]})
+>             .limit(20)
+>             .forEach(t -> System.out.println("(%d, %d)".formatted(t[1], t[2])));
+>   }
+> }
+> ```
+
+`Java 9`의 `Stream.iterate`는 두 번째 인수로 `Predicate`를 지원하므로, 조건에 따라 반복을 중단할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        IntStream.iterate(0, n -> n < 100, n -> n + 4);
+    }
+}
+```
+
+`filter`로도 걸러낼수 있지 않을까? 생각할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        IntStream.iterate(0, n -> n + 4)
+                .filter(n -> n < 100)
+                .forEach(System.out::println);
+    }
+}
+```
+
+하지만 위의 코드는 끊임없이 생성하고, 끊임없이 걸러내는 작업을 하기 때문에 실제로는 끝나지 않는 로직입니다.
+
+`filter`대신 `쇼트서킷`를 지원하는 `takeWhile`을 사용하면 가능합니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        IntStream.iterate(0, n -> n + 4)
+                .takeWhile(n -> n < 100)
+                .forEach(System.out::println);
+    }
+}
+```
+
+#### generate 메서드
+
+`iterate`와 비슷하게 `generate`도 `Infinite Stream`을 만들지만, `iterate`와 달리 생성된 각 값을 연속적으로 계산하지 않는다는 것이 차이점 입니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        DoubleStream.generate(Math::random)
+                .limit(5)
+                .forEach(System.out::println);
+    }
+}
+```
+
+하지만, 억지로 만들려면 만들 수는 있습니다. `Stream.generate`를 사용해서 `피보나치수열`을 만들어 보겠습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        IntSupplier intSupplier = new IntSupplier() {
+            private int prev = 0;
+            private int current = 1;
+
+            @Override
+            public int getAsInt() {
+                int oldPrev = this.prev;
+                int nextValue = this.prev + this.current;
+                this.prev = this.current;
+                this.current = nextValue;
+                return oldPrev;
+            }
+        };
+        IntStream.generate(intSupplier)
+                .limit(5)
+                .forEach(System.out::println);
+    }
+}
+```
+
+위 코드의 `IntSupplier`은 변수에 어떤 피보나치 요소가 들어있는지 추적하므로 `가변 상태 객체`입니다. 즉, `getAsInt`를 호출하면 객체의 상태를 바뀌며 새로운 값을 생성합니다.
+
+`iterate`를 사용했을 때는 기존 상태를 바꾸지 않는 `불변 상태`를 유지했습니다.
+
+> `Stream 병렬 처리`로 올바른 결과를 얻을려면 `불변 상태 기법`을 고수해야 합니다.
+
+## 5.9 마치며
+
+- `Stream API`를 이용하면 복잡한 데이터 처리 질의를 표현할 수 있습니다.
+- `filter`, `distinct`, `takeWhile`, `skip`, `limit` 메소드로 `Stream`을 filtering 하거나 자를 수 있습니다.
+- 소스가 정렬되어 있다는 사실을 알고 있을 때, `takeWhile`과 `dropWhile` 메소드를 효과적으로 사용할 수 있습니다.
+- `map`, `flatMap` 메소드로 `Stream`의 요소를 추출하거나 변환할 수 있습니다.
+- `findFirst`, `findAny` 메소드로 `Stream` 요소를 검색할 수 있습니다.
+- `allMatch`,  `noneMatch`, `anyMatch` 메소드를 이용해서 `Predicate`와 일치하는 요소를 검색할 수 있습니다. `쇼트서킷` 처리가 되어 효율적입니다,
+- `reduce` 메소드로 `Stream`의 모든 요소를 반복 조합하여 값을 도출할 수 있습니다.
+- `filter`, `map`등은 상태를 저장하지 않는 `상태 없는 연산`인 반면, `reduce`, `sorted`, `distinct` 등의 메소드는 새로운 `Stream`을 반환하기에 앞서 모든
+  요소를 `버퍼`에 저정합니다. 이런 메소드를 `상태 있는 연산`이라고 부릅니다.
+- `IntStream`, `DoubleStream`, `LongStream`은 `기본형 특화 Stream`으로 각각의 기본형의 연산에 특화되어 있습니다.
+- `Colleciton` 뿐만 아니라, `Array`, `File`, `Value`, `iterate`, `generate` 같은 메소드로도 `Stream`을 만들 수 있습니다.
+- 무한한 개수의 요소를 가진 `Strema`을 `Infinite Stream`이라고 합니다.
