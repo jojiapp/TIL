@@ -121,3 +121,5 @@
     - [5.8.4 파일로 스트림 만들기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#584-파일로-스트림-만들기)
     - [5.8.5 함수로 무한 스트림 만들기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#585-함수로-무한-스트림-만들기)
 - [5.9 마치며](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_5_스트림_활용.md#59-마치며)
+
+### [Chapter 6. 스트림으로 데이터 수집](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#Chapter-6-스트림으로-데이터-수집)
