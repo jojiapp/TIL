@@ -5,6 +5,7 @@
     - [6.1.2 미리 정의된 컬렉터](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#612-미리-정의된-컬렉터)
 - [6.2 리듀싱과 요약](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#62-리듀싱과-요약)
     - [6.2.1 스트림값에서 최댓값과 최솟값 검색](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#621-스트림값에서-최댓값과-최솟값-검색)
+    - [6.2.2 요약 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#622-요약-연산)
 
 `Java 8`의 `Stream`은 **데이터 집합을 멋지게 처리하는 게으른 반복자**라고 설명할 수 있습니다.
 
@@ -153,3 +154,37 @@ class Foo {
 > `Stream`에 있는 숫자 필드의 `합계`나 `평균` 등을 반환하는 연산에도 `reducing` 기능이 자주 사용됩니다.
 >
 > 이러한 연산을 `요약 (summariztion)` 연산이라 부릅니다.
+
+### 6.2.2 요약 연산
+
+`class Collectors`는 `summingInt`라는 특별한 요약 팩토리 메소드를 제공합니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        int totalCalories = menu.stream().collect(summingInt(Dish::getCalories));
+    }
+}
+```
+
+`summingInt`의 `인수`로 전달된 `함수`는 `객체`를 `int`로 `Mapping`한 `Collector`를 반환하고,
+`collect` 메소드로 전달되면 `요약 작업`을 수행합니다.
+
+`summingLong`와 `summingDobule`는 `long`, `double` 형식의 데이터로 요약한다는 점만 다르고 동작은 동일합니다.
+
+`합계`외에도 `평균`을 구하기 위한 `averagingInt`도 있습니다. (물론 `long`, `double`도 제공)
+
+또한 `개수`, `합계`, `평균`, `최솟값`, `최댓값`을 한 번에 연산해주는 `summarizingInt` 메소드를 제공합니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        IntSummaryStatistics menuStatistics = menu.stream().collect(summarizingInt(Dish::getCalories));
+        System.out.println(menuStatistics);
+        // IntSummaryStatistics{count=9, sum=4300, min=120, average=477.777778, max=800}
+    }
+}
+```
+
+물론, `long`과 `double`에 특화된 `summarizingLong`와 `summarizingDouble` 및 `LongSummaryStatistics`, `DoubleSummaryStatistics`도
+있습니다.
