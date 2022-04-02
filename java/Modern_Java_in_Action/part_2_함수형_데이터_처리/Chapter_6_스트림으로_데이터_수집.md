@@ -2,6 +2,7 @@
 
 - [6.1 컬렉터란 무엇인가?](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#61-컬렉터란-무엇인가)
     - [6.1.1 고급 리듀싱 기능을 수행하는 컬렉터](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#611-고급-리듀싱-기능을-수행하는-컬렉터)
+    - [6.1.2 미리 정의된 컬렉터](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#612-미리-정의된-컬렉터)
 
 `Java 8`의 `Stream`은 **데이터 집합을 멋지게 처리하는 게으른 반복자**라고 설명할 수 있습니다.
 
@@ -85,3 +86,15 @@ class Foo {
 경우 `Dish`의 `type`이 `key`값이 되고, `Dish`가 `value`가 됩니다.
 
 위 처럼, `Collectors` `interface`의 메소드를 어떻게 구현하느냐에 따라 `Stream`에 어떤 `reducing 연산`을 숳ㅇ할 지 결정됩니다.
+
+### 6.1.2 미리 정의된 컬렉터
+
+`Collectors`에서 제공하는 메소드의 기능은 크게 세 가지로 구분할 수 있습니다.
+
+- `Stream` 요소를 하나의 값으로 `reduce`하고 `요약`
+    - `총합`을 찾는 등의 작업을 할 때 유용합니다.
+- `그룹화`
+    - `다수준`으로 `그룹화` 하거나, 각각의 결과를 `서브 그룹`에 추가로 `reducing 연산`을 적용할 수 있습니다.
+- `분할`
+    - `그룹화`의 특별한 연산으로, `Predicate`를 `그룹화 함수`로 사용합니다.
+
