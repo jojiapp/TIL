@@ -1,6 +1,7 @@
 # Chapter 6. 스트림으로 데이터 수집
 
 - [6.1 컬렉터란 무엇인가?](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#61-컬렉터란-무엇인가)
+    - [6.1.1 고급 리듀싱 기능을 수행하는 컬렉터](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#611-고급-리듀싱-기능을-수행하는-컬렉터)
 
 `Java 8`의 `Stream`은 **데이터 집합을 멋지게 처리하는 게으른 반복자**라고 설명할 수 있습니다.
 
@@ -61,3 +62,26 @@ class Foo {
 
 `명령형`의 경우 다중 루프와 조건물을 추가해야 하기 때문에 `가독성`과 `유지보수성`이 크게 떨어지는 반면,
 `함수형`에서는 필요한 `Collector`를 쉽게 추가할 수 있습니다.
+
+### 6.1.1 고급 리듀싱 기능을 수행하는 컬렉터
+
+훌륭하게 설계된 `함수형 API`의 또 다른 장점으로는 높은 수준이 `조합성`과 `재사용성`을 꼽을 수 있습니다.
+
+`collect`에서는 `reducing 연산`을 이용해서 `Stream`의 각 요소를 방문하면서 `Collector`가 작업을 처리합니다.
+
+> `collect`로 결과를 수집하는 과정을 간단하면서도 유연한 방식으로 정의할 수 있다는 점이 `Collector`의 최대 강점입니다.
+
+보통 함수를 요소로 변환 할 때는 `Collector`를 적용하며, 최종 결과를 저장하는 자료구조에 값을 누적합니다.
+
+```java
+class Foo {
+    private static Map<Dish.Type, List<Dish>> groupDishesByType() {
+        return menu.stream().collect(Collectors.groupingBy(Dish::getType));
+    }
+}
+```
+
+예를 들어 `groupingBy`을 이용하면, `특정 필드`를 기준으로 `그룹화`를 하면, `key`값으로 `그룹화`에 사용한 `특정 필드`가, `value`에 해당 데이터가 들어간 `Map`을 반환합니다. 위의
+경우 `Dish`의 `type`이 `key`값이 되고, `Dish`가 `value`가 됩니다.
+
+위 처럼, `Collectors` `interface`의 메소드를 어떻게 구현하느냐에 따라 `Stream`에 어떤 `reducing 연산`을 숳ㅇ할 지 결정됩니다.
