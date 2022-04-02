@@ -3,6 +3,8 @@
 - [6.1 컬렉터란 무엇인가?](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#61-컬렉터란-무엇인가)
     - [6.1.1 고급 리듀싱 기능을 수행하는 컬렉터](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#611-고급-리듀싱-기능을-수행하는-컬렉터)
     - [6.1.2 미리 정의된 컬렉터](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#612-미리-정의된-컬렉터)
+- [6.2 리듀싱과 요약](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#62-리듀싱과-요약)
+    - [6.2.1 스트림값에서 최댓값과 최솟값 검색](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#621-스트림값에서-최댓값과-최솟값-검색)
 
 `Java 8`의 `Stream`은 **데이터 집합을 멋지게 처리하는 게으른 반복자**라고 설명할 수 있습니다.
 
@@ -98,3 +100,56 @@ class Foo {
 - `분할`
     - `그룹화`의 특별한 연산으로, `Predicate`를 `그룹화 함수`로 사용합니다.
 
+## 6.2 리듀싱과 요약
+
+`Collector`로 `Stream`의 모든 항목을 하나의 결과로 함칠 수 있습니다.
+
+트리를 구성하는 다수준 `Map`, 메뉴의 칼로리 합계를 가리키는 `단순한 정수` 등 다양한 형식으로 결과가 도출 될 수 있습니다.
+
+예를 들어, 메뉴의 전체 개수를 알고 싶다면 아래와 같이 작성할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        menu.stream().collect(Collectors.counting());
+    }
+}
+```
+
+아래처럼 불필요한 과정을 생략하여 더 간단하게 작성할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        menu.stream().count();
+    }
+}
+```
+
+### 6.2.1 스트림값에서 최댓값과 최솟값 검색
+
+`Collectors.maxBy`와 `Collectors.minBy`를 통해 `최댓값`과 `최솟값`을 구할 수 있습니다. 두 `Collector`는 `Comparator`를 인자로 받아 계산을 수행합니다.
+
+예를 들어, 메뉴에서 칼로리가 가장 높은 요리를 찾는다고 하면 아래와 같이 작성할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Optional<Dish> mostCalorieDish = menu
+                .stream()
+                .collect(maxBy(Comparator.comparingInt(Dish::getCalories)));
+
+        // 더 간단하게 작성
+        menu.stream().max(Comparator.comparingInt(Dish::getCalories));
+
+    }
+}
+```
+
+특이한 점은 `Optional`을 반환한다는 점입니다.
+
+만약, 요소가 하나도 반환할 값이 없기 떄문에 `Optional`로 감싸져서 반환되는 것입니다.
+
+> `Stream`에 있는 숫자 필드의 `합계`나 `평균` 등을 반환하는 연산에도 `reducing` 기능이 자주 사용됩니다.
+>
+> 이러한 연산을 `요약 (summariztion)` 연산이라 부릅니다.
