@@ -6,6 +6,7 @@
 - [6.2 리듀싱과 요약](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#62-리듀싱과-요약)
     - [6.2.1 스트림값에서 최댓값과 최솟값 검색](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#621-스트림값에서-최댓값과-최솟값-검색)
     - [6.2.2 요약 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#622-요약-연산)
+    - [6.2.3 문자열 연결](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#623-문자열-연결)
 
 `Java 8`의 `Stream`은 **데이터 집합을 멋지게 처리하는 게으른 반복자**라고 설명할 수 있습니다.
 
@@ -188,3 +189,40 @@ class Foo {
 
 물론, `long`과 `double`에 특화된 `summarizingLong`와 `summarizingDouble` 및 `LongSummaryStatistics`, `DoubleSummaryStatistics`도
 있습니다.
+
+### 6.2.3 문자열 연결
+
+`Collector`의 `joining` 팩토리 메소드를 이용하면 ~~각 객체의`toString`을 호출~~ 하여 추출한 모든 문자열을 하나의 문자열로 연결해서 반환합니다.
+
+`joining` 메소드는 내부적으로 `StringBuilder`를 이용해서 문자열을 하나로 만듭니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        String shortMenu = menu.stream().map(Dish::getName).collect(joining());
+    }
+}
+```
+
+위는 메뉴의 모든 요리 이름을 연결하여 한줄로 출력하는 로직입니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        String shortMenu1 = menu.stream().collect(joining()); // 불가능
+        String shortMenu2 = menu.stream().map(Dish::toString).collect(joining()); // 가능
+    }
+}
+```
+
+면호출 하지 않으므로 `joining`전에 `String`형식으로 변환 작업을 해주어야 합니다.
+
+`구분자`를 넣고 싶다면 `joining(", ")`와 같은 형식으로 넣어줄 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        String shortMenu = menu.stream().map(Dish::toString).collect(joining(", "));
+    }
+}
+```
