@@ -9,6 +9,7 @@
     - [6.2.3 문자열 연결](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#623-문자열-연결)
     - [6.2.4 범용 리듀싱 요약 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#624-범용-리듀싱-요약-연산)
 - [6.3 그룹화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#63-그룹화)
+    - [6.3.1 그룹화된 요소 조작](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#631-그룹화된-요소-조작)
 
 `Java 8`의 `Stream`은 **데이터 집합을 멋지게 처리하는 게으른 반복자**라고 설명할 수 있습니다.
 
@@ -415,6 +416,59 @@ class Foo {
                         }
                 )
         );
+    }
+}
+```
+
+### 6.3.1 그룹화된 요소 조작
+
+500칼로리가 넘는 요리만 `filter`한다고 했을 때, 아래처럼 작성할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Map<Dish.Type, List<Dish>> caloricDishesByType = menu.stream()
+                .filter(dish -> dish.getCalories() > 500)
+                .collect(groupingBy(Dish::getType));
+
+        // {OTHER=[french fries, pizza], MEAT=[pork, beef]}
+    }
+}
+```
+
+하지만, 위의 로직의 경우 `filter`를 먼저 하기 때문에, 특정 타입이 하나도 500칼로리를 넘지 않는다면 `grouping`될 때 제외가 되어버립니다.
+
+이 문제를 해결하기 위해 `Collector`은 두 번째 인수를 갖도록 `groupingBy` 메소드를 `override`하여 제공합니다. 두 번째 인수로 `filter Predicate`를 이동시킴으로써 위의
+문제를 해결할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Map<Dish.Type, List<Dish>> caloricDishesByType2 = menu.stream()
+                .collect(
+                        groupingBy(
+                                Dish::getType,
+                                filtering(dish -> dish.getCalories() > 500, toList())
+                        )
+                );
+
+        // {OTHER=[french fries, pizza], FISH=[], MEAT=[pork, beef]}
+    }
+}
+```
+
+만약 `Dish`대신 다른 값으로 변환하고 싶다면 `mapping`함수를 사용할 수 있습니다. `flatMapping`도 지원합니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Map<Dish.Type, List<String>> dishNamesByType = menu.stream()
+                .collect(
+                        groupingBy(
+                                Dish::getType,
+                                mapping(Dish::getName, toList())
+                        )
+                );
     }
 }
 ```
