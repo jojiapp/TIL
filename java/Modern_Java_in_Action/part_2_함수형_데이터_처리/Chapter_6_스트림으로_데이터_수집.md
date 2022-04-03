@@ -11,6 +11,7 @@
 - [6.3 그룹화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#63-그룹화)
     - [6.3.1 그룹화된 요소 조작](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#631-그룹화된-요소-조작)
     - [6.3.2 다수준 그룹화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#632-다수준-그룹화)
+    - [6.3.3 서브그룹으로 데이터 수집](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#633-서브그룹으로-데이터-수집)
 
 `Java 8`의 `Stream`은 **데이터 집합을 멋지게 처리하는 게으른 반복자**라고 설명할 수 있습니다.
 
@@ -500,3 +501,141 @@ class Foo {
 
 위의 예제는 두 수준으로 구현했지만, 계속 해서 `groupingBy`를 사용함으로 `n 수준 트리구조`로 구현할 수 있습니다.
 
+### 6.3.3 서브그룹으로 데이터 수집
+
+`분류 함수` 한 개의 인수를 갖는 `groupingBy(f)`는 `grouping(f, toList())`의 축약형 입니다.
+
+즉, `filter`, `mapping`, `groupingBy` 외에도 다양한 `Collector`를 적용할 수 있습니다.
+
+- `Dish.Type` 별 **개수**
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Map<Dish.Type, Long> typesCount = menu.stream()
+                .collect(
+                        groupingBy(
+                                Dish::getType,
+                                counting()
+                        )
+                );
+    }
+}
+```
+
+- `Dish.Type` 중 **칼로리가 가장 높은 요리**
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Map<Dish.Type, Optional<Dish>> mostCaloricByType = menu.stream()
+                .collect(
+                        groupingBy(
+                                Dish::getType,
+                                maxBy(comparingInt(Dish::getCalories))
+                        )
+                );
+    }
+}
+```
+
+#### 컬렉터 결과를 다른 형식에 적용하기
+
+`Colletors.colletingAndThen` 팩토리 메소드를 이용하면 `Collector`가 반환한 결과를 다른 형식으로 변환할 수 있습니다.
+
+다음처럼 위의 예제에서 칼로리가 가장 높은 요리의 경우 `Optional`로 감싸져있는데 모두 `Optional`에서 꺼낸 값을 반환받도록 할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Map<Dish.Type, Dish> mostCaloricByType2 = menu.stream()
+                .collect(
+                        groupingBy(
+                                Dish::getType,
+                                collectingAndThen(
+                                        maxBy(comparingInt(Dish::getCalories)),
+                                        Optional::get
+                                )
+                        )
+                );
+    }
+}
+```
+
+`cpllectingAndThen` 메소드는 적용할 `Collector`와 `변환 함수`를 인수로 받아 다른 `Collector`를 반환합니다. 반환되는 `Collector`는 기존`Collector`의 래퍼 역할을
+하며 `collect` 마지막 과정에서 `변환 함수`로 자신이 반환하는 값을 `매핑`합니다.
+
+> `reducing Collectr`는 절대 `Optional.empty()`를 반환하지 않으므로 위의 로직은 안전한 로직입니다.
+
+- `groupingBy`는 요리의 종류에 따라 메뉴 `Stream`을 `그룹화` 합니다.
+- `collectingAndThen` 메소드는 위에서 `그룹화` 된 `서브스트림`에 적용됩니다.
+- `collectingAndThen` `Collector`는 세 번째 `Collector`를 감쌉니다.
+- `reducing Collector`가 `서브스트림`에 연산을 수행한 결과에 `collectingAndThen`의 `반환 함수`를 적용합니다.
+
+#### groupingBy와 함께 사용하는 다른 컬렉터 예제
+
+- `summingInt`를 활용한 그룹별 총 합계
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Map<Dish.Type, Integer> totalCaloriesByType = menu.stream()
+                .collect(
+                        groupingBy(
+                                Dish::getType,
+                                summingInt(Dish::getCalories)
+                        )
+                );
+    }
+}
+```
+
+- `mapping`
+
+`mapping`은 `Stream` 인수를 `변환하는 함수`와 결과 객체를 누적하는 `Collector`를 인수로 받습니다.
+
+아래는 각 `Type` 별로 존재하는 `CaloricLevel`을 추출하는 로직입니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Map<Dish.Type, Set<CaloricLevel>> caloricLevelsByType = menu.stream()
+                .collect(
+                        groupingBy(
+                                Dish::getType,
+                                mapping(
+                                        dish -> {
+                                            if (dish.getCalories() <= 400) return CaloricLevel.DIET;
+                                            else if (dish.getCalories() <= 700) return CaloricLevel.NORMAL;
+                                            else return CaloricLevel.FAT;
+                                        },
+                                        toSet()
+                                )
+                        )
+                );
+    }
+}
+```
+
+위의 예제에서는 `Set`의 형식이 정해져있지 않습니다. `toCollection`을 이용하면 원하는 방식으로 결과를 제어할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Map<Dish.Type, Set<CaloricLevel>> caloricLevelsByType2 = menu.stream()
+                .collect(
+                        groupingBy(
+                                Dish::getType,
+                                mapping(
+                                        dish -> {
+                                            if (dish.getCalories() <= 400) return CaloricLevel.DIET;
+                                            else if (dish.getCalories() <= 700) return CaloricLevel.NORMAL;
+                                            else return CaloricLevel.FAT;
+                                        },
+                                        toCollection(HashSet::new)
+                                )
+                        )
+                );
+    }
+}
+```
