@@ -10,6 +10,7 @@
     - [6.2.4 범용 리듀싱 요약 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#624-범용-리듀싱-요약-연산)
 - [6.3 그룹화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#63-그룹화)
     - [6.3.1 그룹화된 요소 조작](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#631-그룹화된-요소-조작)
+    - [6.3.2 다수준 그룹화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#632-다수준-그룹화)
 
 `Java 8`의 `Stream`은 **데이터 집합을 멋지게 처리하는 게으른 반복자**라고 설명할 수 있습니다.
 
@@ -472,4 +473,30 @@ class Foo {
     }
 }
 ```
+
+### 6.3.2 다수준 그룹화
+
+두 인수를 받는 `groupingBy` 메소드는 일반적인 `분류 함수`와 `Collector`를 인수로 받아 `다수준`으로 `그룹화`를 할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Map<Dish.Type, Map<CaloricLevel, List<Dish>>> dishesByTypeCaloricLevel = menu.stream()
+                .collect(
+                        groupingBy(
+                                Dish::getType,
+                                groupingBy(
+                                        dish -> {
+                                            if (dish.getCalories() <= 400) return CaloricLevel.DIET;
+                                            else if (dish.getCalories() <= 700) return CaloricLevel.NORMAL;
+                                            else return CaloricLevel.FAT;
+                                        }
+                                )
+                        )
+                );
+    }
+}
+```
+
+위의 예제는 두 수준으로 구현했지만, 계속 해서 `groupingBy`를 사용함으로 `n 수준 트리구조`로 구현할 수 있습니다.
 
