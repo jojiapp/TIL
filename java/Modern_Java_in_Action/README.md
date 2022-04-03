@@ -131,3 +131,4 @@
     - [6.2.1 스트림값에서 최댓값과 최솟값 검색](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#621-스트림값에서-최댓값과-최솟값-검색)
     - [6.2.2 요약 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#622-요약-연산)
     - [6.2.3 문자열 연결](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#623-문자열-연결)
+    - [6.2.4 범용 리듀싱 요약 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#624-범용-리듀싱-요약-연산)
