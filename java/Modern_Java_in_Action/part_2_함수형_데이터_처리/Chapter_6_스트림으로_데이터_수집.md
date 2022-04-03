@@ -15,6 +15,8 @@
 - [6.4 분할](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#64-분할)
     - [6.4.1 분할의 장점](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#641-분할의-장점)
     - [6.4.2 숫자를 소수와 비소수로 분할하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#642-숫자를-소수와-비소수로-분할하기)
+- [6.5 Collector 인터페이스](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#65-Collector-인터페이스)
+    - [6.5.1 Collector 인터페이스의 메서드 살펴보기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#651-Collector-인터페이스의-메서드-살펴보기)
 
 `Java 8`의 `Stream`은 **데이터 집합을 멋지게 처리하는 게으른 반복자**라고 설명할 수 있습니다.
 
@@ -731,3 +733,136 @@ class Partitioning {
     }
 }
 ```
+
+## 6.5 Collector 인터페이스
+
+`interface Collector` 는 `reducing 연산 (Collector)`을 어떻게 구현할지 제공하는 메소드 집합으로 구성 되어있습니다.
+
+`interface Collector`의 시그니처와 5개의 메소드는 아래와 같습니다.
+
+```java
+class Collector {
+    Supplier<A> supplier();
+
+    BiConsumer<A, T> accumulator();
+
+    BinaryOperator<A> combiner();
+
+    Function<A, R> finisher();
+
+    Set<Characteristics> characteristics();
+}
+```
+
+- `T`: 수집될 `Stream` 항목의 제네릭 형식
+- `A`: 누적자
+- `R`: 수집 연산 결과 객체의 형식 (대개 `Collection` 형식)
+
+예를 들어 `Stream`의 모든 요소를 `List<T>`로 수집하는 클래스를 구현한다면 아래와 같이 할 수 있습니다.
+
+```java
+public class ToListCollector<T> implements Collector<T, List<T>, List<T>> {}
+```
+
+누적 과정에서 사용되는 객체가 수집 과정의 최종 결과로 사용됩니다.
+
+### 6.5.1 Collector 인터페이스의 메서드 살펴보기
+
+`Supplier`, `BiConsumer`, `BinaryOperator`, `Function`는 `collect`에서 사용되는 반면,
+`characteristics`는 `collect`가 어떤 최적화를 이용해서 `reducing 연산`을 수행할 것인지 결정하도록 돕는 `힌트 특성 집합`을 제공합니다.
+
+#### supplier 메서드 : 새로운 결과 컨테이너 만들기
+
+`snipplier` 메소드는 수집 과정에서 빈 누적자 인스턴스를 만드는 파라미터가 없는 함수이기 때문에 빈 결과로 이루어진 `Supplier`를 반환해야 합니다.
+
+`ToListCollector`처럼 누적자를 반환하는 `Collector`에서는 `빈 누적자`가 비어있는 `Stream`의 수집 과정의 결과가 될 수 있습ㅂ니다.
+
+```java
+public class ToListCollector<T> implements Collector<T, List<T>, List<T>> {
+    @Override
+    public Supplier<List<T>> supplier() {
+        return ArrayList::new;
+    }
+}
+```
+
+#### accumulator 메서드 : 결과 컨테이너에 요소 추가하기
+
+`accumulator` 메소드는 `reducing 연산`을 수행하는 함수를 반환합니다.
+
+```java
+public class ToListCollector<T> implements Collector<T, List<T>, List<T>> {
+    @Override
+    public BiConsumer<List<T>, T> accumulator() {
+        return List::add;
+    }
+}
+```
+
+#### finisher 메서드 : 최종 변환값을 결과 컨테이너로 적용하기
+
+`finisher` 메소드는 `Stream` 탐색을 끝내고 누적자 객체를 최종 결과로 변환하면서 누적 과정을 끝낼 때 호출할 함수를 반환해야 합니다.
+
+`ToListCollector` 처럼 누적자 객체가 이미 최종 `결과인 상황`에서는 변환 과정이 필요하지 않으므로 `finisher` 메소드는 `항등 함수`를 반환합니다.
+
+```java
+public class ToListCollector<T> implements Collector<T, List<T>, List<T>> {
+    @Override
+    public Function<List<T>, List<T>> finisher() {
+        return Function.identity;
+    }
+}
+```
+
+위의 세 가지 메소드를 통해 `reducing 연산`을 만들 수 있습니다. (단, `파이프라인`과 `병렬 실행` 등은 고려하지 않음)
+
+1. `collector.suppliter().get()`
+2. `collector.accumulator().accpet(accumlator, next)`
+3. `Stream`에 요소가 남아 있다면 다시 2번 진행
+4. `collector.finisher().apply(accumulator)`
+5. 결과 `return`
+
+#### combiner 메소드 : 두 결과 컨테이너 병합
+
+`combiner` 메소드는 `Stream`의 서로 다른 `서브파트`를 `병렬`로 처리할 때 누적자가 이 결과를 어떻게 처리할지 정의합니다.
+
+`toList`의 경우 비교적 쉽게 구현할 수 있습니다. `Stream`의 `두 번째 서브파트`에서 수집한 항목 리스트를 `첫 번쨰 서브파트` 결과 리스트의 뒤에 추가 하면 됩니다.
+
+```java
+public class ToListCollector<T> implements Collector<T, List<T>, List<T>> {
+    @Override
+    public BinaryOperator<List<T>> combiner() {
+        return (list1, list2) -> {
+            list1.addAll(list2);
+            return list1;
+        };
+    }
+}
+```
+
+이를 이용하면 `Stream`의 `reducing`을 `병렬`로 수행할 수 있습니다.
+
+- `Stream`을 분할해야 하는지 정의하는 조건이 `false`으로 바뀌기 전까지 재쉬적으로 분할합니다.
+  (분산된 작업의 크기가 너무 작아지면 병렬 수행의 속도는 순차 수행의 속도 보다 낮아지므로, `프로세싱 코어`의 `개수`를 초과하는 병렬 작업은 효율적이지 않습니다.)
+- 모든 서브스트림의 각 요소에 `reduceing 연산`을 순차적으로 적용해서 서브스트림을 `병렬`로 처리할 수 있습니다.
+- 마지막으로 `combiner` 메소드가 분할된 모든 서브스트림의 결과를 합치면서 연산이 완료됩니다.
+
+#### Characteristics 메소드
+
+`characteristics` 메소드는 `Collector` 연산을 정의하는 `Characteristics` 형식의 `불변 집합`을 반환합니다.
+
+`Characteristics`는 `Stream`을 `병렬`로 `reduce`할 것인지, 한다면 어떤 `최적화`를 선택할지 `힌트`를 제공합니다.
+
+```java
+enum Characteristics {
+    CONCURRENT,
+    UNORDERED,
+    IDENTITY_FINISH
+}
+```
+
+- `UNORDERED`: `reducing` 결과는 `Stream` 요소의 방문 순서나 누적 순서에 영향을 받지 않음
+- `CONCURRENT`: `다중 Thread`에서 `accumlator` 함수를 동시에 호출할 수 있으며, `Stream`의 `병렬 reducing`을 수행할 수 있음
+  `Collector`의 플래그에 `UNORDERED`를 함께 설정하지 않았다면, `데이터 순서가 무의미`한 상황에서만 `병렬 reducing`을 수행할 수 있습니다.
+- `IDENTITY_FINISH`: `finisher` 메소드가 반환하는 함수는 단순히 `identity`를 적용할 뿐이므로 생략할 수 있습니다. 따라서 `reducing 과정`의 `최종 결과`로 `누적자 객체`를
+  바로 사용할 수 있으며, `누적자 A`를 `결과 R`로 안전하게 형변환할 수 있습니다.
