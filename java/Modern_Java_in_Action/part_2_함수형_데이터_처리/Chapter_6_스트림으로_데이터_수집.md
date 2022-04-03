@@ -12,6 +12,7 @@
     - [6.3.1 그룹화된 요소 조작](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#631-그룹화된-요소-조작)
     - [6.3.2 다수준 그룹화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#632-다수준-그룹화)
     - [6.3.3 서브그룹으로 데이터 수집](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#633-서브그룹으로-데이터-수집)
+- [6.4 분할](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#64-분할)
 
 `Java 8`의 `Stream`은 **데이터 집합을 멋지게 처리하는 게으른 반복자**라고 설명할 수 있습니다.
 
@@ -639,3 +640,28 @@ class Foo {
     }
 }
 ```
+
+## 6.4 분할
+
+`분할`은 `분할 함수`라 불리는 `Predicate`를 `분류 함수`로 사용하는 특수한 `그룹화` 기능입니다.
+
+`Predicate`는 `boolean`을 반환하므로 `Map`은 최대 두 개의 그룹으로 분류됩니다.
+
+예를 들어, 모든 요리를 채식 요리와 채식이 아닌 요리로 분류한다고 하면 아래와 같이 작성할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Map<Boolean, List<Dish>> partitionedMenu = menu.stream()
+                .collect(
+                        partitioningBy(
+                                Dish::isVegetarian
+                        )
+                );
+
+        partitionedMenu.get(true); // 모든 채식 요리
+        partitionedMenu.get(false); // 모든 채식이 아닌 요리
+    }
+}
+```
+
