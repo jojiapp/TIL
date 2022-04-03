@@ -8,6 +8,7 @@
     - [6.2.2 요약 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#622-요약-연산)
     - [6.2.3 문자열 연결](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#623-문자열-연결)
     - [6.2.4 범용 리듀싱 요약 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#624-범용-리듀싱-요약-연산)
+- [6.3 그룹화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#63-그룹화)
 
 `Java 8`의 `Stream`은 **데이터 집합을 멋지게 처리하는 게으른 반복자**라고 설명할 수 있습니다.
 
@@ -382,3 +383,39 @@ class Foo {
     }
 }
 ```
+
+## 6.3 그룹화
+
+데이터 집합을 하나 이상의 특성으로 분류해서 `그룹화`하는 연산도 `DB`에서 많이 수행되는 작업입니다.
+
+`명령형`으로 `그룹화`를 구현하면 까다롭고, 할일이 많으며, 에러도 많이 발생하는 반면,
+`함수형`을 이용하면 `가독성` 있는 한 줄의 코드로 `그룹화`를 구현할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Map<Dish.Type, List<Dish>> dishesByType = menu.stream().collect(groupingBy(Dish::getType));
+    }
+}
+```
+
+`Dish.Type`과 일치하는 모든 요리를 추출하는 함수를 `groupingBy` 메소드로 전달했습니다. 이 함수를 기준으로 `그룹화`되므로 이를 `분류 함수`라고 합니다.
+
+예를 들어, 400칼로리 이하는 `diet`, 400 ~ 700칼로리는 `normal`, 700칼로리 이상은 `fat`로 분류한다고 하면 아래처럼 작성할 수 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Map<CaloricLevel, List<Dish>> dishesByCaloricLevel = menu.stream().collect(
+                groupingBy(
+                        dish -> {
+                            if (dish.getCalories() <= 400) return CaloricLevel.DIET;
+                            else if (dish.getCalories() <= 700) return CaloricLevel.NORMAL;
+                            else return CaloricLevel.FAT;
+                        }
+                )
+        );
+    }
+}
+```
+
