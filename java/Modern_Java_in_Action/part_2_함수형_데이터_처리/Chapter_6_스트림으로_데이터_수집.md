@@ -13,6 +13,8 @@
     - [6.3.2 다수준 그룹화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#632-다수준-그룹화)
     - [6.3.3 서브그룹으로 데이터 수집](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#633-서브그룹으로-데이터-수집)
 - [6.4 분할](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#64-분할)
+    - [6.4.1 분할의 장점](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#641-분할의-장점)
+    - [6.4.2 숫자를 소수와 비소수로 분할하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#642-숫자를-소수와-비소수로-분할하기)
 
 `Java 8`의 `Stream`은 **데이터 집합을 멋지게 처리하는 게으른 반복자**라고 설명할 수 있습니다.
 
@@ -665,3 +667,67 @@ class Foo {
 }
 ```
 
+### 6.4.1 분할의 장점
+
+`분할 함수`가 반환하는 `true`, `false` 두 가지 요소의 `Stream` 리스트를 모두 유지한다는 것이 분할의 장점입니다.
+
+또한, `Collector`를 두 번째 인수로 전달할 수 있는 `override`된 `partitioningBy` 메소드도 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Map<Boolean, Map<Dish.Type, List<Dish>>> vegetarianDishesByType = menu.stream()
+                .collect(
+                        partitioningBy(
+                                Dish::isVegetarian,
+                                groupingBy(Dish::getType)
+                        )
+                );
+        // {false={FISH=[prawns, salmon], MEAT=[pork, beef, chicken]}, true={OTHER=[french fries, rice, season fruit, pizza]}}
+    }
+}
+```
+
+이를 응용하여 채식 요리와 채식이 아닌 요리 중 가장 칼로리가 높은 요리만 추출할 수도 있습니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        Map<Boolean, Dish> mostCaloricPartitionedByVegetarian = menu.stream()
+                .collect(
+                        partitioningBy(
+                                Dish::isVegetarian,
+                                collectingAndThen(
+                                        maxBy(comparingInt(Dish::getCalories)),
+                                        Optional::get
+                                )
+                        )
+                );
+        // {false=pork, true=pizza}
+    }
+}
+```
+
+`partitioningBy`가 반환한 `Map`은 `true`, `false`만 포함하므로 간결하고 효과적입니다. 내부적으로는 `특수한 Map`과 두 개의 `필드`로 구현되었습니다.
+
+`groupingBy`에서 다수준으로 `그룹화` 했던 것처럼 `partitioningBy`로 다수준 `분할`도 가능합니다.
+
+### 6.4.2 숫자를 소수와 비소수로 분할하기
+
+정수 `n`을 인수로 받아서 `2`에서 `n`까지의 자연수를 `소수`와 `비소수`로 나눠보겠습니다.
+
+```java
+class Partitioning {
+    public static void main(String[] args) {
+        int n = 10000;
+        Map<Boolean, List<Integer>> partitionPrimes = IntStream.rangeClosed(2, n)
+                .boxed()
+                .collect(partitioningBy(Partitioning::isPrime));
+    }
+
+    public static boolean isPrime(int candidate) {
+        return IntStream.rangeClosed(2, (int) Math.sqrt(candidate))
+                .noneMatch(n -> candidate % n == 0);
+    }
+}
+```
