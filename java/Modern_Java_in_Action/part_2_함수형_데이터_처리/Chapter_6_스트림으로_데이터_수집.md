@@ -17,7 +17,7 @@
     - [6.4.2 숫자를 소수와 비소수로 분할하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#642-숫자를-소수와-비소수로-분할하기)
 - [6.5 Collector 인터페이스](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#65-Collector-인터페이스)
     - [6.5.1 Collector 인터페이스의 메서드 살펴보기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#651-Collector-인터페이스의-메서드-살펴보기)
-    - [6.5.2 응용하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#652-응용하기)
+- [6.6 커스텀 컬렉터를 구현해서 성능 개선하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#66-커스텀-컬렉터를-구현해서-성능-개선하기)
 
 `Java 8`의 `Stream`은 **데이터 집합을 멋지게 처리하는 게으른 반복자**라고 설명할 수 있습니다.
 
@@ -927,7 +927,6 @@ class Foo {
 `Stream`은 세 함수 (`발행`, `누적`, `합침`)를 인수로 받는 `collect` 메소드를 `Override`하며 각각의 메소드는 `Collector` 인터페이스의 메소드가 반환하는 함수와 같은 기능을
 수행합니다.
 
-
 ```java
 class Foo {
     public static void main(String[] args) {
@@ -940,8 +939,30 @@ class Foo {
 }
 ```
 
-위의 코드는 `간결`하지만, 기존의 코드에 비해 `가독성`이 떨어집니다. 
-적절한 `class`로 `Custom class`를 구현하는 편이 `중복`을 피하고 `재사용성`을 높이는데 도움이 됩니다.
+위의 코드는 `간결`하지만, 기존의 코드에 비해 `가독성`이 떨어집니다. 적절한 `class`로 `Custom class`를 구현하는 편이 `중복`을 피하고 `재사용성`을 높이는데 도움이 됩니다.
 
 또한, `Characteristics`를 전달할 수 없기 때문에 `IDENTITY_FINISH`와 `CONCURRENT`이지만 `UNORDERED`는 아닌 `Collector`로만 동작합니다.
+
+## 6.6 커스텀 컬렉터를 구현해서 성능 개선하기
+
+앞서 `Collectors` 클래스가 제공하는 팩토리 메소드 중 하나를 이용해서 `Custom Collector`를 만들어 자연수 `n`까지를 `소수`와 `비소수`로 `분할` 했었습니다.
+
+```java
+class Foo {
+    public Map<Boolean, List<Integer>> partitionPrimes(int n) {
+        return IntStream.range(2, n).boxed()
+                .collect(partitioningBy(candidate -> isPrime(candidate)));
+    }
+
+    public boolean isPrime(int candidate) {
+        int candidateRoot = (int) Math.sqrt(candidate);
+        return IntStream.rangeClosed(2, candidateRoot)
+                .noneMatch(i -> candidate % i == 0);
+    }
+}
+```
+
+이후, `isPrime` 메소드에서 `제곱근`이하로 대상을 제한하여 개선하였습니다.
+
+여기서 `Custom Collector`을 이용하면 성능을 더 개선할 수 있습니다.
 
