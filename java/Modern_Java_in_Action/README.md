@@ -141,3 +141,4 @@
     - [6.4.2 숫자를 소수와 비소수로 분할하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#642-숫자를-소수와-비소수로-분할하기)
 - [6.5 Collector 인터페이스](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#65-Collector-인터페이스)
     - [6.5.1 Collector 인터페이스의 메서드 살펴보기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#651-Collector-인터페이스의-메서드-살펴보기)
+    - [6.5.2 응용하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#652-응용하기)

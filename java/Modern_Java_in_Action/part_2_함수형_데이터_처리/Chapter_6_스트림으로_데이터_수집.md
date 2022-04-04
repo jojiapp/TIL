@@ -17,6 +17,7 @@
     - [6.4.2 숫자를 소수와 비소수로 분할하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#642-숫자를-소수와-비소수로-분할하기)
 - [6.5 Collector 인터페이스](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#65-Collector-인터페이스)
     - [6.5.1 Collector 인터페이스의 메서드 살펴보기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#651-Collector-인터페이스의-메서드-살펴보기)
+    - [6.5.2 응용하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#652-응용하기)
 
 `Java 8`의 `Stream`은 **데이터 집합을 멋지게 처리하는 게으른 반복자**라고 설명할 수 있습니다.
 
@@ -866,3 +867,81 @@ enum Characteristics {
   `Collector`의 플래그에 `UNORDERED`를 함께 설정하지 않았다면, `데이터 순서가 무의미`한 상황에서만 `병렬 reducing`을 수행할 수 있습니다.
 - `IDENTITY_FINISH`: `finisher` 메소드가 반환하는 함수는 단순히 `identity`를 적용할 뿐이므로 생략할 수 있습니다. 따라서 `reducing 과정`의 `최종 결과`로 `누적자 객체`를
   바로 사용할 수 있으며, `누적자 A`를 `결과 R`로 안전하게 형변환할 수 있습니다.
+
+### 6.5.2 응용하기
+
+위에서 공부한 내용을 바탕으로 `ToListCollector`을 만들어보면 아래와 같습니다.
+
+```java
+public class ToListCollector<T> implements Collector<T, List<T>, List<T>> {
+
+    @Override
+    public Supplier<List<T>> supplier() {
+        return ArrayList::new; // 수집 연산의 시발점
+    }
+
+    @Override
+    public BiConsumer<List<T>, T> accumulator() {
+        return List::add; // 탐색한 항목을 누적하고 바로 누적자를 수정
+    }
+
+    @Override
+    public Function<List<T>, List<T>> finisher() {
+        return Function.identity(); // 항등 함수
+    }
+
+    @Override
+    public BinaryOperator<List<T>> combiner() {
+        return (list1, list2) -> {
+            list1.addAll(list2); // 두 번째 콘텐츠아 합쳐서 첫 번째 누적자를 수정
+            return list1; // 변경된 첫 번째 누적자를 반환
+        };
+    }
+
+    @Override
+    public Set<Characteristics> characteristics() {
+        return Collections.unmodifiableSet(EnumSet.of(IDENTITY_FINISH, CONCURRENT));
+        // 컬렉터의 플래그를 IDENTITY_FINISH, CONCURRENT로 설정
+    }
+
+}
+```
+
+`Collectors.toList`와 사소한 최적화를 제외하면 대체로 비슷한 로직입니다.
+
+차이점은 `toList`는 `팩토리 메소드`인 반면, `ToListCollector`은 `new` 키워드를 통해 `인스턴스화` 한다는 점입니다.
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        List<Dish> dishes1 = menu.stream().collect(new ToListCollector<>());
+        List<Dish> dishes2 = menu.stream().collect(Collectors.toList());
+    }
+}
+```
+
+#### 컬렉터 구현을 만들지 않고도 커스텀 수집 수행하기
+
+`IDENTITY_FINISH` 수집 연산에서는 `Collector` 인터페이스를 새로 구현하지 않고도 같은 결과를 만들 수 있습니다.
+
+`Stream`은 세 함수 (`발행`, `누적`, `합침`)를 인수로 받는 `collect` 메소드를 `Override`하며 각각의 메소드는 `Collector` 인터페이스의 메소드가 반환하는 함수와 같은 기능을
+수행합니다.
+
+
+```java
+class Foo {
+    public static void main(String[] args) {
+        ArrayList<Object> dishes3 = menu.stream().collect(
+                ArrayList::new,
+                List::add,
+                List::addAll
+        );
+    }
+}
+```
+
+위의 코드는 `간결`하지만, 기존의 코드에 비해 `가독성`이 떨어집니다. 
+적절한 `class`로 `Custom class`를 구현하는 편이 `중복`을 피하고 `재사용성`을 높이는데 도움이 됩니다.
+
+또한, `Characteristics`를 전달할 수 없기 때문에 `IDENTITY_FINISH`와 `CONCURRENT`이지만 `UNORDERED`는 아닌 `Collector`로만 동작합니다.
+
