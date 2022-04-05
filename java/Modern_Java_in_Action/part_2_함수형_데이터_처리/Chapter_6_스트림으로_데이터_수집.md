@@ -18,6 +18,7 @@
 - [6.5 Collector 인터페이스](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#65-Collector-인터페이스)
     - [6.5.1 Collector 인터페이스의 메서드 살펴보기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#651-Collector-인터페이스의-메서드-살펴보기)
 - [6.6 커스텀 컬렉터를 구현해서 성능 개선하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#66-커스텀-컬렉터를-구현해서-성능-개선하기)
+    - [6.6.1 소수로만 나누기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#661-소수로만-나누기)
 
 `Java 8`의 `Stream`은 **데이터 집합을 멋지게 처리하는 게으른 반복자**라고 설명할 수 있습니다.
 
@@ -966,3 +967,40 @@ class Foo {
 
 여기서 `Custom Collector`을 이용하면 성능을 더 개선할 수 있습니다.
 
+### 6.6.1 소수로만 나누기
+
+`제수`가 소수가 아니면 소용이 없으므로 `제수`를 현재 숫자 이하에서 발견한 소수로 제한할 수 있습니다.
+
+그러려면 지금까지 발견한 소수 리스트에 접근해야 하는데, 지금까지의 `Collector`을 사용해서는 수집 과정에서 부분결과에 접근할 수 없습니다.
+
+이럴 때, `Custom Collector`을 사용할 수 있습니다.
+
+중간 결과 리스트가 있다면 `isPrime` 메소드로 중간 결과 리스트를 전달하도록 아래와 같이 수정합니다.
+
+```java
+class Foo {
+    public boolean isPrime(List<Integer> primes, int candidate) {
+        return primes.stream().noneMatch(i -> candidate % i == 0);
+    }
+}
+```
+
+이후, 다음 소수가 대상의 루트보다 크면 소수로 나누는 검사를 멈추게 최적화를 해야합니다. 하지만 `Stream`에는 이런 기능을 제공하지 않습니다.
+`filter`를 사용할 수 있지만 `filter`는 전체를 처리한 다음에 결과를 반환하기 때문에 요소가 많다면 성능에 문제가 생길 수 있습니다.
+
+> 💡 `noneMatch`가 `쇼트서킷`이므로 조건이 만족하면 `filter`또한 전체를 순회하지 않습니다. 
+> 
+> (책에서는 왜 전체를 순회한다고 되어있지?) 
+
+`takeWhile`을 사용하여 아래처럼 정렬된 리스트와 `Predicate`를 인수로 받아 리스트의 첫 요소에서 시작해서 `Predicate`를 만족하는 요소까지의 리스트를 반환합니다.
+
+```java
+class Foo {
+    public boolean isPrime(List<Integer> primes, int candidate) {
+        int candidateRoot = (int) Math.sqrt(candidate);
+        return primes.stream()
+                .takeWhile(i -> i <= candidateRoot)
+                .noneMatch(i -> candidate % i == 0);
+    }
+}
+```
