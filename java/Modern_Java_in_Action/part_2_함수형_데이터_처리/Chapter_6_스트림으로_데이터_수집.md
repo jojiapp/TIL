@@ -86,7 +86,7 @@ class Foo {
 
 `collect`에서는 `reducing 연산`을 이용해서 `Stream`의 각 요소를 방문하면서 `Collector`가 작업을 처리합니다.
 
-> `collect`로 결과를 수집하는 과정을 간단하면서도 유연한 방식으로 정의할 수 있다는 점이 `Collector`의 최대 강점입니다.
+> 💡 `collect`로 결과를 수집하는 과정을 간단하면서도 유연한 방식으로 정의할 수 있다는 점이 `Collector`의 최대 강점입니다.
 
 보통 함수를 요소로 변환 할 때는 `Collector`를 적용하며, 최종 결과를 저장하는 자료구조에 값을 누적합니다.
 
@@ -164,7 +164,7 @@ class Foo {
 
 만약, 요소가 하나도 반환할 값이 없기 떄문에 `Optional`로 감싸져서 반환되는 것입니다.
 
-> `Stream`에 있는 숫자 필드의 `합계`나 `평균` 등을 반환하는 연산에도 `reducing` 기능이 자주 사용됩니다.
+> 💡 `Stream`에 있는 숫자 필드의 `합계`나 `평균` 등을 반환하는 연산에도 `reducing` 기능이 자주 사용됩니다.
 >
 > 이러한 연산을 `요약 (summariztion)` 연산이라 부릅니다.
 
@@ -227,7 +227,7 @@ class Foo {
 }
 ```
 
-> 테스트 결과 자동으로 `toString`을 호출 하지 않으므로 `joining`전에 `String`형식으로 변환 작업을 해주어야 합니다.
+> 💡 테스트 결과 자동으로 `toString`을 호출 하지 않으므로 `joining`전에 `String`형식으로 변환 작업을 해주어야 합니다.
 
 `구분자`를 넣고 싶다면 `joining(", ")`와 같은 형식으로 넣어줄 수 있습니다.
 
@@ -290,7 +290,7 @@ class Foo {
 
 첫 번째 요소가 없으면 값이 존재 하지 않으므로 `Optional` 객체를 반환합니다.
 
-> #### collect와 reduce
+> #### 💡 collect와 reduce
 >
 > `collect`와 `reduce` 메소드는 같은 기능을 구현할 수 있으므로 다른 점이 무엇인지 애매할 수 있습니다.
 >
@@ -327,7 +327,7 @@ class Foo {
 >
 > 그렇기 때문에 `가변 컨테이너` 관련 작업이면서 `병렬성`을 확보하려면 `collect`를 사용하는 것이 바람직합니다.
 
-#### 컬렉션 프레임워크 유연성 : 같은 연산도 다양한 방식으로 수행할 수 있다.
+#### 💡 컬렉션 프레임워크 유연성 : 같은 연산도 다양한 방식으로 수행할 수 있다.
 
 위에서 작성했던 모든 요리의 칼로리 합계를 구하는 `reducing` 작업을 `Lambda`대신 `Integer`의 `sum` 메소드를 `메소드 참조`로 이용하면 코드를 더 단순화 시킬수 있습니다.
 
@@ -369,11 +369,11 @@ class Foo {
 
 `요소`를 받아 `1L`로 변환 시킨후 더하면 됩니다.
 
-> #### 제네릭 와일드카드 '?' 사용법
+> #### 💡 제네릭 와일드카드 '?' 사용법
 >
 > 위의 예제에서 `?`는 `Collector`의 형식이 알려지지 않았음을 의미합니다. 즉 누적자의 형식이 자유롭습니다.
 
-#### 자신의 상황에 맞는 최적의 해법 선택
+#### 💡 자신의 상황에 맞는 최적의 해법 선택
 
 하나의 연산을 다영한 방법으로 해결할 수 있음을 위의 예제들을 통해 배웠습니다.
 
@@ -546,7 +546,7 @@ class Foo {
 }
 ```
 
-#### 컬렉터 결과를 다른 형식에 적용하기
+#### 💡 컬렉터 결과를 다른 형식에 적용하기
 
 `Colletors.colletingAndThen` 팩토리 메소드를 이용하면 `Collector`가 반환한 결과를 다른 형식으로 변환할 수 있습니다.
 
@@ -572,14 +572,14 @@ class Foo {
 `cpllectingAndThen` 메소드는 적용할 `Collector`와 `변환 함수`를 인수로 받아 다른 `Collector`를 반환합니다. 반환되는 `Collector`는 기존`Collector`의 래퍼 역할을
 하며 `collect` 마지막 과정에서 `변환 함수`로 자신이 반환하는 값을 `매핑`합니다.
 
-> `reducing Collectr`는 절대 `Optional.empty()`를 반환하지 않으므로 위의 로직은 안전한 로직입니다.
+> 💡 `reducing Collectr`는 절대 `Optional.empty()`를 반환하지 않으므로 위의 로직은 안전한 로직입니다.
 
 - `groupingBy`는 요리의 종류에 따라 메뉴 `Stream`을 `그룹화` 합니다.
 - `collectingAndThen` 메소드는 위에서 `그룹화` 된 `서브스트림`에 적용됩니다.
 - `collectingAndThen` `Collector`는 세 번째 `Collector`를 감쌉니다.
 - `reducing Collector`가 `서브스트림`에 연산을 수행한 결과에 `collectingAndThen`의 `반환 함수`를 적용합니다.
 
-#### groupingBy와 함께 사용하는 다른 컬렉터 예제
+#### 💡 groupingBy와 함께 사용하는 다른 컬렉터 예제
 
 - `summingInt`를 활용한 그룹별 총 합계
 
@@ -773,7 +773,7 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>> {}
 `Supplier`, `BiConsumer`, `BinaryOperator`, `Function`는 `collect`에서 사용되는 반면,
 `characteristics`는 `collect`가 어떤 최적화를 이용해서 `reducing 연산`을 수행할 것인지 결정하도록 돕는 `힌트 특성 집합`을 제공합니다.
 
-#### supplier 메서드 : 새로운 결과 컨테이너 만들기
+#### 💡 supplier 메서드 : 새로운 결과 컨테이너 만들기
 
 `snipplier` 메소드는 수집 과정에서 빈 누적자 인스턴스를 만드는 파라미터가 없는 함수이기 때문에 빈 결과로 이루어진 `Supplier`를 반환해야 합니다.
 
@@ -788,7 +788,7 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>> {
 }
 ```
 
-#### accumulator 메서드 : 결과 컨테이너에 요소 추가하기
+#### 💡 accumulator 메서드 : 결과 컨테이너에 요소 추가하기
 
 `accumulator` 메소드는 `reducing 연산`을 수행하는 함수를 반환합니다.
 
@@ -801,7 +801,7 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>> {
 }
 ```
 
-#### finisher 메서드 : 최종 변환값을 결과 컨테이너로 적용하기
+#### 💡 finisher 메서드 : 최종 변환값을 결과 컨테이너로 적용하기
 
 `finisher` 메소드는 `Stream` 탐색을 끝내고 누적자 객체를 최종 결과로 변환하면서 누적 과정을 끝낼 때 호출할 함수를 반환해야 합니다.
 
@@ -824,7 +824,7 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>> {
 4. `collector.finisher().apply(accumulator)`
 5. 결과 `return`
 
-#### combiner 메소드 : 두 결과 컨테이너 병합
+#### 💡 combiner 메소드 : 두 결과 컨테이너 병합
 
 `combiner` 메소드는 `Stream`의 서로 다른 `서브파트`를 `병렬`로 처리할 때 누적자가 이 결과를 어떻게 처리할지 정의합니다.
 
@@ -849,7 +849,7 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>> {
 - 모든 서브스트림의 각 요소에 `reduceing 연산`을 순차적으로 적용해서 서브스트림을 `병렬`로 처리할 수 있습니다.
 - 마지막으로 `combiner` 메소드가 분할된 모든 서브스트림의 결과를 합치면서 연산이 완료됩니다.
 
-#### Characteristics 메소드
+#### 💡 Characteristics 메소드
 
 `characteristics` 메소드는 `Collector` 연산을 정의하는 `Characteristics` 형식의 `불변 집합`을 반환합니다.
 
@@ -921,7 +921,7 @@ class Foo {
 }
 ```
 
-#### 컬렉터 구현을 만들지 않고도 커스텀 수집 수행하기
+#### 💡 컬렉터 구현을 만들지 않고도 커스텀 수집 수행하기
 
 `IDENTITY_FINISH` 수집 연산에서는 `Collector` 인터페이스를 새로 구현하지 않고도 같은 결과를 만들 수 있습니다.
 
