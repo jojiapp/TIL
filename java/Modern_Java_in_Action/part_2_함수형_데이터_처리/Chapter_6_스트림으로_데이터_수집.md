@@ -988,9 +988,9 @@ class Foo {
 이후, 다음 소수가 대상의 루트보다 크면 소수로 나누는 검사를 멈추게 최적화를 해야합니다. 하지만 `Stream`에는 이런 기능을 제공하지 않습니다.
 `filter`를 사용할 수 있지만 `filter`는 전체를 처리한 다음에 결과를 반환하기 때문에 요소가 많다면 성능에 문제가 생길 수 있습니다.
 
-> 💡 `noneMatch`가 `쇼트서킷`이므로 조건이 만족하면 `filter`또한 전체를 순회하지 않습니다. 
-> 
-> (책에서는 왜 전체를 순회한다고 되어있지?) 
+> 💡 `noneMatch`가 `쇼트서킷`이므로 조건이 만족하면 `filter`또한 전체를 순회하지 않습니다.
+>
+> (책에서는 왜 전체를 순회한다고 되어있지?)
 
 `takeWhile`을 사용하여 아래처럼 정렬된 리스트와 `Predicate`를 인수로 받아 리스트의 첫 요소에서 시작해서 `Predicate`를 만족하는 요소까지의 리스트를 반환합니다.
 
@@ -1004,3 +1004,96 @@ class Foo {
     }
 }
 ```
+
+#### 💡 1단계 : Collector 클래스 시그니처 정의
+
+`interface Collector`의 정의를 참고해서 `클래스 시그니처`를 만듭니다.
+
+```java
+public interface Collector<T, A, R> {}
+```
+
+- `T`: `Stream`요소
+- `A`: `중간 결과`를 누적하는 객체의 형식
+- `R`: `collect` 연산의 `최종 결과` 형식
+
+```java
+public class PrimeNumbersCollector implements Collector<
+        Integer,
+        Map<Boolean, List<Integer>>,
+        Map<Boolean, List<Integer>>
+        > {
+    @Override
+    public Supplier<Map<Boolean, List<Integer>>> supplier() {
+        return null;
+    }
+
+    @Override
+    public BiConsumer<Map<Boolean, List<Integer>>, Integer> accumulator() {
+        return null;
+    }
+
+    @Override
+    public BinaryOperator<Map<Boolean, List<Integer>>> combiner() {
+        return null;
+    }
+
+    @Override
+    public Function<Map<Boolean, List<Integer>>, Map<Boolean, List<Integer>>> finisher() {
+        return null;
+    }
+
+    @Override
+    public Set<Characteristics> characteristics() {
+        return null;
+    }
+}
+```
+
+#### 💡 2단계 : 리듀싱 연산 구현
+
+`Supplier` 메소드는 누적자를 만드는 함수를 반환해야 합니다.
+
+```java
+public class PrimeNumbersCollector implements Collector<
+        Integer,
+        Map<Boolean, List<Integer>>,
+        Map<Boolean, List<Integer>>
+        > {
+    @Override
+    public Supplier<Map<Boolean, List<Integer>>> supplier() {
+        return () -> {
+            HashMap<Boolean, List<Integer>> result = new HashMap<>();
+            result.put(true, new ArrayList<>());
+            result.put(false, new ArrayList<>());
+            return result;
+        };
+    }
+}
+```
+
+위 코드는 누적자로 사용할 `Map`을 `true`, `false` 키와 `빈 List`로 초기화 하였습니다.
+
+이제 `수집 과정`에서 `List`에 각각 `소수`와 `비소수`를 추가할 것입니다.
+
+이제 수집 결과의 `중간 과정`에도 접근할 수 있습니다. `Stream`의 요소를 어떻게 수집할지 결정하는 것은 `accumulator` 메소드이므로 해당 메소드를 구현해보곘습니다.
+
+```java
+public class PrimeNumbersCollector implements Collector<
+        Integer,
+        Map<Boolean, List<Integer>>,
+        Map<Boolean, List<Integer>>
+        > {
+    @Override
+    public BiConsumer<Map<Boolean, List<Integer>>, Integer> accumulator() {
+        return (Map<Boolean, List<Integer>> acc, Integer candidate) -> {
+            acc.get(isPrime(acc.get(true), candidate))
+                    .add(candidate);
+        };
+    }
+}
+```
+
+위 코드에서 `누적 Map`의 `true` 키로 지금까지 발견한 소수 리스트에 접근 할 수 있습니다.
+
+또한, 소수 여부를 판단하는 `candidate`를 인수로 `isPrime` 메소드에서 호출함으로써, `소수`, `비소수` 리스트 중 알맞은 `List`에 `candidate`를 추가합니다. 
