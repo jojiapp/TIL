@@ -1096,4 +1096,30 @@ public class PrimeNumbersCollector implements Collector<
 
 위 코드에서 `누적 Map`의 `true` 키로 지금까지 발견한 소수 리스트에 접근 할 수 있습니다.
 
-또한, 소수 여부를 판단하는 `candidate`를 인수로 `isPrime` 메소드에서 호출함으로써, `소수`, `비소수` 리스트 중 알맞은 `List`에 `candidate`를 추가합니다. 
+또한, 소수 여부를 판단하는 `candidate`를 인수로 `isPrime` 메소드에서 호출함으로써, `소수`, `비소수` 리스트 중 알맞은 `List`에 `candidate`를 추가합니다.
+
+#### 💡 3단계 : 병렬 실행할 수 있는 컬렉터 만들기(가능하다면)
+
+`병렬 수집 과정`에서 `두 부분 누적자`를 합칠 수 있는 메소드를 만들어 `병렬 실행`이 가능하다록 해보겠습니다.
+
+위의 예제에서는 두 번째 `Map`을 첫 번째 `Map`의 소수와 비소수 리스트에 추가하는 연산이면 충분합니다.
+
+```java
+public class PrimeNumbersCollector implements Collector<
+        Integer,
+        Map<Boolean, List<Integer>>,
+        Map<Boolean, List<Integer>>
+        > {
+    @Override
+    public BinaryOperator<Map<Boolean, List<Integer>>> combiner() {
+        return (Map<Boolean, List<Integer>> map1, Map<Boolean, List<Integer>> map2) -> {
+            map1.get(true).addAll(map2.get(true));
+            map1.get(false).addAll(map2.get(false));
+            return map1;
+        };
+    }
+}
+```
+
+알고리즘 자체가 순차적이어서 `Collector`를 실제 병렬로 사용할 수 없습니다.
+따라서 `combiner` 메소드는 호출될 일이 없으므로 빈 구현으로 남겨둘 수 있습니다. (또는 `UnsupportedOperationException`을 던지도록 구현)
