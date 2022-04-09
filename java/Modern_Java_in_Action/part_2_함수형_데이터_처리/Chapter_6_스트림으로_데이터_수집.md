@@ -19,6 +19,8 @@
     - [6.5.1 Collector 인터페이스의 메서드 살펴보기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#651-Collector-인터페이스의-메서드-살펴보기)
 - [6.6 커스텀 컬렉터를 구현해서 성능 개선하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#66-커스텀-컬렉터를-구현해서-성능-개선하기)
     - [6.6.1 소수로만 나누기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#661-소수로만-나누기)
+    - [6.6.2 컬렉터 성능 비교](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#662-컬렉터-성능-비교)
+- [6.7 마치며](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#67-마치며)
 
 `Java 8`의 `Stream`은 **데이터 집합을 멋지게 처리하는 게으른 반복자**라고 설명할 수 있습니다.
 
@@ -1220,3 +1222,83 @@ public class PartitionPrimeNumbers {
     }
 }
 ```
+
+### 6.6.2 컬렉터 성능 비교
+
+```java
+public class MyCollectorHarness {
+    public static void main(String[] args) {
+        long fastest = Long.MAX_VALUE;
+        for (int i = 0; i < 10; i++) { // 테스트 10번 실행
+            long start = System.nanoTime();
+            partitionPrimes(1_000_000); // 백만개의 숫자를 소수와 비소수로 구분
+            long duration = (System.nanoTime() - start) / 1_000_000; // 밀리초 단위로 측정
+            if (duration < fastest) fastest = duration; // 가장 빨리 실행된 값
+        }
+        System.out.println("Fastest execution done in " + fastest + " msecs");
+        // Fastest execution done in 116 msecs
+    }
+}
+```
+
+```java
+public class MyCollectorHarness {
+    public static void main(String[] args) {
+        long fastest = Long.MAX_VALUE;
+        for (int i = 0; i < 10; i++) {
+            long start = System.nanoTime();
+            partitionPrimesWithCustomCollector(1_000_000);
+            long duration = (System.nanoTime() - start) / 1_000_000;
+            if (duration < fastest) fastest = duration;
+        }
+        System.out.println("Fastest execution done in " + fastest + " msecs");
+        // Fastest execution done in 74 msecs
+    }
+}
+
+```
+
+`Custom Collector`의 경우 더 빨라진 속도를 알 수 있습니다.
+
+위에서 `ToListCollector`에서 했던것 처럼 `Override`된 버전의 `collect` 메소드로 `PrimeNumbersCollector`의 핵심 로직을 구현하는 세 함수를 전달하는 방법도 있습니다.
+
+```java
+public class MyCollectorHarness {
+    public static void main(String[] args) {
+        long fastest = Long.MAX_VALUE;
+        for (int i = 0; i < 10; i++) {
+            long start = System.nanoTime();
+            IntStream.rangeClosed(2, 1_000_000)
+                    .boxed()
+                    .collect(
+                            () -> new HashMap<Boolean, List<Integer>>() {{
+                                put(true, new ArrayList<>());
+                                put(false, new ArrayList<>());
+                            }},
+                            (acc, candidate) -> {
+                                acc.get(isPrime(acc.get(true), candidate))
+                                        .add(candidate);
+                            },
+                            (map1, map2) -> {
+                                map1.get(true).addAll(map2.get(true));
+                                map1.get(false).addAll(map2.get(false));
+                            }
+                    );
+            long duration = (System.nanoTime() - start) / 1_000_000;
+            if (duration < fastest) fastest = duration;
+        }
+        System.out.println("Fastest execution done in " + fastest + " msecs");
+    }
+}
+
+```
+
+위 처럼 `Collector`를 새로 만들지 않고도 간결하게 사용할 수 있지만, `가독성`과 `재사용성`은 떨어집니다.
+
+## 6.7 마치며
+
+- `collect`는 `Stream` 요소를 요약 결과로 누적하는 `Collector`을 인수로 갖는 `최종 연산`입니다.
+- `Stream`요소를 하나의 값으로 `reduce`하고 요약하는 `Collector` 뿐 아니라 `최솟값`, `최댓값`, `평균값`을 계산하는 `Collecotr` 등이 미리 정의되어 있습니다.
+- `groupingBy`로 `Stream`요소를 `그룹화` 하거나, `partitioningBy`로 `분할`할 수 있습니다.
+- `Collector`는 `다수준`의 `그룹화`, `분할`, `리듀싱` 연산에 적합하게 설계되어 있습니다.
+- `Collector`에 정의된 메소드를 구현해서 `Custom Collector`를 개발할 수 있습니다.
