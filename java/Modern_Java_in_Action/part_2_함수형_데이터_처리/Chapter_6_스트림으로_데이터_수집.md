@@ -1121,5 +1121,102 @@ public class PrimeNumbersCollector implements Collector<
 }
 ```
 
-알고리즘 자체가 순차적이어서 `Collector`를 실제 병렬로 사용할 수 없습니다.
-따라서 `combiner` 메소드는 호출될 일이 없으므로 빈 구현으로 남겨둘 수 있습니다. (또는 `UnsupportedOperationException`을 던지도록 구현)
+알고리즘 자체가 순차적이어서 `Collector`를 실제 병렬로 사용할 수 없습니다. 따라서 `combiner` 메소드는 호출될 일이 없으므로 빈 구현으로 남겨둘 수 있습니다. (
+또는 `UnsupportedOperationException`을 던지도록 구현)
+
+#### 💡 4단계 : finisher 메소드와 컬렉터의 characteristics 메서드
+
+`accumulator`의 형식은 `Collector` 결과 형식과 같으므로 항등 함수 `identity`를 반환하도록 `finisher` 메소드를 구현하면 됩니다.
+
+```java
+public class PrimeNumbersCollector implements Collector<
+        Integer,
+        Map<Boolean, List<Integer>>,
+        Map<Boolean, List<Integer>>
+        > {
+    @Override
+    public Function<Map<Boolean, List<Integer>>, Map<Boolean, List<Integer>>> finisher() {
+        return Function.identity();
+    }
+}
+```
+
+`Custom Collector`은 `CONCURRENT (병렬 리듀싱)`도 아니고 `UNORDERED (순서영향 X)`도 아니지만 `IDENTITY_FINISH` 이므로 아래 처럼 구현하면 됩니다.
+
+```java
+public class PrimeNumbersCollector implements Collector<
+        Integer,
+        Map<Boolean, List<Integer>>,
+        Map<Boolean, List<Integer>>
+        > {
+    @Override
+    public Set<Characteristics> characteristics() {
+        return Collections.unmodifiableSet(EnumSet.of(Characteristics.IDENTITY_FINISH));
+    }
+}
+```
+
+- 최종 구현 코드
+
+```java
+public class PrimeNumbersCollector implements Collector<
+        Integer,
+        Map<Boolean, List<Integer>>,
+        Map<Boolean, List<Integer>>
+        > {
+
+    public boolean isPrime(List<Integer> primes, int candidate) {
+        int candidateRoot = (int) Math.sqrt(candidate);
+        return primes.stream()
+                .takeWhile(i -> i <= candidateRoot)
+                .noneMatch(i -> candidate % i == 0);
+    }
+
+    @Override
+    public Supplier<Map<Boolean, List<Integer>>> supplier() {
+        return () -> {
+            HashMap<Boolean, List<Integer>> result = new HashMap<>();
+            result.put(true, new ArrayList<>());
+            result.put(false, new ArrayList<>());
+            return result;
+        };
+    }
+
+    @Override
+    public BiConsumer<Map<Boolean, List<Integer>>, Integer> accumulator() {
+        return (Map<Boolean, List<Integer>> acc, Integer candidate) -> {
+            acc.get(isPrime(acc.get(true), candidate))
+                    .add(candidate);
+        };
+    }
+
+    @Override
+    public BinaryOperator<Map<Boolean, List<Integer>>> combiner() {
+        return (Map<Boolean, List<Integer>> map1, Map<Boolean, List<Integer>> map2) -> {
+            map1.get(true).addAll(map2.get(true));
+            map1.get(false).addAll(map2.get(false));
+            return map1;
+        };
+    }
+
+    @Override
+    public Function<Map<Boolean, List<Integer>>, Map<Boolean, List<Integer>>> finisher() {
+        return Function.identity();
+    }
+
+    @Override
+    public Set<Characteristics> characteristics() {
+        return Collections.unmodifiableSet(EnumSet.of(Characteristics.IDENTITY_FINISH));
+    }
+}
+```
+
+이제 앞에서 작성했던 `partitioningBy`를 `Custom Collector`로 교체할 수 있습니다.
+
+```java
+public class PartitionPrimeNumbers {
+    public static Map<Boolean, List<Integer>> partitionPrimesWithCustomCollector(int n) {
+        return IntStream.rangeClosed(2, n).boxed().collect(new PrimeNumbersCollector());
+    }
+}
+```
