@@ -146,3 +146,5 @@
     - [6.6.1 소수로만 나누기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#661-소수로만-나누기)
     - [6.6.2 컬렉터 성능 비교](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#662-컬렉터-성능-비교)
 - [6.7 마치며](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#67-마치며)
+
+### [Chapter 7. 병렬 데이터 처리와 성능](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_7_병렬_데이터_처리와_성능.md#Chapter-7-병렬-데이터-처리와-성능)
