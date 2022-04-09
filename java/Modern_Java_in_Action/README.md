@@ -148,3 +148,5 @@
 - [6.7 마치며](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#67-마치며)
 
 ### [Chapter 7. 병렬 데이터 처리와 성능](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_7_병렬_데이터_처리와_성능.md#Chapter-7-병렬-데이터-처리와-성능)
+
+- [7.1 병렬 스트림](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_7_병렬_데이터_처리와_성능.md#71-병렬-스트림)

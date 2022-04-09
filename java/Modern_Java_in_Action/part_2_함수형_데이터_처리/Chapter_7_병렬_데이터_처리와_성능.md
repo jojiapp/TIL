@@ -1,5 +1,7 @@
 # Chapter 7. 병렬 데이터 처리와 성능
 
+- [7.1 병렬 스트림](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_7_병렬_데이터_처리와_성능.md#71-병렬-스트림)
+
 앞서 `데이터 컬렉션`을 `선언형`으로 제어하는 방법을 살펴보았습니다.  
 또한, `외부 반복`을 `내부 반복`으로 바꾸면 `네이티브 자바 라이브러리`가 `Stream` 요소의 처리를 제어할 수 있으므로 개발자는 `Collection`의 처리 속도를 높이기 위해 따로 고민할 필요가
 없습니다.
@@ -12,3 +14,42 @@
 `Java 7`은 더 쉽게 `병렬화`를 수행하면서 에러를 최소화할 수 있도록 `Fork/Join Framework` 기능을 제공합니다.
 
 `Stream`을 이용하면 `순차 스트림`에서 `병렬 스트림`으로 자연스럽게 변경할 수 있습니다.
+
+## 7.1 병렬 스트림
+
+`Collector`에 `parallelStream`을 호출하면 `병렬 스트림`이 생성됩니다.
+
+`병렬 스트림`이란 각각의 `Thread`에서 처리할 수 있도록 `Stream`요소를 `여러 청크`로 분할한 `Stream`입니다. 따라서, `병렬 스트림`을 이용하면 모든 `멀티코어 프로세서`가 각각의 `청크`를
+처리하도록 할당할 수 있습니다.
+
+아래처럼 `무한 스트림`을 만든 다음 인수로 주어진 크기로 `Stream`을 제한하고, 두 숫자를 더하는 `BinaryOperator`로 `reducing`작업을 수행할 수 있다.
+
+```java
+class Foo {
+    public long sequentialSum(long n) {
+        return Stream.iterate(1L, i -> i + 1)
+                .limit(n)
+                .reduce(0L, Long::sum);
+    }
+}
+```
+
+기존의 자바 코드는 아래처럼 작성할 수 있습니다.
+
+```java
+class Foo {
+    public long iterativeSum(long n) {
+        long result = 0;
+        for (long i = 1L; i <= n; i++) {
+            result += i;
+        }
+        return result;
+    }
+}
+```
+
+특히 `n`이 커진다면 `병렬`로 처리하는 것이 더 좋습니다.
+
+위의 코드를 `병렬 처리` 하려면 결과 변수를 어떻게 `동기화`를 하고, 몇 개의 `Thread`를 사용해야 하며, 숫자는 어떻게 생성할지 등등 많은 고민이 필요합니다.
+
+`병렬 스트림`을 이용하면 이런 걱정 없이 모든 문제를 쉽게 해결할 수 있습니다.
