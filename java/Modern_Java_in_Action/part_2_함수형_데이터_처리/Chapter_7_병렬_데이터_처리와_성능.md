@@ -1,6 +1,7 @@
 # Chapter 7. 병렬 데이터 처리와 성능
 
 - [7.1 병렬 스트림](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_7_병렬_데이터_처리와_성능.md#71-병렬-스트림)
+    - [7.1.1 순차 스트림을 병렬 스트림으로 변환하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_7_병렬_데이터_처리와_성능.md#711-순차-스트림을-병렬-스트림으로-변환하기)
 
 앞서 `데이터 컬렉션`을 `선언형`으로 제어하는 방법을 살펴보았습니다.  
 또한, `외부 반복`을 `내부 반복`으로 바꾸면 `네이티브 자바 라이브러리`가 `Stream` 요소의 처리를 제어할 수 있으므로 개발자는 `Collection`의 처리 속도를 높이기 위해 따로 고민할 필요가
@@ -53,3 +54,34 @@ class Foo {
 위의 코드를 `병렬 처리` 하려면 결과 변수를 어떻게 `동기화`를 하고, 몇 개의 `Thread`를 사용해야 하며, 숫자는 어떻게 생성할지 등등 많은 고민이 필요합니다.
 
 `병렬 스트림`을 이용하면 이런 걱정 없이 모든 문제를 쉽게 해결할 수 있습니다.
+
+### 7.1.1 순차 스트림을 병렬 스트림으로 변환하기
+
+`순차 스트림`에 `parallel` 메소드를 호출하면 기존의 `함수형 reducing 연산`이 `병렬`로 처리됩니다.
+
+```java
+public class ParallelStreams {
+    public static long parallelSum(long n) {
+        return Stream.iterate(1L, i -> i + 1)
+                .limit(n)
+                .parallel()
+                .reduce(Long::sum);
+    }
+}
+```
+
+이전 코드와 다른 점은 `Stream`이 여러 `청크`로 분할되어 `reducing 연산`을 `병렬`로 처리할 수 있다는 점입니다.
+
+`parallel` 메소드를 호출하면 내부적으로 병렬로 수행해야 한다는 것을 의미하는 `boolean flag`가 설정됩니다. 반대로, `sequential` 메소드를 실행하면 `순차 스트림`으로 변경할 수
+있습니다.
+
+`parallel`과 `sequential` 메소드 중 최종적을 호출 된 메소드가 전체 `Pipeline`에 영향을 미칩니다.
+
+> #### 💡 병렬 스트림에서 사용하는 스레드 풀 설정
+>
+> `병렬 스트림`은 내부적으로 `ForkJoinPool`을 사용합니다.
+>
+> `ForkJoinPool`은 프로세서 수, 즉 `Runtime.getRuntime().availableProcessors()`가 반환하는 값에 상응하는 `Thread`를 갖습니다.
+>
+> 특별한 이유가 업다면 `ForkJoinPool`의 `기본값`을 그대로 사용할 것을 `권장`합니다.
+
