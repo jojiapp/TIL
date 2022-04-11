@@ -1,7 +1,7 @@
 # Chapter 7. 병렬 데이터 처리와 성능
 
-- [7.1 병렬 스트림](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_7_병렬_데이터_처리와_성능.md#71-병렬-스트림)
-    - [7.1.1 순차 스트림을 병렬 스트림으로 변환하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_7_병렬_데이터_처리와_성능.md#711-순차-스트림을-병렬-스트림으로-변환하기)
+- [7.1 병렬 스트림](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-7-병렬-데이터-처리와-성능.md#71-병렬-스트림)
+    - [7.1.1 순차 스트림을 병렬 스트림으로 변환하기](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-7-병렬-데이터-처리와-성능.md#711-순차-스트림을-병렬-스트림으로-변환하기)
 
 앞서 `데이터 컬렉션`을 `선언형`으로 제어하는 방법을 살펴보았습니다.  
 또한, `외부 반복`을 `내부 반복`으로 바꾸면 `네이티브 자바 라이브러리`가 `Stream` 요소의 처리를 제어할 수 있으므로 개발자는 `Collection`의 처리 속도를 높이기 위해 따로 고민할 필요가

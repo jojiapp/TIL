@@ -1,26 +1,26 @@
 # Chapter 6. 스트림으로 데이터 수집
 
-- [6.1 컬렉터란 무엇인가?](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#61-컬렉터란-무엇인가)
-    - [6.1.1 고급 리듀싱 기능을 수행하는 컬렉터](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#611-고급-리듀싱-기능을-수행하는-컬렉터)
-    - [6.1.2 미리 정의된 컬렉터](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#612-미리-정의된-컬렉터)
-- [6.2 리듀싱과 요약](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#62-리듀싱과-요약)
-    - [6.2.1 스트림값에서 최댓값과 최솟값 검색](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#621-스트림값에서-최댓값과-최솟값-검색)
-    - [6.2.2 요약 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#622-요약-연산)
-    - [6.2.3 문자열 연결](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#623-문자열-연결)
-    - [6.2.4 범용 리듀싱 요약 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#624-범용-리듀싱-요약-연산)
-- [6.3 그룹화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#63-그룹화)
-    - [6.3.1 그룹화된 요소 조작](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#631-그룹화된-요소-조작)
-    - [6.3.2 다수준 그룹화](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#632-다수준-그룹화)
-    - [6.3.3 서브그룹으로 데이터 수집](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#633-서브그룹으로-데이터-수집)
-- [6.4 분할](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#64-분할)
-    - [6.4.1 분할의 장점](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#641-분할의-장점)
-    - [6.4.2 숫자를 소수와 비소수로 분할하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#642-숫자를-소수와-비소수로-분할하기)
-- [6.5 Collector 인터페이스](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#65-Collector-인터페이스)
-    - [6.5.1 Collector 인터페이스의 메서드 살펴보기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#651-Collector-인터페이스의-메서드-살펴보기)
-- [6.6 커스텀 컬렉터를 구현해서 성능 개선하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#66-커스텀-컬렉터를-구현해서-성능-개선하기)
-    - [6.6.1 소수로만 나누기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#661-소수로만-나누기)
-    - [6.6.2 컬렉터 성능 비교](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#662-컬렉터-성능-비교)
-- [6.7 마치며](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_6_스트림으로_데이터_수집.md#67-마치며)
+- [6.1 컬렉터란 무엇인가?](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-6-스트림으로-데이터-수집.md#61-컬렉터란-무엇인가)
+    - [6.1.1 고급 리듀싱 기능을 수행하는 컬렉터](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-6-스트림으로-데이터-수집.md#611-고급-리듀싱-기능을-수행하는-컬렉터)
+    - [6.1.2 미리 정의된 컬렉터](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-6-스트림으로-데이터-수집.md#612-미리-정의된-컬렉터)
+- [6.2 리듀싱과 요약](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-6-스트림으로-데이터-수집.md#62-리듀싱과-요약)
+    - [6.2.1 스트림값에서 최댓값과 최솟값 검색](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-6-스트림으로-데이터-수집.md#621-스트림값에서-최댓값과-최솟값-검색)
+    - [6.2.2 요약 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-6-스트림으로-데이터-수집.md#622-요약-연산)
+    - [6.2.3 문자열 연결](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-6-스트림으로-데이터-수집.md#623-문자열-연결)
+    - [6.2.4 범용 리듀싱 요약 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-6-스트림으로-데이터-수집.md#624-범용-리듀싱-요약-연산)
+- [6.3 그룹화](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-6-스트림으로-데이터-수집.md#63-그룹화)
+    - [6.3.1 그룹화된 요소 조작](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-6-스트림으로-데이터-수집.md#631-그룹화된-요소-조작)
+    - [6.3.2 다수준 그룹화](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-6-스트림으로-데이터-수집.md#632-다수준-그룹화)
+    - [6.3.3 서브그룹으로 데이터 수집](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-6-스트림으로-데이터-수집.md#633-서브그룹으로-데이터-수집)
+- [6.4 분할](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-6-스트림으로-데이터-수집.md#64-분할)
+    - [6.4.1 분할의 장점](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-6-스트림으로-데이터-수집.md#641-분할의-장점)
+    - [6.4.2 숫자를 소수와 비소수로 분할하기](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-6-스트림으로-데이터-수집.md#642-숫자를-소수와-비소수로-분할하기)
+- [6.5 Collector 인터페이스](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-6-스트림으로-데이터-수집.md#65-Collector-인터페이스)
+    - [6.5.1 Collector 인터페이스의 메서드 살펴보기](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-6-스트림으로-데이터-수집.md#651-Collector-인터페이스의-메서드-살펴보기)
+- [6.6 커스텀 컬렉터를 구현해서 성능 개선하기](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-6-스트림으로-데이터-수집.md#66-커스텀-컬렉터를-구현해서-성능-개선하기)
+    - [6.6.1 소수로만 나누기](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-6-스트림으로-데이터-수집.md#661-소수로만-나누기)
+    - [6.6.2 컬렉터 성능 비교](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-6-스트림으로-데이터-수집.md#662-컬렉터-성능-비교)
+- [6.7 마치며](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-6-스트림으로-데이터-수집.md#67-마치며)
 
 `Java 8`의 `Stream`은 **데이터 집합을 멋지게 처리하는 게으른 반복자**라고 설명할 수 있습니다.
 
@@ -861,14 +861,14 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>> {
 enum Characteristics {
     CONCURRENT,
     UNORDERED,
-    IDENTITY_FINISH
+    IDENTITY-FINISH
 }
 ```
 
 - `UNORDERED`: `reducing` 결과는 `Stream` 요소의 방문 순서나 누적 순서에 영향을 받지 않음
 - `CONCURRENT`: `다중 Thread`에서 `accumlator` 함수를 동시에 호출할 수 있으며, `Stream`의 `병렬 reducing`을 수행할 수 있음
   `Collector`의 플래그에 `UNORDERED`를 함께 설정하지 않았다면, `데이터 순서가 무의미`한 상황에서만 `병렬 reducing`을 수행할 수 있습니다.
-- `IDENTITY_FINISH`: `finisher` 메소드가 반환하는 함수는 단순히 `identity`를 적용할 뿐이므로 생략할 수 있습니다. 따라서 `reducing 과정`의 `최종 결과`로 `누적자 객체`를
+- `IDENTITY-FINISH`: `finisher` 메소드가 반환하는 함수는 단순히 `identity`를 적용할 뿐이므로 생략할 수 있습니다. 따라서 `reducing 과정`의 `최종 결과`로 `누적자 객체`를
   바로 사용할 수 있으며, `누적자 A`를 `결과 R`로 안전하게 형변환할 수 있습니다.
 
 ### 6.5.2 응용하기
@@ -903,8 +903,8 @@ public class ToListCollector<T> implements Collector<T, List<T>, List<T>> {
 
     @Override
     public Set<Characteristics> characteristics() {
-        return Collections.unmodifiableSet(EnumSet.of(IDENTITY_FINISH, CONCURRENT));
-        // 컬렉터의 플래그를 IDENTITY_FINISH, CONCURRENT로 설정
+        return Collections.unmodifiableSet(EnumSet.of(IDENTITY-FINISH, CONCURRENT));
+        // 컬렉터의 플래그를 IDENTITY-FINISH, CONCURRENT로 설정
     }
 
 }
@@ -925,7 +925,7 @@ class Foo {
 
 #### 💡 컬렉터 구현을 만들지 않고도 커스텀 수집 수행하기
 
-`IDENTITY_FINISH` 수집 연산에서는 `Collector` 인터페이스를 새로 구현하지 않고도 같은 결과를 만들 수 있습니다.
+`IDENTITY-FINISH` 수집 연산에서는 `Collector` 인터페이스를 새로 구현하지 않고도 같은 결과를 만들 수 있습니다.
 
 `Stream`은 세 함수 (`발행`, `누적`, `합침`)를 인수로 받는 `collect` 메소드를 `Override`하며 각각의 메소드는 `Collector` 인터페이스의 메소드가 반환하는 함수와 같은 기능을
 수행합니다.
@@ -944,7 +944,7 @@ class Foo {
 
 위의 코드는 `간결`하지만, 기존의 코드에 비해 `가독성`이 떨어집니다. 적절한 `class`로 `Custom class`를 구현하는 편이 `중복`을 피하고 `재사용성`을 높이는데 도움이 됩니다.
 
-또한, `Characteristics`를 전달할 수 없기 때문에 `IDENTITY_FINISH`와 `CONCURRENT`이지만 `UNORDERED`는 아닌 `Collector`로만 동작합니다.
+또한, `Characteristics`를 전달할 수 없기 때문에 `IDENTITY-FINISH`와 `CONCURRENT`이지만 `UNORDERED`는 아닌 `Collector`로만 동작합니다.
 
 ## 6.6 커스텀 컬렉터를 구현해서 성능 개선하기
 
@@ -1143,7 +1143,7 @@ public class PrimeNumbersCollector implements Collector<
 }
 ```
 
-`Custom Collector`은 `CONCURRENT (병렬 리듀싱)`도 아니고 `UNORDERED (순서영향 X)`도 아니지만 `IDENTITY_FINISH` 이므로 아래 처럼 구현하면 됩니다.
+`Custom Collector`은 `CONCURRENT (병렬 리듀싱)`도 아니고 `UNORDERED (순서영향 X)`도 아니지만 `IDENTITY-FINISH` 이므로 아래 처럼 구현하면 됩니다.
 
 ```java
 public class PrimeNumbersCollector implements Collector<
@@ -1153,7 +1153,7 @@ public class PrimeNumbersCollector implements Collector<
         > {
     @Override
     public Set<Characteristics> characteristics() {
-        return Collections.unmodifiableSet(EnumSet.of(Characteristics.IDENTITY_FINISH));
+        return Collections.unmodifiableSet(EnumSet.of(Characteristics.IDENTITY-FINISH));
     }
 }
 ```
@@ -1208,7 +1208,7 @@ public class PrimeNumbersCollector implements Collector<
 
     @Override
     public Set<Characteristics> characteristics() {
-        return Collections.unmodifiableSet(EnumSet.of(Characteristics.IDENTITY_FINISH));
+        return Collections.unmodifiableSet(EnumSet.of(Characteristics.IDENTITY-FINISH));
     }
 }
 ```
@@ -1228,11 +1228,11 @@ public class PartitionPrimeNumbers {
 ```java
 public class MyCollectorHarness {
     public static void main(String[] args) {
-        long fastest = Long.MAX_VALUE;
+        long fastest = Long.MAX-VALUE;
         for (int i = 0; i < 10; i++) { // 테스트 10번 실행
             long start = System.nanoTime();
-            partitionPrimes(1_000_000); // 백만개의 숫자를 소수와 비소수로 구분
-            long duration = (System.nanoTime() - start) / 1_000_000; // 밀리초 단위로 측정
+            partitionPrimes(1-000-000); // 백만개의 숫자를 소수와 비소수로 구분
+            long duration = (System.nanoTime() - start) / 1-000-000; // 밀리초 단위로 측정
             if (duration < fastest) fastest = duration; // 가장 빨리 실행된 값
         }
         System.out.println("Fastest execution done in " + fastest + " msecs");
@@ -1244,11 +1244,11 @@ public class MyCollectorHarness {
 ```java
 public class MyCollectorHarness {
     public static void main(String[] args) {
-        long fastest = Long.MAX_VALUE;
+        long fastest = Long.MAX-VALUE;
         for (int i = 0; i < 10; i++) {
             long start = System.nanoTime();
-            partitionPrimesWithCustomCollector(1_000_000);
-            long duration = (System.nanoTime() - start) / 1_000_000;
+            partitionPrimesWithCustomCollector(1-000-000);
+            long duration = (System.nanoTime() - start) / 1-000-000;
             if (duration < fastest) fastest = duration;
         }
         System.out.println("Fastest execution done in " + fastest + " msecs");
@@ -1265,10 +1265,10 @@ public class MyCollectorHarness {
 ```java
 public class MyCollectorHarness {
     public static void main(String[] args) {
-        long fastest = Long.MAX_VALUE;
+        long fastest = Long.MAX-VALUE;
         for (int i = 0; i < 10; i++) {
             long start = System.nanoTime();
-            IntStream.rangeClosed(2, 1_000_000)
+            IntStream.rangeClosed(2, 1-000-000)
                     .boxed()
                     .collect(
                             () -> new HashMap<Boolean, List<Integer>>() {{
@@ -1284,7 +1284,7 @@ public class MyCollectorHarness {
                                 map1.get(false).addAll(map2.get(false));
                             }
                     );
-            long duration = (System.nanoTime() - start) / 1_000_000;
+            long duration = (System.nanoTime() - start) / 1-000-000;
             if (duration < fastest) fastest = duration;
         }
         System.out.println("Fastest execution done in " + fastest + " msecs");

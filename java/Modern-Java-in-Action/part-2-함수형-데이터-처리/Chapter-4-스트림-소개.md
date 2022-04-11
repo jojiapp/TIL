@@ -1,15 +1,15 @@
 # Chapter 4. 스트림 소개
 
-- [4.1 스트림이란 무엇인가?](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#41-스트림이란-무엇인가)
-- [4.2 스트림 시작하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#42-스트림-시작하기)
-- [4.3 스트림과 컬렉션](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#43-스트림과-컬렉션)
-    - [4.3.1 딱 한 번만 탐색할 수 있다](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#431-딱-한-번만-탐색할-수-있다)
-    - [4.3.2 외부 반복과 내부 반복](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#432-외부-반복과-내부-반복)
-- [4.4 스트림 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#44-스트림-연산)
-    - [4.4.1 중간 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#441-중간-연산)
-    - [4.4.2 최종 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#442-최종-연산)
-    - [4.4.3 스트림 이용하기](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#443-스트림-이용하기)
-- [4.6 마치며](https://github.com/jojiapp/TIL/blob/master/java/Modern_Java_in_Action/part_2_함수형_데이터_처리/Chapter_4_스트림_소개.md#46-마치며)
+- [4.1 스트림이란 무엇인가?](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-4-스트림-소개.md#41-스트림이란-무엇인가)
+- [4.2 스트림 시작하기](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-4-스트림-소개.md#42-스트림-시작하기)
+- [4.3 스트림과 컬렉션](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-4-스트림-소개.md#43-스트림과-컬렉션)
+    - [4.3.1 딱 한 번만 탐색할 수 있다](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-4-스트림-소개.md#431-딱-한-번만-탐색할-수-있다)
+    - [4.3.2 외부 반복과 내부 반복](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-4-스트림-소개.md#432-외부-반복과-내부-반복)
+- [4.4 스트림 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-4-스트림-소개.md#44-스트림-연산)
+    - [4.4.1 중간 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-4-스트림-소개.md#441-중간-연산)
+    - [4.4.2 최종 연산](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-4-스트림-소개.md#442-최종-연산)
+    - [4.4.3 스트림 이용하기](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-4-스트림-소개.md#443-스트림-이용하기)
+- [4.6 마치며](https://github.com/jojiapp/TIL/blob/master/java/Modern-Java-in-Action/part-2-함수형-데이터-처리/Chapter-4-스트림-소개.md#46-마치며)
 
 거의 모든 `Java Application`은 `Collection`을 만들고 처리하는 과정을 포함합니다.
 
