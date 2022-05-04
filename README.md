@@ -7,3 +7,10 @@
 ## Spring
 
 - [[인프런] 스프링 DB 1편 - 데이터 접근 핵심 원리](https://github.com/jojiapp/TIL/tree/master/spring/스프링-DB-1편-데이터-접근-핵심-원리)
+- [Local 환경에서 Static Resources 읽어오기](https://github.com/jojiapp/TIL/tree/master/spring/Local-환경에서-Static-Resources-읽어오기.md)
+- [Template Engine을 사용하여 PDF파일로 변환하기](https://github.com/jojiapp/TIL/tree/master/spring/Template-Engine을-사용하여-PDF파일로-변환하기.md)
+- [Binding Error Properties Message 적용](https://github.com/jojiapp/TIL/tree/master/spring/Binding-Error-Properties-Message-적용.md)
+
+## JPA
+
+- [QueryDSL Support Custom 하기](https://github.com/jojiapp/TIL/tree/master/jpa/QueryDSL-Support-Custom-하기.md)
