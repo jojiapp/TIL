@@ -10,6 +10,7 @@
 - [Local 환경에서 Static Resources 읽어오기](https://github.com/jojiapp/TIL/tree/master/spring/Local-환경에서-Static-Resources-읽어오기.md)
 - [Template Engine을 사용하여 PDF파일로 변환하기](https://github.com/jojiapp/TIL/tree/master/spring/Template-Engine을-사용하여-PDF파일로-변환하기.md)
 - [Binding Error Properties Message 적용](https://github.com/jojiapp/TIL/tree/master/spring/Binding-Error-Properties-Message-적용.md)
+- [Spring Boot에서 Response DateTime Format 일괄 적용](https://github.com/jojiapp/TIL/tree/master/spring/Spring-Boot에서-Response-DateTime-Format-일괄-적용.md)
 
 ## JPA
 
