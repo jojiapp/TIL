@@ -83,7 +83,7 @@ public class TemplateParser {
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <th:block th:replace="pdf/approval/document/partials/styles :: commonStyle"/>
+    <style th:replace="pdf/approval/document/partials/styles :: commonStyle"></style>
     <title th:text="${title}"></title>
 </head>
 <body>
