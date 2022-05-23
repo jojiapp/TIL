@@ -219,7 +219,7 @@ public class PdfGenerator {
             try {
                 renderer.getFontResolver()
                         .addFont(
-                                getNotoSansFontPath(font),
+                                getFontPath(font),
                                 BaseFont.IDENTITY_H,
                                 BaseFont.EMBEDDED
                         );
